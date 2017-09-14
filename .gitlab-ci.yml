@@ -11,7 +11,6 @@ stages:
 buildLibAndBinaries:
   stage: build
   script:
-##   - ./.installCMakeDocker.sh
    - ./build.sh
 
 testLibWithBinaries:
