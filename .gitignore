@@ -42,3 +42,5 @@ cmake_install.cmake
 LibNetworks.cbp
 *.cbp
 build/
+.vs/
+CMakeSettings.json

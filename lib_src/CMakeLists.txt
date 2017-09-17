@@ -11,7 +11,7 @@ add_definitions( -DBOOST_ALL_NO_LIB )
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.51.0 COMPONENTS filesystem system thread regex REQUIRED)
+find_package(Boost 1.51.0 COMPONENTS "filesystem" "system" "thread" "regex" REQUIRED)
 
 if(Boost_FOUND)
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
@@ -23,7 +23,7 @@ if(Boost_FOUND)
 
     add_library(cubznetworks STATIC ${SOURCES} ${INCLUDES})
 
-    target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+    target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS})
 
     target_link_libraries(cubznetworks ${Boost_LIBRARIES})
 endif()
