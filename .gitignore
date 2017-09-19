@@ -44,3 +44,5 @@ LibNetworks.cbp
 build/
 .vs/
 CMakeSettings.json
+Debug/
+Release/

@@ -1,9 +1,7 @@
-#include <Server.h>
+#include <TCPServer.h>
 
 int main()
 {
-    Server server;
-
-    server.helloWorld();
+    Network::TCPServer server;
     return 0;
 }

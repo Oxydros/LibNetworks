@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.5)
-project(cubznetworks)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -21,7 +20,7 @@ if(Boost_FOUND)
     file(GLOB SOURCES src/*.cpp)
     file(GLOB INCLUDES include/*.h)
 
-    add_library(cubznetworks STATIC ${SOURCES} ${INCLUDES})
+    add_library(cubznetworks ${SOURCES} ${INCLUDES})
 
     target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS})
 
