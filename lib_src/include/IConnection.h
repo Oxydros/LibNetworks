@@ -15,20 +15,21 @@ namespace Network
 		IConnection		*udpConnection;
 	};
 
-	class IConnection
+	class IConnection : public std::enable_shared_from_this<IConnection>
 	{
 	public:
-		typedef std::shared_ptr<IConnection>	Ptr;
+		typedef std::shared_ptr<IConnection>	SharedPtr;
+		typedef std::unique_ptr<IConnection>	UniquePtr;
 
 	public:
-		IConnection() {}
-		virtual ~IConnection() {}
+		IConnection() = default;
+		virtual ~IConnection() = default;
+		IConnection(IConnection const &) = delete;
+		IConnection &operator=(IConnection const &) = delete;
 
 	public:
 		virtual bool start() = 0;
 		virtual bool stop() = 0;
 		virtual ConnectionInfo const &getConnectionInfo() const = 0;
-		virtual bool write(std::string const &data) = 0;
-		virtual std::string read() = 0;
 	};
 }
