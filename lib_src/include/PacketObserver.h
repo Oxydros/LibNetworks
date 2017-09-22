@@ -1,13 +1,12 @@
 #pragma once
 
+#include "IPacket.h"
 #include "IConnection.h"
 
 namespace Network
 {
-	class Packet;
-
 	class PacketObserver
 	{
-		virtual Packet *handlePacket(IConnection const &from, Packet const &packet) = 0;
+		virtual IPacket *handlePacket(IConnection const &from, IPacket const &packet) = 0;
 	};
 }
