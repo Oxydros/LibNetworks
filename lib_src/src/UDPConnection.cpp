@@ -21,11 +21,6 @@ bool Network::UDPConnection::stop()
 	return false;
 }
 
-ConnectionInfo const & Network::UDPConnection::getConnectionInfo() const
-{
-	return (*_connectionInfo);
-}
-
 bool Network::UDPConnection::write(std::string const & data)
 {
 	return false;

@@ -25,11 +25,6 @@ bool Network::TCPConnection::stop()
 	return false;
 }
 
-ConnectionInfo const & Network::TCPConnection::getConnectionInfo() const
-{
-	return (*_connectionInfo);
-}
-
 void Network::TCPConnection::process_read()
 {
 	//We use this to make sure that the connection object is still alive

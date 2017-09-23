@@ -11,8 +11,7 @@ namespace Network
 		{
 			CHAT,
 			FILE,
-			USER,
-			ERROR
+			USER
 		};
 
 	public:
@@ -27,4 +26,6 @@ namespace Network
 		PacketType				getType() const;
 		void					setType(PacketType newType);
 	};
+
+	TCPPacket EmptyTCPPacket();
 }

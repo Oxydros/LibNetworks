@@ -13,7 +13,6 @@ namespace Network
 	{
 	private:
 		ConnectionManager					&_connectionManager;
-		ConnectionInfo						*_connectionInfo;
 		PacketObserver						&_observer;
 		boost::asio::ip::tcp::socket		_socket;
 		std::vector<unsigned char>			_buffer;
@@ -26,7 +25,6 @@ namespace Network
 	public:
 		virtual bool start();
 		virtual bool stop();
-		virtual ConnectionInfo const &getConnectionInfo() const;
 
 	private:
 		void process_read();

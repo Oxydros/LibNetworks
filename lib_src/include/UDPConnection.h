@@ -9,7 +9,6 @@ namespace Network
 	{
 
 	private:
-		ConnectionInfo		*_connectionInfo;
 
 	public:
 		UDPConnection(boost::asio::io_service &io_service);
@@ -18,7 +17,6 @@ namespace Network
 	public:
 		bool start();
 		bool stop();
-		ConnectionInfo const &getConnectionInfo() const;
 		bool write(std::string const &data);
 		std::string read();
 	};
