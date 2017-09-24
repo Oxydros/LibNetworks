@@ -11,21 +11,29 @@ namespace Network
 		{
 			CHAT,
 			FILE,
-			USER
+			AUTH,
+			PING,
+			USER,
+			UNKNOWN
 		};
 
-	public:
-		explicit				TCPPacket();
-		virtual					~TCPPacket();
+	private:
+		PacketType						_type;
+		std::vector<unsigned char>		_fileData;
 
 	public:
-		virtual PacketBuffer	getData() const;
-		virtual bool			setData(PacketBuffer const &buff);
+		explicit					TCPPacket();
+		virtual						~TCPPacket();
 
 	public:
-		PacketType				getType() const;
-		void					setType(PacketType newType);
+		virtual PacketBuffer		getData() const;
+		virtual bool				setData(PacketBuffer const &buff);
+
+	public:
+		PacketType					getType() const;
+		void						setType(PacketType newType);
+		std::vector<unsigned char>	getFileData() const;
 	};
 
-	TCPPacket EmptyTCPPacket();
+	TCPPacket EmptyTCPPacket;
 }
