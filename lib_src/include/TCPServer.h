@@ -1,7 +1,6 @@
 #pragma once
 
-#include <boost/asio.hpp>
-
+#include "Common.h"
 #include "IServer.h"
 #include "ConnectionManager.h"
 #include "TCPConnection.h"

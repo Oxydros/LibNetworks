@@ -1,8 +1,5 @@
 #pragma once
 
-#include <vector>
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include "Debug.h"
 #include "IConnection.h"
 #include "ConnectionManager.h"
@@ -32,11 +29,9 @@ namespace Network
 		virtual bool sendPacket(IPacket const &packet);
 
 	private:
-		void	checkRead();
 		void	checkWrite();
-		void 	handleRead(boost::system::error_code ec);
 		void 	handleWrite(boost::system::error_code ec);
-		void 	processRead(boost::system::error_code &ec);
+		void 	processRead();
 		void 	processWrite(boost::system::error_code &ec);
 	};
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <queue>
-#include <boost/asio.hpp>
+#include "Common.h"
 #include "PacketObserver.h"
 
 namespace Network

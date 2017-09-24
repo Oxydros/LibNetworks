@@ -5,7 +5,7 @@ using namespace Network;
 Network::TCPClient::TCPClient(PacketObserver &o)
 	: Client(o), _io_service(), _signalRegister(_io_service)
 {
-    handleAsyncWait();
+ //   handleAsyncWait();
 }
 
 Network::TCPClient::~TCPClient()
