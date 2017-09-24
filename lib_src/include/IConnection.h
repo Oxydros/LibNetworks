@@ -2,12 +2,13 @@
 
 #include <string>
 #include <memory>
+#include "IPacket.h"
 
 namespace Network
 {
 	class IConnection;
 
-	class IConnection : public std::enable_shared_from_this<IConnection>
+	class IConnection
 	{
 	public:
 		typedef std::shared_ptr<IConnection>	SharedPtr;
@@ -20,7 +21,8 @@ namespace Network
 		IConnection &operator=(IConnection const &) = delete;
 
 	public:
-		virtual bool start() = 0;
-		virtual bool stop() = 0;
+		virtual void start() = 0;
+		virtual void stop() = 0;
+		virtual bool sendPacket(IPacket const &packet) = 0;
 	};
 }

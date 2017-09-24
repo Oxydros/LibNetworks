@@ -5,7 +5,7 @@
 
 namespace Network
 {
-	class UDPConnection : public IConnection
+	class UDPConnection : public IConnection, public std::enable_shared_from_this<UDPConnection>
 	{
 
 	private:
@@ -15,9 +15,8 @@ namespace Network
 		virtual ~UDPConnection();
 
 	public:
-		bool start();
-		bool stop();
-		bool write(std::string const &data);
-		std::string read();
+		virtual void start();
+		virtual void stop();
+		virtual bool sendPacket(IPacket const &packet);
 	};
 }

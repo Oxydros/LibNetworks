@@ -11,22 +11,15 @@ Network::UDPConnection::~UDPConnection()
 {
 }
 
-bool Network::UDPConnection::start()
+void Network::UDPConnection::start()
 {
-	return false;
 }
 
-bool Network::UDPConnection::stop()
+void Network::UDPConnection::stop()
 {
-	return false;
 }
 
-bool Network::UDPConnection::write(std::string const & data)
+bool Network::UDPConnection::sendPacket(IPacket const &packet)
 {
-	return false;
-}
-
-std::string Network::UDPConnection::read()
-{
-	return std::string();
+	return (false);
 }

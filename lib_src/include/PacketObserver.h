@@ -7,6 +7,6 @@ namespace Network
 {
 	class PacketObserver
 	{
-		virtual IPacket *handlePacket(IConnection const &from, IPacket const &packet) = 0;
+		virtual void handlePacket(IConnection const &from, IPacket const &packet) = 0;
 	};
 }

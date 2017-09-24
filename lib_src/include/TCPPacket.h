@@ -35,5 +35,5 @@ namespace Network
 		std::vector<unsigned char>	getFileData() const;
 	};
 
-	TCPPacket EmptyTCPPacket;
+	static const TCPPacket EmptyTCPPacket;
 }

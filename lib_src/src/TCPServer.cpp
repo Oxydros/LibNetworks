@@ -71,14 +71,13 @@ void Network::TCPServer::processAccept()
 			return;
 		if (!ec)
 		{
-			dout << "New connection" << std::endl;
 			//Take the socket ownership
 			//Instantiate a connection with it
 			_connectionManager.add(
 				std::make_shared<TCPConnection>(
 					std::move(_serverSocket),
-					_connectionManager,
-					_packetObserver
+					_packetObserver,
+					&_connectionManager
 					));
 		}
 		processAccept();

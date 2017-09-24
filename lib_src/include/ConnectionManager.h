@@ -21,8 +21,8 @@ namespace Network
 		ConnectionManager &operator=(ConnectionManager const &) = delete;
 
 	public:
-		bool add(IConnection::SharedPtr);
-		bool stop(IConnection::SharedPtr);
-		bool stop_all();
+		void add(IConnection::SharedPtr);
+		void stop(IConnection::SharedPtr);
+		void stop_all();
 	};
 }

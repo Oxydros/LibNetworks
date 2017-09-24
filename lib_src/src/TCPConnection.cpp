@@ -3,47 +3,105 @@
 using namespace Network;
 
 TCPConnection::TCPConnection(boost::asio::ip::tcp::socket socket,
-	ConnectionManager &manager, PacketObserver &observer)
-	: _socket(std::move(socket)), _connectionManager(manager), _observer(observer)
+	PacketObserver &observer, ConnectionManager *manager)
+	: _socket(std::move(socket)), _connectionManager(manager), _observer(observer),
+      _stopped(false)
 {
-
+    boost::asio::ip::tcp::socket::non_blocking_io non_blocking_io(true);
+    _socket.io_control(non_blocking_io);
+    _socket.non_blocking(true);
 }
 
-Network::TCPConnection::~TCPConnection()
+void Network::TCPConnection::start()
 {
+    if (_stopped)
+        return ;
+	checkRead();
+	if (!_toSendBuffer.empty() && !_isWriting)
+		checkWrite();
 }
 
-bool Network::TCPConnection::start()
+void Network::TCPConnection::checkRead()
 {
-	process_read();
-	return false;
+	dout << "Checking if I can read" << std::endl;
+	//Check if we can read on the socket
+	//select() like
+	_socket.async_read_some(boost::asio::null_buffers(),
+							boost::bind(&TCPConnection::handleRead,
+										shared_from_this(),
+										boost::asio::placeholders::error));
 }
 
-bool Network::TCPConnection::stop()
+void Network::TCPConnection::checkWrite()
 {
-	_socket.close();
-	return false;
+	dout << "Checking if I can write" << std::endl;
+	//Check if we can write on the socket
+	//select() like
+	_isWriting = true;
+	_socket.async_write_some(boost::asio::null_buffers(),
+							 boost::bind(&TCPConnection::handleWrite,
+										 shared_from_this(),
+										 boost::asio::placeholders::error));
 }
 
-void Network::TCPConnection::process_read()
+void Network::TCPConnection::stop()
 {
-	//We use this to make sure that the connection object is still alive
-	//during the async operations
-	auto	selfPtr = shared_from_this();
+    if (!_stopped)
+    {
+        dout << "Stop socket" << std::endl;
+        _socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+        _socket.close();
+        _stopped = true;
+    }
+}
 
-	//We read 4 bytes to determine the size of the packet.
-	//Then we will read of the size of the packet
-	_socket.async_read_some(boost::asio::buffer(&(_buffer[0]), 4),
-		[this, selfPtr](boost::system::error_code errorCode, std::size_t nbBytes)
+bool Network::TCPConnection::sendPacket(IPacket const &packet)
+{
+	PacketBuffer toSend = packet.getData();
+
+	//Concat buffers
+	_toSendBuffer.insert(std::end(_toSendBuffer), std::begin(toSend),
+	std::end(toSend));
+	return (false);
+}
+
+void Network::TCPConnection::handleRead(boost::system::error_code ec)
+{
+    dout << ec.message() << std::endl;
+	if (!ec)
 	{
-		//Here _buffer is filled with nbBytes
-		//We can do stuff to read the packet etc.
-		//We can then call again process_read
-		//We can also call the observer and write the response with a 
-		//process write
-	});
+		processRead(ec);
+	}
+	if (!ec || ec == boost::asio::error::would_block)
+		start();
+	else
+		_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 }
 
-void Network::TCPConnection::process_write()
+void Network::TCPConnection::handleWrite(boost::system::error_code ec)
 {
+	_isWriting = false;
+    dout << ec.message() << std::endl;
+	if (!ec)
+	{
+		processWrite(ec);
+	}
+	//If error, stop socket
+	if (!(!ec || ec == boost::asio::error::would_block))
+		_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
+}
+
+void Network::TCPConnection::processRead(boost::system::error_code &ec)
+{
+    std::size_t len;
+
+    len = _socket.read_some(boost::asio::buffer(_buffer, 512), ec);
+    dout << "READ " << len << std::endl;
+    if (len == 0)
+        _connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
+}
+
+void Network::TCPConnection::processWrite(boost::system::error_code &ec)
+{
+    dout << "WRITING on SOCKET" << std::endl;
 }

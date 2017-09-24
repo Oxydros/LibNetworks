@@ -5,10 +5,9 @@
 
 class Observer : public Network::PacketObserver
 {
-	virtual Network::IPacket *handlePacket(Network::IConnection const &from, Network::IPacket const &packet)
+	virtual void handlePacket(Network::IConnection const &from, Network::IPacket const &packet)
 	{
-		std::cout << "Received new packet !" << std::endl;
-		return nullptr;
+		std::cout << "Received new packet in handler !" << std::endl;
 	}
 };
 

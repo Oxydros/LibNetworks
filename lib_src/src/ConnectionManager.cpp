@@ -1,4 +1,5 @@
 
+#include "Debug.h"
 #include "ConnectionManager.h"
 
 using namespace Network;
@@ -11,33 +12,35 @@ Network::ConnectionManager::~ConnectionManager()
 {
 }
 
-bool Network::ConnectionManager::add(IConnection::SharedPtr ptr)
+void Network::ConnectionManager::add(IConnection::SharedPtr ptr)
 {
+	dout << "New connection" << std::endl;
 	//Adding the connection to the set
 	_connections.insert(ptr);
 
 	//Launching the connection read / write loop
 	ptr->start();
-	return (false);
+	dout << _connections.size() << " active connections" << std::endl;
 }
 
-bool Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
+void Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
 {
+	dout << "Delete connection" << std::endl;
+
 	//Erasing the connection from the set
 	_connections.erase(ptr);
 
 	//Stopping the read / write loop by closing the socket
 	ptr->stop();
-	return (false);
+	dout << _connections.size() << " active connections" << std::endl;
 }
 
 //Stop all connections
-bool Network::ConnectionManager::stop_all()
+void Network::ConnectionManager::stop_all()
 {
 	for (auto co : _connections)
 	{
 		co->stop();
 	}
 	_connections.clear();
-	return (false);
 }
