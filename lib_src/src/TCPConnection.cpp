@@ -1,3 +1,4 @@
+#include <TCPPacket.h>
 #include "TCPConnection.h"
 
 using namespace Network;
@@ -31,14 +32,19 @@ void Network::TCPConnection::processRead()
 {
 	auto self(shared_from_this());
 
-	dout << "Launch async read" << std::endl;
-	_socket.async_read_some(boost::asio::buffer(&_buffer[0], 4),
+
+	dout << "Launch async read for packet size" << std::endl;
+
+    //TO OPTI
+    _buffer.resize(4);
+
+	_socket.async_read_some(boost::asio::buffer(_buffer.data(), 4),
 	[this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
 		dout << "READ " << nbBytes << std::endl;
 		if (!ec && nbBytes > 0)
         {
-            processRead();
+            handleRead(nbBytes);
         }
 		else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
 		{
@@ -46,6 +52,38 @@ void Network::TCPConnection::processRead()
 			_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 		}
 	});
+}
+
+void Network::TCPConnection::handleRead(size_t nbBytes)
+{
+    auto self(shared_from_this());
+    std::int32_t 	_bufferSize = 0;
+
+    std::memcpy(&_bufferSize, _buffer.data(), sizeof(_bufferSize));
+    dout << "Packet size " <<_bufferSize << std::endl;
+
+    dout << "Launch async read for packet" << std::endl;
+
+    //TO OPTI
+    _buffer.resize(_bufferSize);
+
+    _socket.async_read_some(boost::asio::buffer(_buffer.data(), _bufferSize),
+                            [this, self](boost::system::error_code ec, std::size_t nbBytes)
+                            {
+                                dout << "READ " << nbBytes << std::endl;
+                                if (!ec && nbBytes > 0)
+                                {
+                                    TCPPacket packet;
+
+                                    packet.setData(_buffer);
+                                    processRead();
+                                }
+                                else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
+                                {
+                                    dout << "Read error, stopping socket" << std::endl;
+                                    _connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
+                                }
+                            });
 }
 
 void Network::TCPConnection::stop()
@@ -63,7 +101,7 @@ bool Network::TCPConnection::sendPacket(IPacket const &packet)
 {
 	PacketBuffer toSend = packet.getData();
 
-	dout << "Received send packet cmd" << std::endl;
+	dout << "Received send packet cmd of size " << toSend.size() << std::endl;
 	//Concat buffers
 	_toSendBuffer.insert(std::end(_toSendBuffer), std::begin(toSend),
 	std::end(toSend));
@@ -86,5 +124,8 @@ void Network::TCPConnection::handleWrite(boost::system::error_code ec)
 
 void Network::TCPConnection::processWrite(boost::system::error_code &ec)
 {
-    dout << "WRITING on SOCKET" << std::endl;
+    dout << "WRITING on SOCKET " << _toSendBuffer.size() << " bytes" << std::endl;
+    std::size_t len = _socket.write_some(boost::asio::buffer(_toSendBuffer.data(), _toSendBuffer.size()), ec);
+    _toSendBuffer.clear();
+    dout << "SUCCESSFULLY WROTE " << len << std::endl;
 }

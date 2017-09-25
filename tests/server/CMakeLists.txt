@@ -17,4 +17,6 @@ add_executable(server ${SOURCES} ${INCLUDES})
 
 ##target_include_directories(hello_world PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
 
-target_link_libraries(server cubznetworks)
+target_link_libraries(server
+        cubznetworks
+        )

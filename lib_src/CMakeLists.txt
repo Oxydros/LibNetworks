@@ -16,9 +16,9 @@ if(Boost_FOUND)
     file(GLOB SOURCES src/*.cpp)
     file(GLOB INCLUDES include/*.h)
 
-    add_library(cubznetworks ${SOURCES} ${INCLUDES})
+    add_library(cubznetworks STATIC ${SOURCES} ${INCLUDES})
 
     target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS})
 
-    target_link_libraries(cubznetworks proto ${PROTOBUF_LIBRARY} ${Boost_LIBRARIES})
+    target_link_libraries(cubznetworks proto ${Boost_LIBRARIES})
 endif()

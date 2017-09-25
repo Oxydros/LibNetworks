@@ -15,8 +15,10 @@ int main()
 {
 	Observer		obs;
 	Network::TCPClient client(obs);
+	Network::TCPPacket packet;
 
 	client.connect("0.0.0.0", "4242");
+	client.sendPacket(packet);
 	client.run();
 	dout << "Leaving client ..." << std::endl;
     return 0;
