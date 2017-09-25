@@ -16,7 +16,7 @@ PacketBuffer Network::UDPPacket::getData() const
 	return PacketBuffer();
 }
 
-bool Network::UDPPacket::setData(PacketBuffer const & buff)
+std::size_t Network::UDPPacket::setData(PacketBuffer const & buff)
 {
-	return false;
+	return (0);
 }

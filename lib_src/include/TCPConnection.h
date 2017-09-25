@@ -30,6 +30,7 @@ namespace Network
 
 	private:
 		void	checkWrite();
+		void	handleRead(size_t nbBytes);
 		void 	handleWrite(boost::system::error_code ec);
 		void 	processRead();
 		void 	processWrite(boost::system::error_code &ec);

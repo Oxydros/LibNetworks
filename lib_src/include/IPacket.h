@@ -23,6 +23,6 @@ namespace Network
 		virtual Protocol getProtocol() const = 0;
 		virtual void setProtocol(Protocol newPro) = 0;
 		virtual PacketBuffer getData() const = 0;
-		virtual bool setData(PacketBuffer const &buff) = 0;
+		virtual std::size_t setData(PacketBuffer const &buff) = 0;
 	};
 }

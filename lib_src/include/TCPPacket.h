@@ -1,5 +1,6 @@
 #pragma once
 
+#include "test.pb.h"
 #include "APacket.h"
 
 namespace Network
@@ -19,6 +20,7 @@ namespace Network
 
 	private:
 		PacketType						_type;
+		test::TestMessage				_textProtobuf;
 		std::vector<unsigned char>		_fileData;
 
 	public:
@@ -27,7 +29,7 @@ namespace Network
 
 	public:
 		virtual PacketBuffer		getData() const;
-		virtual bool				setData(PacketBuffer const &buff);
+		virtual std::size_t			setData(PacketBuffer const &buff);
 
 	public:
 		PacketType					getType() const;
