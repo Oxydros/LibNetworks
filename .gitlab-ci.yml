@@ -1,7 +1,7 @@
 image: ubuntu:latest
 
 before_script:
-   - apt-get update && apt-get install -y libboost-all-dev make wget build-essential cmake
+   - apt-get update && apt-get install -y libboost-all-dev make wget build-essential cmake curl unzip
    - ./.installProto.sh
    - cmake --version
 

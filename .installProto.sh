@@ -6,11 +6,11 @@ curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.
 unzip protoc-3.2.0-linux-x86_64.zip -d protoc3
 
 # Move protoc to /usr/local/bin/
-sudo mv protoc3/bin/* /usr/local/bin/
+mv protoc3/bin/* /usr/local/bin/
 
 # Move protoc3/include to /usr/local/include/
-sudo mv protoc3/include/* /usr/local/include/
+mv protoc3/include/* /usr/local/include/
 
 # Optional: change owner
-sudo chown [user] /usr/local/bin/protoc
-sudo chown -R [user] /usr/local/include/google
+chown [user] /usr/local/bin/protoc
+chown -R [user] /usr/local/include/google
