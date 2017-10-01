@@ -10,7 +10,3 @@ mv protoc3/bin/* /usr/local/bin/
 
 # Move protoc3/include to /usr/local/include/
 mv protoc3/include/* /usr/local/include/
-
-# Optional: change owner
-chown [user] /usr/local/bin/protoc
-chown -R [user] /usr/local/include/google
