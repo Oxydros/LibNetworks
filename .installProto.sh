@@ -6,7 +6,7 @@ curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.
 unzip protoc-3.2.0-linux-x86_64.zip -d protoc3
 
 # Move protoc to /usr/local/bin/
-mv protoc3/bin/* /usr/local/bin/
+mv protoc3/bin/* /usr/bin/
 
 # Move protoc3/include to /usr/local/include/
-mv protoc3/include/* /usr/local/include/
+mv protoc3/include/* /usr/include/
