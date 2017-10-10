@@ -13,7 +13,7 @@ ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
     message("Release build.")
 ENDIF()
 
+#add_subdirectory(proto)
 add_subdirectory(lib_src)
-add_subdirectory(proto)
 add_subdirectory(tests/server)
 add_subdirectory(tests/client)

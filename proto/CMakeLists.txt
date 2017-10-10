@@ -1,3 +1,4 @@
+cmake_minimum_required (VERSION 3.6)
 INCLUDE(FindProtobuf)
 FIND_PACKAGE(Protobuf REQUIRED)
 PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HEADER test.proto)
