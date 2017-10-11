@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package test;
 
@@ -7,6 +7,6 @@ message TestMessage {
         TEST = 0;
         OUI = 2;
     }
-    required string message = 1;
-    required MessageType type = 2;
+    string message = 1;
+    MessageType type = 2;
 }
