@@ -1,26 +1,17 @@
 #pragma once
 
-#include "test.pb.h"
+#include "TCPMessage.pb.h"
 #include "APacket.h"
 
 namespace Network
 {
 	class TCPPacket : public APacket
 	{
-	public:
-		enum PacketType
-		{
-			CHAT,
-			FILE,
-			AUTH,
-			PING,
-			USER,
-			UNKNOWN
-		};
+    public:
+        typedef TCPMessage::TCPPacket::Type Type;
 
 	private:
-		PacketType						_type;
-		test::TestMessage				_textProtobuf;
+		TCPMessage::TCPPacket           _protobufPacket;
 		std::vector<unsigned char>		_fileData;
 
 	public:
@@ -32,10 +23,13 @@ namespace Network
 		virtual std::size_t			setData(PacketBuffer const &buff);
 
 	public:
-		PacketType					getType() const;
-		void						setType(PacketType newType);
 		std::vector<unsigned char>	getFileData() const;
+        Type                        getPacketType() const;
+
+        TCPMessage::AuthMessage     getAuthMessage() const;
+        TCPMessage::PingMessage     getPingMessage() const;
+        TCPMessage::FileMessage     getFileMessage() const;
 	};
 
-	static const TCPPacket EmptyTCPPacket;
+	static const TCPPacket          EmptyTCPPacket;
 }

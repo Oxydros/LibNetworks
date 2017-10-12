@@ -19,8 +19,6 @@ void Network::TCPConnection::start()
 void Network::TCPConnection::checkWrite()
 {
 	dout << "Checking if I can write" << std::endl;
-	//Check if we can write on the socket
-	//select() like
 	_isWriting = true;
 	_socket.async_write_some(boost::asio::null_buffers(),
 							 boost::bind(&TCPConnection::handleWrite,
