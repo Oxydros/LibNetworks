@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
-project(cubznetworks)
 
 set(CMAKE_CXX_STANDARD 14)
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_definitions( -DBOOST_ALL_NO_LIB )
 set(Boost_USE_STATIC_LIBS ON)
@@ -25,5 +20,5 @@ if(Boost_FOUND)
 
     target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS})
 
-    target_link_libraries(cubznetworks ${Boost_LIBRARIES})
+    target_link_libraries(cubznetworks proto ${Boost_LIBRARIES})
 endif()

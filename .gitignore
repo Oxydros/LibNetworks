@@ -44,3 +44,7 @@ LibNetworks.cbp
 build/
 .vs/
 CMakeSettings.json
+Debug/
+Release/
+proto/test.pb.cc
+proto/test.pb.h

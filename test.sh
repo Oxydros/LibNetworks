@@ -2,6 +2,6 @@
 
 cd build;
 
-./bin/hello_world;
+##./bin/hello_world;
 
 echo "Success";
