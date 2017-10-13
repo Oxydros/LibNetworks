@@ -5,7 +5,7 @@
 using namespace Network;
 
 Network::TCPPacket::TCPPacket()
-	: APacket(), _protobufPacket(), _fileData()
+	: APacket(TCP), _protobufPacket(), _fileData()
 {
     _protobufPacket.set_type(TCPMessage::TCPPacket::UNKNOWN);
 }

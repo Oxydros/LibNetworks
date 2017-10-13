@@ -6,7 +6,7 @@ using namespace Network;
 TCPConnection::TCPConnection(boost::asio::ip::tcp::socket socket,
 	PacketObserver &observer, ConnectionManager *manager)
 	: _socket(std::move(socket)), _connectionManager(manager), _observer(observer),
-      _stopped(false), _buffer()
+      _stopped(false), _buffer(), _ioMutex()
 {
     _buffer.reserve(512);
 }
@@ -85,8 +85,10 @@ void Network::TCPConnection::stop()
     }
 }
 
+//Scoped lock to prevent multiple thread write bugs
 bool Network::TCPConnection::sendPacket(IPacket const &packet)
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
 	PacketBuffer toSend = packet.getData();
 
 	dout << "Received send packet cmd of size " << toSend.size() << std::endl;
@@ -99,7 +101,6 @@ bool Network::TCPConnection::sendPacket(IPacket const &packet)
 
 void Network::TCPConnection::handleWrite(boost::system::error_code ec)
 {
-	_isWriting = false;
     dout << "WRITE: " << ec.message() << std::endl;
 	if (!ec)
 	{
@@ -110,8 +111,11 @@ void Network::TCPConnection::handleWrite(boost::system::error_code ec)
 		_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 }
 
+//Scoped lock to prevent multiple thread write bugs
 void Network::TCPConnection::processWrite(boost::system::error_code &ec)
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
+
     dout << "WRITING on SOCKET " << _toSendBuffer.size() << " bytes" << std::endl;
     std::size_t len = _socket.write_some(boost::asio::buffer(_toSendBuffer.data(), _toSendBuffer.size()), ec);
     _toSendBuffer.clear();
@@ -121,7 +125,6 @@ void Network::TCPConnection::processWrite(boost::system::error_code &ec)
 void Network::TCPConnection::checkWrite()
 {
     dout << "Checking if I can write" << std::endl;
-    _isWriting = true;
     _socket.async_write_some(boost::asio::null_buffers(),
                              boost::bind(&TCPConnection::handleWrite,
                                          shared_from_this(),

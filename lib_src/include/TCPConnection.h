@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/thread/mutex.hpp>
 #include "Debug.h"
 #include "IConnection.h"
 #include "ConnectionManager.h"
@@ -15,8 +16,8 @@ namespace Network
 		boost::asio::ip::tcp::socket		_socket;
 		std::vector<unsigned char>			_buffer;
 		std::vector<unsigned char>			_toSendBuffer;
-		bool								_isWriting;
 		bool								_stopped;
+        boost::mutex                        _ioMutex;
 
 	public:
 		explicit TCPConnection(boost::asio::ip::tcp::socket socket,

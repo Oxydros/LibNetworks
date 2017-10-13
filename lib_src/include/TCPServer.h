@@ -34,7 +34,7 @@ namespace Network
 		virtual bool run();
 
 	private:
-		void	handleAsynWait();
+		void	handleAsyncWait();
 		void	processAccept();
 	};
 }
