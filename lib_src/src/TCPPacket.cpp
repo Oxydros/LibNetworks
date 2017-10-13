@@ -49,6 +49,11 @@ std::size_t Network::TCPPacket::setData(PacketBuffer const &buff)
 	return (buff.size());
 }
 
+void Network::TCPPacket::setType(Type t)
+{
+    _protobufPacket.set_type(t);
+}
+
 std::vector<unsigned char> Network::TCPPacket::getFileData() const
 {
 	return (_fileData);
@@ -59,17 +64,17 @@ Network::TCPPacket::Type Network::TCPPacket::getPacketType() const
     return (_protobufPacket.type());
 }
 
-TCPMessage::AuthMessage     Network::TCPPacket::getAuthMessage() const
+TCPMessage::AuthMessage const     &Network::TCPPacket::getAuthMessage() const
 {
     return (_protobufPacket.authmessage());
 }
 
-TCPMessage::PingMessage     Network::TCPPacket::getPingMessage() const
+TCPMessage::PingMessage const     &Network::TCPPacket::getPingMessage() const
 {
     return (_protobufPacket.pingmessage());
 }
 
-TCPMessage::FileMessage     Network::TCPPacket::getFileMessage() const
+TCPMessage::FileMessage const     &Network::TCPPacket::getFileMessage() const
 {
     return (_protobufPacket.filemessage());
 }
@@ -87,4 +92,15 @@ TCPMessage::PingMessage     *Network::TCPPacket::getMutablePingMessage()
 TCPMessage::FileMessage     *Network::TCPPacket::getMutableFileMessage()
 {
     return (_protobufPacket.mutable_filemessage());
+}
+
+TCPMessage::TCPPacket const      &Network::TCPPacket::getTCPPacket() const
+{
+    return (_protobufPacket);
+}
+
+std::ostream &operator<<(std::ostream &os, Network::TCPPacket const &packet)
+{
+    os << packet.getTCPPacket().DebugString();
+    return (os);
 }

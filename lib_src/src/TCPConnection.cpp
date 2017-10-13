@@ -64,6 +64,7 @@ void Network::TCPConnection::handleRead(size_t nbBytes)
                                     TCPPacket packet;
 
                                     packet.setData(_buffer);
+                                    _observer.handlePacket(self, packet);
                                     processRead();
                                 }
                                 else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)

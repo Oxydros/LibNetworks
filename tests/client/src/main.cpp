@@ -1,13 +1,16 @@
 #include <iostream>
 #include <Debug.h>
 #include <TCPClient.h>
+#include <TCPServer.h>
 #include <TCPPacket.h>
 
 class Observer : public Network::PacketObserver
 {
-	virtual void handlePacket(Network::IConnection const &from, Network::IPacket const &packet)
+	virtual void handlePacket(Network::IConnection::SharedPtr from, Network::IPacket const &packet)
 	{
-		std::cout << "Received new packet in handler!" << std::endl;
+        auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
+
+        std::cout << "Received " << tcpPacket << std::endl;
 	}
 };
 
@@ -18,7 +21,9 @@ int main()
 	Network::TCPPacket packet;
 
 	client.connect("0.0.0.0", "4242");
-	client.sendPacket(packet);
+    client.sendPacket(packet);
+    packet.setType(Network::TCPPacket::Type::TCPPacket_Type_PING);
+    client.sendPacket(packet);
 	client.run(); //Block
 	dout << "Leaving client ..." << std::endl;
     return 0;

@@ -15,25 +15,31 @@ namespace Network
 		std::vector<unsigned char>		_fileData;
 
 	public:
-		explicit					TCPPacket();
-		virtual						~TCPPacket();
+		explicit					    TCPPacket();
+		virtual						    ~TCPPacket();
 
 	public:
-		virtual PacketBuffer		getData() const;
-		virtual std::size_t			setData(PacketBuffer const &buff);
+		virtual PacketBuffer		    getData() const;
+		virtual std::size_t			    setData(PacketBuffer const &buff);
 
 	public:
-		std::vector<unsigned char>	getFileData() const;
-        Type                        getPacketType() const;
+		std::vector<unsigned char>	    getFileData() const;
+        Type                            getPacketType() const;
 
-        TCPMessage::AuthMessage     getAuthMessage() const;
-        TCPMessage::PingMessage     getPingMessage() const;
-        TCPMessage::FileMessage     getFileMessage() const;
+        TCPMessage::AuthMessage const   &getAuthMessage() const;
+        TCPMessage::PingMessage const   &getPingMessage() const;
+        TCPMessage::FileMessage const   &getFileMessage() const;
 
-        TCPMessage::AuthMessage     *getMutableAuthMessage();
-        TCPMessage::PingMessage     *getMutablePingMessage();
-        TCPMessage::FileMessage     *getMutableFileMessage();
+        TCPMessage::AuthMessage         *getMutableAuthMessage();
+        TCPMessage::PingMessage         *getMutablePingMessage();
+        TCPMessage::FileMessage         *getMutableFileMessage();
+
+        TCPMessage::TCPPacket const      &getTCPPacket() const;
+
+        void                            setType(Type t);
 	};
 
-	static const TCPPacket          EmptyTCPPacket;
+	static const TCPPacket              EmptyTCPPacket;
 }
+
+std::ostream &operator<<(std::ostream &os, Network::TCPPacket const &packet);
