@@ -5,9 +5,11 @@
 
 class Observer : public Network::PacketObserver
 {
-	virtual void handlePacket(Network::IConnection const &from, Network::IPacket const &packet)
+	virtual void handlePacket(Network::IConnection::SharedPtr from, Network::IPacket const &packet)
 	{
-		std::cout << "Received new packet in handler !" << std::endl;
+        auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
+
+        std::cout << "Received " << tcpPacket << std::endl;
 	}
 };
 
@@ -16,6 +18,6 @@ int main()
 	Observer		obs;
 	Network::TCPServer server("0.0.0.0", "4242", obs);
 
-	server.run();
+	server.run(); //Block
     return 0;
 }

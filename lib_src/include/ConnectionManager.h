@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <boost/thread/mutex.hpp>
 #include "IConnection.h"
 
 namespace Network
@@ -8,6 +9,7 @@ namespace Network
 	class ConnectionManager
 	{
 	private:
+        boost::mutex                        _ioMutex;
 		std::set<IConnection::SharedPtr>	_connections;
 
 	public:
