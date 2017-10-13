@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
+add_subdirectory(proto)
+
 set(CMAKE_CXX_STANDARD 14)
 
 add_definitions( -DBOOST_ALL_NO_LIB )

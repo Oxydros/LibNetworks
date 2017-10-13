@@ -1,0 +1,17 @@
+cmake_minimum_required (VERSION 3.5)
+
+set(CMAKE_CXX_STANDARD 14)
+
+INCLUDE(FindProtobuf)
+FIND_PACKAGE(Protobuf REQUIRED)
+
+message(STATUS "ProtoLib ${PROTOBUF_LIBRARIES}")
+message(STATUS "ProtoInclude ${PROTOBUF_INCLUDE_DIRS}")
+
+PROTOBUF_GENERATE_CPP(PROTO_SRC PROTO_HEADER TCPMessage.proto)
+
+ADD_LIBRARY(proto ${PROTO_HEADER} ${PROTO_SRC})
+
+target_include_directories(proto PUBLIC ${PROTOBUF_INCLUDE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(proto PUBLIC ${PROTOBUF_LIBRARIES})
