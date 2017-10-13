@@ -29,6 +29,10 @@ namespace Network
         TCPMessage::AuthMessage     getAuthMessage() const;
         TCPMessage::PingMessage     getPingMessage() const;
         TCPMessage::FileMessage     getFileMessage() const;
+
+        TCPMessage::AuthMessage     *getMutableAuthMessage();
+        TCPMessage::PingMessage     *getMutablePingMessage();
+        TCPMessage::FileMessage     *getMutableFileMessage();
 	};
 
 	static const TCPPacket          EmptyTCPPacket;

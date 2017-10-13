@@ -19,7 +19,7 @@ int main()
 
 	client.connect("0.0.0.0", "4242");
 	client.sendPacket(packet);
-	client.run();
+	client.run(); //Block
 	dout << "Leaving client ..." << std::endl;
     return 0;
 }

@@ -33,6 +33,7 @@ void Network::TCPClient::disconnect()
 {
     _tcpConnection->stop();
 }
+
 void Network::TCPClient::run()
 {
     _tcpConnection->start();

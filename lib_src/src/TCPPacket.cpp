@@ -5,7 +5,7 @@
 using namespace Network;
 
 Network::TCPPacket::TCPPacket()
-	: _protobufPacket(), _fileData()
+	: APacket(), _protobufPacket(), _fileData()
 {
     _protobufPacket.set_type(TCPMessage::TCPPacket::UNKNOWN);
 }
@@ -72,4 +72,19 @@ TCPMessage::PingMessage     Network::TCPPacket::getPingMessage() const
 TCPMessage::FileMessage     Network::TCPPacket::getFileMessage() const
 {
     return (_protobufPacket.filemessage());
+}
+
+TCPMessage::AuthMessage     *Network::TCPPacket::getMutableAuthMessage()
+{
+    return (_protobufPacket.mutable_authmessage());
+}
+
+TCPMessage::PingMessage     *Network::TCPPacket::getMutablePingMessage()
+{
+    return (_protobufPacket.mutable_pingmessage());
+}
+
+TCPMessage::FileMessage     *Network::TCPPacket::getMutableFileMessage()
+{
+    return (_protobufPacket.mutable_filemessage());
 }

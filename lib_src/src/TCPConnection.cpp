@@ -16,16 +16,6 @@ void Network::TCPConnection::start()
 	processRead();
 }
 
-void Network::TCPConnection::checkWrite()
-{
-	dout << "Checking if I can write" << std::endl;
-	_isWriting = true;
-	_socket.async_write_some(boost::asio::null_buffers(),
-							 boost::bind(&TCPConnection::handleWrite,
-										 shared_from_this(),
-										 boost::asio::placeholders::error));
-}
-
 void Network::TCPConnection::processRead()
 {
 	auto self(shared_from_this());
@@ -126,4 +116,14 @@ void Network::TCPConnection::processWrite(boost::system::error_code &ec)
     std::size_t len = _socket.write_some(boost::asio::buffer(_toSendBuffer.data(), _toSendBuffer.size()), ec);
     _toSendBuffer.clear();
     dout << "SUCCESSFULLY WROTE " << len << std::endl;
+}
+
+void Network::TCPConnection::checkWrite()
+{
+    dout << "Checking if I can write" << std::endl;
+    _isWriting = true;
+    _socket.async_write_some(boost::asio::null_buffers(),
+                             boost::bind(&TCPConnection::handleWrite,
+                                         shared_from_this(),
+                                         boost::asio::placeholders::error));
 }

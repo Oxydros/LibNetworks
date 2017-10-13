@@ -16,6 +16,6 @@ int main()
 	Observer		obs;
 	Network::TCPServer server("0.0.0.0", "4242", obs);
 
-	server.run();
+	server.run(); //Block
     return 0;
 }
