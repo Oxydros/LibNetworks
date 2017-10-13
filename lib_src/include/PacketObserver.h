@@ -7,6 +7,7 @@ namespace Network
 {
 	class PacketObserver
 	{
-		virtual void handlePacket(IConnection const &from, IPacket const &packet) = 0;
+    public:
+		virtual void handlePacket(IConnection::SharedPtr from, IPacket const &packet) = 0;
 	};
 }

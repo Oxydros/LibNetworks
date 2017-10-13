@@ -1,0 +1,2 @@
+Received type: UNKNOWN
+Received type: PING
