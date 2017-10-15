@@ -13,10 +13,6 @@ endif(UNIX)
 file(GLOB SOURCES src/*.cpp)
 file(GLOB INCLUDES include/*.h)
 
-message(STATUS "ProtoLib ${PROTOBUF_LIBRARY}")
-
 add_executable(client ${SOURCES} ${INCLUDES})
 
-target_link_libraries(client
-        cubznetworks
-        )
+target_link_libraries(client cubznetworks)
