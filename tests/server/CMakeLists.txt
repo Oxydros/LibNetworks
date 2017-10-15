@@ -15,6 +15,4 @@ file(GLOB INCLUDES include/*.h)
 
 add_executable(server ${SOURCES} ${INCLUDES})
 
-target_link_libraries(server
-        cubznetworks
-        )
+target_link_libraries(server cubznetworks)
