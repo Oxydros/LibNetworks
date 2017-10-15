@@ -9,10 +9,14 @@ SET_SOURCE_FILES_PROPERTIES(${PROTO_SOURCES} ${PROTO_HEADERS} PROPERTIES GENERAT
 add_definitions( -DBOOST_ALL_NO_LIB )
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+set(Boost_USE_STATIC_RUNTIME ON)
 find_package(Boost 1.51.0 COMPONENTS "filesystem" "system" "thread" "regex" REQUIRED)
 
 if(Boost_FOUND)
+    if (MSCV)
+      add_definitions(-D_WIN32_WINNT=0x0501)
+    endif(MSCV)
+
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
     message(STATUS "Boost_VERSION: ${Boost_VERSION}")
@@ -23,9 +27,9 @@ if(Boost_FOUND)
     file(GLOB SOURCES src/*.cpp)
     file(GLOB INCLUDES include/*.h)
 
-    add_library(cubznetworks STATIC ${PROTO_SOURCES} ${PROTO_HEADERS} ${SOURCES} ${INCLUDES})
+    add_library(cubznetworks STATIC ${SOURCES} ${INCLUDES})
 
-    target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS} ${EXTERNAL_DEPS_INCLUDES} ${EXTERNAL_INCLUDE_DIR})
+    target_include_directories(cubznetworks PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${Boost_INCLUDE_DIRS})
 
-    target_link_libraries(cubznetworks ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
+    target_link_libraries(cubznetworks proto ${Boost_LIBRARIES} ${EXTERNAL_LIBS})
 endif()
