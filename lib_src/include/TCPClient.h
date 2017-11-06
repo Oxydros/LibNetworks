@@ -5,6 +5,10 @@
 
 namespace Network
 {
+    //! TCPClient
+    /*!
+     * Implementation of a TCPClient
+     */
 	class TCPClient : public Client
 	{
 	private:
@@ -17,9 +21,28 @@ namespace Network
 		virtual ~TCPClient();
 
 	public:
+        /*!
+         * Connect to a foreign TCP server
+         * @param ip
+         * @param port
+         * @return
+         */
 		virtual bool		connect(std::string const &ip, std::string const &port);
+
+        /*!
+         * Disconnect from a server
+         */
 		virtual void		disconnect();
+
+        /*!
+         * Send a packet
+         * @param p
+         */
         virtual void        sendPacket(IPacket const &p);
+
+        /*!
+         * Launch the loop
+         */
 		virtual void		run();
 
     private:

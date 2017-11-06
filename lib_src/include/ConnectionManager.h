@@ -6,6 +6,10 @@
 
 namespace Network
 {
+    //! A Connection manager class
+    /*!
+     * Handle the life of the connections
+     */
 	class ConnectionManager
 	{
 	private:
@@ -23,8 +27,19 @@ namespace Network
 		ConnectionManager &operator=(ConnectionManager const &) = delete;
 
 	public:
+        /*!
+         * Add a new connection
+         */
 		void add(IConnection::SharedPtr);
+
+        /*!
+         * Stop a connection
+         */
 		void stop(IConnection::SharedPtr);
+
+        /*!
+         * Stop all connections
+         */
 		void stop_all();
 	};
 }

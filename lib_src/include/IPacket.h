@@ -6,6 +6,7 @@ namespace Network
 {
 	typedef std::vector<unsigned char> PacketBuffer;
 
+    //! Protocol enum
 	enum Protocol
 	{
 		TCP,
@@ -13,6 +14,10 @@ namespace Network
 		UNKNOWN
 	};
 
+    //! Packet Interface
+    /*!
+     * Specify what is a packet
+     */
 	class IPacket
 	{
 	public:
@@ -20,9 +25,29 @@ namespace Network
 		virtual ~IPacket() = default;
 
 	public:
+        /*!
+         * Return the protocol of the packet
+         * @return Network::Protocol
+         */
 		virtual Protocol getProtocol() const = 0;
+
+        /*!
+         * Set the protocol used for this packet
+         * @param Network::Protocol newPro
+         */
 		virtual void setProtocol(Protocol newPro) = 0;
+
+        /*!
+         * Get the binary representation of the packet
+         * @return Network::PacketBuffer
+         */
 		virtual PacketBuffer getData() const = 0;
+
+        /*!
+         * Set the binary representaton of the packet
+         * @param buff
+         * @return
+         */
 		virtual std::size_t setData(PacketBuffer const &buff) = 0;
 	};
 }

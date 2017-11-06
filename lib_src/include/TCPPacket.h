@@ -5,6 +5,10 @@
 
 namespace Network
 {
+    //! TCPPacket
+    /*!
+     * Implementation of a TCPPacket
+     */
 	class TCPPacket : public APacket
 	{
     public:

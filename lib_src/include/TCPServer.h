@@ -8,6 +8,10 @@
 
 namespace Network
 {
+    //! TCPServer
+    /*!
+     * Implementation of a TCPServer
+     */
 	class TCPServer : public IServer
 	{
 	private:

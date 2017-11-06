@@ -48,3 +48,4 @@ Debug/
 Release/
 proto/test.pb.cc
 proto/test.pb.h
+doc/
