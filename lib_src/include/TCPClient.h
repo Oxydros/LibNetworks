@@ -5,6 +5,10 @@
 
 namespace Network
 {
+    //! TCPClient
+    /*!
+     * Implementation of a TCPClient
+     */
 	class TCPClient : public Client
 	{
 	private:

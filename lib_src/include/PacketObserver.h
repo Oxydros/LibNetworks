@@ -5,6 +5,11 @@
 
 namespace Network
 {
+    //! Packet Observer
+    /*!
+     * Class to implement to receive callbacks from the
+     * servers and clients
+     */
 	class PacketObserver
 	{
     public:

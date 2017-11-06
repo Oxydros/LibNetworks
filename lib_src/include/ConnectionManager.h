@@ -6,6 +6,10 @@
 
 namespace Network
 {
+    //! A Connection manager class
+    /*!
+     * Handle the life of the connections
+     */
 	class ConnectionManager
 	{
 	private:

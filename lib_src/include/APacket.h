@@ -4,6 +4,7 @@
 
 namespace Network
 {
+    /*! Abstract class implementing IPacket */
 	class APacket : public IPacket
 	{
 	private:

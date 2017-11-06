@@ -6,6 +6,7 @@
 
 namespace Network
 {
+    /*! Abstract Client class */
 	class Client
 	{
 	protected:

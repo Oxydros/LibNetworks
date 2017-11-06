@@ -7,8 +7,10 @@
 
 namespace Network
 {
-	class IConnection;
-
+    //! Connection Interface
+    /*!
+     * Specify what is a connection
+     */
 	class IConnection
 	{
 	public:

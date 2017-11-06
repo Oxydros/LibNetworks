@@ -2,6 +2,10 @@
 
 namespace Network
 {
+    //! Server Interface
+    /*!
+     * Specify what is a Server
+     */
 	class IServer
 	{
 	public:

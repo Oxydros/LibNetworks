@@ -8,6 +8,10 @@
 
 namespace Network
 {
+    //! TCPConnection
+    /*!
+     * Implementation of a TCPConnection
+     */
 	class TCPConnection : public IConnection, public std::enable_shared_from_this<TCPConnection>
 	{
 	private:

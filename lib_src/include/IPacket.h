@@ -6,6 +6,7 @@ namespace Network
 {
 	typedef std::vector<unsigned char> PacketBuffer;
 
+    //! Protocol enum
 	enum Protocol
 	{
 		TCP,
@@ -13,6 +14,10 @@ namespace Network
 		UNKNOWN
 	};
 
+    //! Packet Interface
+    /*!
+     * Specify what is a packet
+     */
 	class IPacket
 	{
 	public:
