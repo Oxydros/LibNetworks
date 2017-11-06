@@ -24,8 +24,21 @@ namespace Network
 		IConnection &operator=(IConnection const &) = delete;
 
 	public:
+        /*!
+         * Start the connection loop
+         */
 		virtual void start() = 0;
+
+        /*!
+         * Stop the connection / Disconnect socket
+         */
 		virtual void stop() = 0;
+
+        /*!
+         * Send a packet
+         * @param packet
+         * @return true or false if succeed
+         */
 		virtual bool sendPacket(IPacket const &packet) = 0;
 	};
 }

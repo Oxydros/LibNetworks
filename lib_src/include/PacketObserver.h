@@ -13,6 +13,11 @@ namespace Network
 	class PacketObserver
 	{
     public:
+        /*!
+         * Callback
+         * @param from
+         * @param packet
+         */
 		virtual void handlePacket(IConnection::SharedPtr from, IPacket const &packet) = 0;
 	};
 }

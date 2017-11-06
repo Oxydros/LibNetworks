@@ -15,7 +15,17 @@ namespace Network
 		virtual ~APacket();
 		
 	public:
+        /*!
+         * Get the protocol
+         * @return Network::Protocol
+         */
 		virtual Protocol getProtocol() const;
+
+        /*!
+         * Set the protocol
+         * @param Network::Protocol newProt
+         * @return void
+         */
 		virtual void setProtocol(Protocol newProt);
 	};
 }
