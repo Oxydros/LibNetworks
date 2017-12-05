@@ -49,3 +49,16 @@ Release/
 proto/test.pb.cc
 proto/test.pb.h
 doc/
+/ALL_BUILD.vcxproj
+/ALL_BUILD.vcxproj.filters
+/LibNetworks.sln
+/ZERO_CHECK.vcxproj
+/ZERO_CHECK.vcxproj.filters
+/lib_src/cubznetworks.vcxproj
+/lib_src/cubznetworks.vcxproj.filters
+/proto/proto.vcxproj
+/proto/proto.vcxproj.filters
+/tests/client/client.vcxproj
+/tests/client/client.vcxproj.filters
+/tests/server/server.vcxproj
+/tests/server/server.vcxproj.filters
