@@ -8,6 +8,10 @@
 
 namespace Network
 {
+    //! TCPServer
+    /*!
+     * Implementation of a TCPServer
+     */
 	class TCPServer : public IServer
 	{
 	private:
@@ -34,7 +38,7 @@ namespace Network
 		virtual bool run();
 
 	private:
-		void	handleAsynWait();
+		void	handleAsyncWait();
 		void	processAccept();
 	};
 }

@@ -4,6 +4,11 @@
 
 namespace Network
 {
+    //! UDPConnection
+    /*!
+     * Implementation of a UDPConnection
+     * NOT WORKING YET
+     */
 	class UDPConnection : public IConnection, public std::enable_shared_from_this<UDPConnection>
 	{
 

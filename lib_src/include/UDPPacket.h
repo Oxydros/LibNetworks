@@ -4,6 +4,11 @@
 
 namespace Network
 {
+    //! UDPPacket
+    /*!
+     * Implementation of a UDPPacket
+     * NOT WORKING YET
+     */
 	class UDPPacket : public APacket
 	{
 	public:

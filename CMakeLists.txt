@@ -1,5 +1,16 @@
 cmake_minimum_required (VERSION 3.5)
+
+if(MSCV)
+	set(CMAKE_USER_MAKE_RULES_OVERRIDE
+		${CMAKE_CURRENT_SOURCE_DIR}/cmake/c_flag_overrides.cmake)
+	set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX
+		${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
+endif(MSCV)
 project (LibNetworks)
+
+if(MSVC)
+	add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -13,7 +24,6 @@ ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
     message("Release build.")
 ENDIF()
 
-add_subdirectory(proto)
 add_subdirectory(lib_src)
 add_subdirectory(tests/server)
 add_subdirectory(tests/client)

@@ -11,12 +11,8 @@ stages:
   - build
   - test
 
-buildLibAndBinaries:
+buildAndTestLibAndBinaries:
   stage: build
   script:
    - ./build.sh
-
-testLibWithBinaries:
-  stage: test
-  script:
-    - ./test.sh
+   - ./test.sh

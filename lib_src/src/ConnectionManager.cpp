@@ -5,6 +5,7 @@
 using namespace Network;
 
 Network::ConnectionManager::ConnectionManager()
+        : _ioMutex()
 {
 }
 
@@ -14,6 +15,8 @@ Network::ConnectionManager::~ConnectionManager()
 
 void Network::ConnectionManager::add(IConnection::SharedPtr ptr)
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
+
 	dout << "New connection" << std::endl;
 	//Adding the connection to the set
 	_connections.insert(ptr);
@@ -25,6 +28,8 @@ void Network::ConnectionManager::add(IConnection::SharedPtr ptr)
 
 void Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
+
 	dout << "Delete connection" << std::endl;
 
 	//Erasing the connection from the set
@@ -38,6 +43,8 @@ void Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
 //Stop all connections
 void Network::ConnectionManager::stop_all()
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
+
 	for (auto co : _connections)
 	{
 		co->stop();

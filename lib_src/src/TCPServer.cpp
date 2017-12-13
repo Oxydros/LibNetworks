@@ -10,7 +10,7 @@ Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPo
 	_io_service(), _serverSocket(_io_service), _signalRegister(_io_service),
 	_acceptor(_io_service)
 {
-	handleAsynWait();
+	handleAsyncWait();
 
 	boost::asio::ip::tcp::resolver	resolver(_io_service);
 	boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve({ ip, serverPort });
@@ -41,7 +41,7 @@ bool Network::TCPServer::run()
 	return (false);
 }
 
-void Network::TCPServer::handleAsynWait()
+void Network::TCPServer::handleAsyncWait()
 {
 	dout << "Configuring signalHandler" << std::endl;
 
