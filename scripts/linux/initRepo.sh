@@ -19,8 +19,8 @@ set(PROTO_HEADERS \${PROTO_HDRS} PARENT_SCOPE)
 PROTO_CMAKELIST_FILE="$PWD/lib_src/proto/CMakeLists.txt"
 
 echo "Initializing submodules"
-git submodule init
-git submodule update --remote --merge
+git submodule sync --recursive
+git submodule update --init --remote --merge
 
 echo "Creating proto CMakeLists.txt"
 echo "$PROTO_CMAKE" > $PROTO_CMAKELIST_FILE
