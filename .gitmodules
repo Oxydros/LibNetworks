@@ -1,3 +1,3 @@
-[submodule "Protobuf Protocol"]
-	   path = lib_src/proto
-	   url = git@gitlab.com:cubz/ProtobufProtocol.git
+[submodule "lib_src/proto"]
+	path = lib_src/proto
+	url = git@gitlab.com:cubz/ProtobufProtocol.git
