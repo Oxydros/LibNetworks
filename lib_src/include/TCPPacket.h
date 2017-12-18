@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TCPMessage.pb.h"
+#include <TCPMessage.pb.h>
 #include "APacket.h"
 
 namespace Network
@@ -12,10 +12,10 @@ namespace Network
 	class TCPPacket : public APacket
 	{
     public:
-        typedef TCPMessage::TCPPacket::Type Type;
+        typedef CubZPacket::PacketTCP::Type Type;
 
 	private:
-		TCPMessage::TCPPacket           _protobufPacket;
+        CubZPacket::PacketTCP           _protobufPacket;
 		std::vector<unsigned char>		_fileData;
 
 	public:
@@ -30,15 +30,15 @@ namespace Network
 		std::vector<unsigned char>	    getFileData() const;
         Type                            getPacketType() const;
 
-        TCPMessage::AuthMessage const   &getAuthMessage() const;
-        TCPMessage::PingMessage const   &getPingMessage() const;
-        TCPMessage::FileMessage const   &getFileMessage() const;
+        CubZPacket::AuthMessage const   &getAuthMessage() const;
+        CubZPacket::PingMessage const   &getPingMessage() const;
+        CubZPacket::FileMessage const   &getFileMessage() const;
 
-        TCPMessage::AuthMessage         *getMutableAuthMessage();
-        TCPMessage::PingMessage         *getMutablePingMessage();
-        TCPMessage::FileMessage         *getMutableFileMessage();
+        CubZPacket::AuthMessage         *getMutableAuthMessage();
+        CubZPacket::PingMessage         *getMutablePingMessage();
+        CubZPacket::FileMessage         *getMutableFileMessage();
 
-        TCPMessage::TCPPacket const      &getTCPPacket() const;
+        CubZPacket::PacketTCP const      &getTCPPacket() const;
 
         void                            setType(Type t);
 	};

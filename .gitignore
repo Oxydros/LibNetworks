@@ -48,7 +48,6 @@ Debug/
 Release/
 proto/test.pb.cc
 proto/test.pb.h
-doc/
 /ALL_BUILD.vcxproj
 /ALL_BUILD.vcxproj.filters
 /LibNetworks.sln
@@ -62,3 +61,6 @@ doc/
 /tests/client/client.vcxproj.filters
 /tests/server/server.vcxproj
 /tests/server/server.vcxproj.filters
+lib_src/proto/
+
+

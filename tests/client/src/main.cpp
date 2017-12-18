@@ -22,7 +22,7 @@ int main()
 
 	client.connect("0.0.0.0", "4242");
     client.sendPacket(packet);
-    packet.setType(Network::TCPPacket::Type::TCPPacket_Type_PING);
+    packet.setType(Network::TCPPacket::Type::PacketTCP_Type_PING);
     client.sendPacket(packet);
 	client.run(); //Block
 	dout << "Leaving client ..." << std::endl;

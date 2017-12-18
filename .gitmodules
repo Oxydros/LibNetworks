@@ -1,0 +1,3 @@
+[submodule "lib_src/proto"]
+	path = lib_src/proto
+	url = ../../cubz/ProtobufProtocol.git
