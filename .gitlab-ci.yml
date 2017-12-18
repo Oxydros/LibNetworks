@@ -1,5 +1,8 @@
 image: ubuntu:latest
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 before_script:
    - apt-get update && apt-get install -y libboost-all-dev make wget build-essential cmake curl unzip software-properties-common git
    - add-apt-repository ppa:maarten-fonville/protobuf
