@@ -1,11 +1,12 @@
 image: ubuntu:latest
 
 before_script:
-   - apt-get update && apt-get install -y libboost-all-dev make wget build-essential cmake curl unzip software-properties-common
+   - apt-get update && apt-get install -y libboost-all-dev make wget build-essential cmake curl unzip software-properties-common git
    - add-apt-repository ppa:maarten-fonville/protobuf
    - apt-get update
    - apt-get install -y libprotobuf-dev libprotoc-dev protobuf-compiler
    - cmake --version
+   - ./scripts/linux/initRepo.sh
 
 stages:
   - build
@@ -14,5 +15,5 @@ stages:
 buildAndTestLibAndBinaries:
   stage: build
   script:
-   - ./build.sh
-   - ./test.sh
+   - ./scripts/linux/build.sh
+   - ./scripts/linux/test.sh

@@ -7,7 +7,7 @@ using namespace Network;
 Network::TCPPacket::TCPPacket()
 	: APacket(TCP), _protobufPacket(), _fileData()
 {
-    _protobufPacket.set_type(TCPMessage::TCPPacket::UNKNOWN);
+    _protobufPacket.set_type(CubZPacket::PacketTCP::UNKNOWN);
 }
 
 Network::TCPPacket::~TCPPacket()
@@ -64,37 +64,37 @@ Network::TCPPacket::Type Network::TCPPacket::getPacketType() const
     return (_protobufPacket.type());
 }
 
-TCPMessage::AuthMessage const     &Network::TCPPacket::getAuthMessage() const
+CubZPacket::AuthMessage const     &Network::TCPPacket::getAuthMessage() const
 {
     return (_protobufPacket.authmessage());
 }
 
-TCPMessage::PingMessage const     &Network::TCPPacket::getPingMessage() const
+CubZPacket::PingMessage const     &Network::TCPPacket::getPingMessage() const
 {
     return (_protobufPacket.pingmessage());
 }
 
-TCPMessage::FileMessage const     &Network::TCPPacket::getFileMessage() const
+CubZPacket::FileMessage const     &Network::TCPPacket::getFileMessage() const
 {
     return (_protobufPacket.filemessage());
 }
 
-TCPMessage::AuthMessage     *Network::TCPPacket::getMutableAuthMessage()
+CubZPacket::AuthMessage     *Network::TCPPacket::getMutableAuthMessage()
 {
     return (_protobufPacket.mutable_authmessage());
 }
 
-TCPMessage::PingMessage     *Network::TCPPacket::getMutablePingMessage()
+CubZPacket::PingMessage     *Network::TCPPacket::getMutablePingMessage()
 {
     return (_protobufPacket.mutable_pingmessage());
 }
 
-TCPMessage::FileMessage     *Network::TCPPacket::getMutableFileMessage()
+CubZPacket::FileMessage     *Network::TCPPacket::getMutableFileMessage()
 {
     return (_protobufPacket.mutable_filemessage());
 }
 
-TCPMessage::TCPPacket const      &Network::TCPPacket::getTCPPacket() const
+CubZPacket::PacketTCP const      &Network::TCPPacket::getTCPPacket() const
 {
     return (_protobufPacket);
 }

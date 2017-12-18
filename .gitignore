@@ -61,3 +61,6 @@ proto/test.pb.h
 /tests/client/client.vcxproj.filters
 /tests/server/server.vcxproj
 /tests/server/server.vcxproj.filters
+lib_src/proto/
+
+

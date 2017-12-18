@@ -1,3 +1,5 @@
+Librairie C++ pour communiquer entre les applications CubZ
+
 # Installation des dependances pour Windows 64 Bits
 Boost:
 - Télécharger la librairie Boost (http://www.boost.org/users/download/)
