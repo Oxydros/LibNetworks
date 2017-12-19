@@ -20,7 +20,7 @@ int main()
 	Network::TCPClient client(obs);
 	Network::TCPPacket packet;
 
-	client.connect("0.0.0.0", "4242");
+	client.connect("127.0.0.1", "4242");
     client.sendPacket(packet);
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_PING);
     client.sendPacket(packet);
