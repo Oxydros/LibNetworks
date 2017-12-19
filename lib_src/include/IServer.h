@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 namespace Network
 {
     //! Server Interface
@@ -18,5 +20,8 @@ namespace Network
          * @return true or false if it succeed
          */
 		virtual bool	run() = 0;
+
+        virtual void    setCallback(PacketObserver &&callback) = 0;
+        virtual void    setCallback(PacketObserver &callback) = 0;
 	};
 }

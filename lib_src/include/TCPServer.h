@@ -4,7 +4,6 @@
 #include "IServer.h"
 #include "ConnectionManager.h"
 #include "TCPConnection.h"
-#include "PacketObserver.h"
 
 namespace Network
 {
@@ -17,7 +16,7 @@ namespace Network
 	private:
 		std::string const				&_serverIp;
 		std::string const				&_serverPort;
-		PacketObserver					&_packetObserver;
+		PacketObserver					_callBack;
 		boost::asio::io_service			_io_service;
 		boost::asio::ip::tcp::socket	_serverSocket;
 		boost::asio::signal_set			_signalRegister;
@@ -26,8 +25,7 @@ namespace Network
 
 	public:
 		explicit TCPServer(std::string const &ip,
-			std::string const &serverPort,
-			PacketObserver &observer);
+			std::string const &serverPort);
 		virtual ~TCPServer();
 
 		//Can't copy a server
@@ -35,7 +33,9 @@ namespace Network
 		TCPServer &operator=(TCPServer const &) = delete;
 
 	public:
-		virtual bool run();
+		virtual bool    run();
+        virtual void    setCallback(PacketObserver &callback);
+        virtual void    setCallback(PacketObserver &&callback);
 
 	private:
 		void	handleAsyncWait();

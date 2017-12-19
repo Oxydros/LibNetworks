@@ -1,10 +1,10 @@
 #pragma once
 
 #include <boost/thread/mutex.hpp>
+#include "Common.h"
 #include "Debug.h"
 #include "IConnection.h"
 #include "ConnectionManager.h"
-#include "PacketObserver.h"
 
 namespace Network
 {
@@ -16,7 +16,7 @@ namespace Network
 	{
 	private:
 		ConnectionManager					*_connectionManager;
-		PacketObserver						&_observer;
+		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		std::vector<unsigned char>			_buffer;
 		std::vector<unsigned char>			_toSendBuffer;

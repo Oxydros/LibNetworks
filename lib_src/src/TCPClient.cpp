@@ -2,8 +2,8 @@
 
 using namespace Network;
 
-Network::TCPClient::TCPClient(PacketObserver &o)
-	: Client(o), _io_service(), _signalRegister(_io_service)
+Network::TCPClient::TCPClient()
+	: Client(), _io_service(), _signalRegister(_io_service)
 {
  //   handleAsyncWait();
 }
@@ -19,7 +19,7 @@ bool Network::TCPClient::connect(std::string const &ip, std::string const &port)
 	boost::asio::connect(socket, resolver.resolve({ ip, port }));
     _tcpConnection = std::make_shared<TCPConnection>(
             std::move(socket),
-            _packetObserver
+            _callBack
     );
 	return (true);
 }

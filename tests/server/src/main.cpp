@@ -3,21 +3,15 @@
 #include <TCPServer.h>
 #include <TCPPacket.h>
 
-class Observer : public Network::PacketObserver
+int main()
 {
-	virtual void handlePacket(Network::IConnection::SharedPtr from, Network::IPacket const &packet)
-	{
+	Network::TCPServer server("0.0.0.0", "4242");
+
+    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
         auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
 
         std::cout << "Received " << tcpPacket << std::endl;
-	}
-};
-
-int main()
-{
-	Observer		obs;
-	Network::TCPServer server("0.0.0.0", "4242", obs);
-
+    });
 	server.run(); //Block
     return 0;
 }

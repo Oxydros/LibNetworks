@@ -4,11 +4,10 @@
 
 using namespace Network;
 
-Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPort,
-	PacketObserver &observer) : _serverIp(ip), _serverPort(serverPort),
-	_packetObserver(observer),
-	_io_service(), _serverSocket(_io_service), _signalRegister(_io_service),
-	_acceptor(_io_service)
+Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPort)
+        : _serverIp(ip), _serverPort(serverPort),
+        _callBack(), _io_service(), _serverSocket(_io_service),
+          _signalRegister(_io_service),_acceptor(_io_service)
 {
 	handleAsyncWait();
 
@@ -76,10 +75,20 @@ void Network::TCPServer::processAccept()
 			_connectionManager.add(
 				std::make_shared<TCPConnection>(
 					std::move(_serverSocket),
-					_packetObserver,
+					_callBack,
 					&_connectionManager
 					));
 		}
 		processAccept();
 	});
+}
+
+void Network::TCPServer::setCallback(PacketObserver &callback)
+{
+    _callBack = std::move(callback);
+}
+
+void Network::TCPServer::setCallback(PacketObserver &&callback)
+{
+    _callBack = callback;
 }

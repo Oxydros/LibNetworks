@@ -2,19 +2,19 @@
 
 #include <queue>
 #include "Common.h"
-#include "PacketObserver.h"
 
 namespace Network
 {
     /*! Abstract Client class */
 	class Client
 	{
+    public:
 	protected:
-		PacketObserver				&_packetObserver;
+        PacketObserver  _callBack;
 
 	public:
-		explicit Client(PacketObserver &observer)
-                : _packetObserver(observer)
+		explicit Client()
+                : _callBack()
 		{}
 		virtual ~Client() = default;
 
@@ -50,10 +50,15 @@ namespace Network
          * @param p
          * @return
          */
-		bool				changePacketObserver(PacketObserver &p)
+
+        void                setCallback(PacketObserver &o)
         {
-            _packetObserver = p;
-            return (false);
+            _callBack = std::move(o);
+        }
+
+        void                setCallback(PacketObserver &&o)
+        {
+            _callBack = o;
         }
 	};
 }
