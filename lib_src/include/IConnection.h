@@ -2,7 +2,6 @@
 
 #include <string>
 #include <memory>
-#include "Common.h"
 #include "IPacket.h"
 
 namespace Network

@@ -17,7 +17,7 @@ namespace Network
         boost::asio::signal_set			_signalRegister;
 
 	public:
-		explicit TCPClient(PacketObserver &o);
+		explicit TCPClient();
 		virtual ~TCPClient();
 
 	public:

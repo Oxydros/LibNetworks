@@ -5,7 +5,7 @@ using namespace Network;
 
 TCPConnection::TCPConnection(boost::asio::ip::tcp::socket socket,
 	PacketObserver &observer, ConnectionManager *manager)
-	: _socket(std::move(socket)), _connectionManager(manager), _observer(observer),
+	: _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
       _stopped(false), _buffer(), _ioMutex()
 {
     _buffer.reserve(512);
@@ -64,7 +64,7 @@ void Network::TCPConnection::handleRead(size_t nbBytes)
                                     TCPPacket packet;
 
                                     packet.setData(_buffer);
-                                    _observer.handlePacket(self, packet);
+                                    _callBack(self, packet);
                                     processRead();
                                 }
                                 else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
@@ -77,6 +77,7 @@ void Network::TCPConnection::handleRead(size_t nbBytes)
 
 void Network::TCPConnection::stop()
 {
+    boost::mutex::scoped_lock   lock(_ioMutex);
     if (!_stopped)
     {
         dout << "Stop socket" << std::endl;
