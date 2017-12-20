@@ -14,5 +14,6 @@
 
 namespace Network
 {
+    typedef std::int32_t                PacketSize;
     typedef std::function<void(Network::IConnection::SharedPtr, Network::IPacket const &)>  PacketObserver;
 }

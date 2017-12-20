@@ -15,16 +15,21 @@ namespace Network
 	class TCPConnection : public IConnection, public std::enable_shared_from_this<TCPConnection>
 	{
 	private:
+        boost::asio::strand                 &_strand;
 		ConnectionManager					*_connectionManager;
 		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		std::vector<unsigned char>			_buffer;
 		std::vector<unsigned char>			_toSendBuffer;
+        PacketSize                          _bytesSize;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
+        PacketSize                          _packetSize;
+        PacketSize                          _packetRead;
 
 	public:
-		explicit TCPConnection(boost::asio::ip::tcp::socket socket,
+		explicit TCPConnection(boost::asio::strand &_strand,
+                               boost::asio::ip::tcp::socket socket,
 			PacketObserver &observer, ConnectionManager *manager = nullptr);
 		virtual ~TCPConnection() = default;
 

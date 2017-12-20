@@ -17,19 +17,19 @@ Network::TCPPacket::~TCPPacket()
 PacketBuffer Network::TCPPacket::getData() const
 {
 	PacketBuffer	_finalBuffer;
-	PacketBuffer	_textBuffer;
+	PacketBuffer	_protobufBuffer;
 	std::int32_t 	_bufferSize = 0;
 
-	_textBuffer.resize(_protobufPacket.ByteSizeLong());
-    _protobufPacket.SerializeToArray(_textBuffer.data(),
+    _protobufBuffer.resize(_protobufPacket.ByteSizeLong());
+    _protobufPacket.SerializeToArray(_protobufBuffer.data(),
                                      _protobufPacket.ByteSize());
 
 	_bufferSize += _protobufPacket.ByteSize();
 	_finalBuffer.resize(_bufferSize + sizeof(_bufferSize));
 	std::memcpy(_finalBuffer.data(), &_bufferSize, sizeof(_bufferSize));
 	std::memcpy(_finalBuffer.data() + sizeof(_bufferSize),
-				_textBuffer.data(),
-				_textBuffer.size());
+                _protobufBuffer.data(),
+                _protobufBuffer.size());
 
 	dout << "Get data on TCPPacket. Packet size: "
 		 << _bufferSize << " Real Size: "

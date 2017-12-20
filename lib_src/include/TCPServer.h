@@ -18,6 +18,7 @@ namespace Network
 		std::string const				&_serverPort;
 		PacketObserver					_callBack;
 		boost::asio::io_service			_io_service;
+        boost::asio::strand             _strand;
 		boost::asio::ip::tcp::socket	_serverSocket;
 		boost::asio::signal_set			_signalRegister;
 		boost::asio::ip::tcp::acceptor	_acceptor;

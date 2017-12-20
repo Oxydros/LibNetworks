@@ -6,7 +6,7 @@ using namespace Network;
 
 Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPort)
         : _serverIp(ip), _serverPort(serverPort),
-        _callBack(), _io_service(), _serverSocket(_io_service),
+        _callBack(), _io_service(), _strand(_io_service), _serverSocket(_io_service),
           _signalRegister(_io_service),_acceptor(_io_service)
 {
 	handleAsyncWait();
@@ -73,7 +73,7 @@ void Network::TCPServer::processAccept()
 			//Take the socket ownership
 			//Instantiate a connection with it
 			_connectionManager.add(
-				std::make_shared<TCPConnection>(
+				std::make_shared<TCPConnection>(_strand,
 					std::move(_serverSocket),
 					_callBack,
 					&_connectionManager
