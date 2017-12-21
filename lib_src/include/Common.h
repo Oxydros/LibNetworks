@@ -1,23 +1,38 @@
 #pragma once
+#ifndef COMMON_INCLUDE_H
+# define COMMON_INCLUDE_H
 
 #ifdef  _DEBUG
 # define BOOST_ASIO_ENABLE_HANDLER_TRACKING
 #endif
 
-#define BUFFER_SIZE     (1024)
+#define MAX_BUFFER_SIZE     (2048)
+#define READ_SIZE           (512)
+#define HEADER_TYPE         std::size_t
+#define HEADER_SIZE         (sizeof(HEADER_TYPE))
+
+#ifndef MAX
+# define MAX(x, y)           ((x) > (y) ? (x) : (y))
+#endif
+
+#ifndef MIN
+# define MIN(x, y)           ((x) < (y) ? (x) : (y))
+#endif
 
 #include <vector>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <functional>
-
 #include "Debug.h"
-#include "IConnection.h"
-#include "IPacket.h"
 
 namespace Network
 {
-    typedef std::int32_t                PacketSize;
+    class IConnection;
+    class IPacket;
 
-    typedef std::function<void(Network::IConnection::SharedPtr, Network::IPacket const &)>  PacketObserver;
+    typedef HEADER_TYPE                 PacketSize;
+    typedef std::vector<unsigned char>  PacketBuffer;
+
+    typedef std::function<void(std::shared_ptr<IConnection>, Network::IPacket const &)>  PacketObserver;
 }
+#endif

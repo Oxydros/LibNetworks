@@ -7,3 +7,6 @@
 #else
 # define dout 0 && std::cout
 #endif
+
+#define tcpMsg dout << "TCP: "
+#define udpMsg dout << "UDP: "

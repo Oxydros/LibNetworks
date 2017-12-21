@@ -16,7 +16,6 @@ namespace Network
 
 	private:
         CubZPacket::PacketTCP           _protobufPacket;
-		std::vector<unsigned char>		_fileData;
 
 	public:
 		explicit					    TCPPacket();
@@ -27,11 +26,7 @@ namespace Network
 		virtual std::size_t			    setData(PacketBuffer const &buff);
 
 	public:
-		std::vector<unsigned char>	    getFileData() const;
         Type                            getPacketType() const;
-
-        void                            setFileData(std::vector<unsigned char> const &fileData);
-        void                            setFileData(char *data, size_t size);
 
         CubZPacket::AuthMessage const   &getAuthMessage() const;
         CubZPacket::PingMessage const   &getPingMessage() const;

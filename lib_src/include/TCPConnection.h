@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/thread/mutex.hpp>
+#include <boost/circular_buffer.hpp>
 #include "Common.h"
 #include "IConnection.h"
 #include "TCPConnectionManager.h"
@@ -15,19 +16,16 @@ namespace Network
 	{
 	private:
         boost::asio::strand                 &_strand;
-		TCPConnectionManager					*_connectionManager;
+		TCPConnectionManager				*_connectionManager;
 		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
         //Use in receiving
-        std::vector<unsigned char>			_buffer;
-        std::vector<unsigned char>			_finalBuffer;
-        PacketSize                          _bytesSize;
-        PacketSize                          _packetSize;
-        PacketSize                          _packetRead;
+        boost::circular_buffer<char>        _readBuffer;
+        std::vector<unsigned char>			_readActionBuffer;
         //Use in sending
-        std::vector<unsigned char>			_toSendBuffer;
+        boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
 		explicit TCPConnection(boost::asio::strand &_strand,
@@ -60,12 +58,6 @@ namespace Network
 		void	checkWrite();
 
         /*!
-         * Handle the read request
-         * @param nbBytes
-         */
-		void	handleRead(size_t nbBytes);
-
-        /*!
          * Handle the write request
          * @param ec
          */
@@ -75,11 +67,5 @@ namespace Network
          * Process the read
          */
 		void 	processRead();
-
-        /*!
-         * Process the write
-         * @param ec
-         */
-		void 	processWrite(boost::system::error_code &ec);
 	};
 }

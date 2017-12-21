@@ -12,7 +12,9 @@ void sendPing(Network::TCPClient &client)
 
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_PING);
     packet.getMutablePingMessage()->set_action(CubZPacket::PingMessage_Action::PingMessage_Action_PING);
-    packet.getMutablePingMessage()->set_pingid(42);
+    packet.getMutablePingMessage()->set_pingid(1);
+    client.sendPacket(packet);
+    packet.getMutablePingMessage()->set_pingid(2);
     client.sendPacket(packet);
 }
 
