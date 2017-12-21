@@ -5,7 +5,7 @@ outputWanted=`cat -e tests/output.txt`
 cd ./build
 
 ##Launching server in background
-./bin/server &> outputServer &
+./bin/tcpServer &> outputServer &
 serverPID=$!
 
 echo "Launched server on $serverPID"
@@ -13,7 +13,7 @@ echo "Launched server on $serverPID"
 echo "Waiting 5secs";
 sleep 5;
 
-./bin/client &> outputClient &
+./bin/tcpClient &> outputClient &
 clientPID=$!
 
 echo "Launched client on $clientPID"
