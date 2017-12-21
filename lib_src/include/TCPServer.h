@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "IServer.h"
-#include "ConnectionManager.h"
+#include "TCPConnectionManager.h"
 #include "TCPConnection.h"
 
 namespace Network
@@ -22,7 +22,7 @@ namespace Network
 		boost::asio::ip::tcp::socket	_serverSocket;
 		boost::asio::signal_set			_signalRegister;
 		boost::asio::ip::tcp::acceptor	_acceptor;
-		ConnectionManager				_connectionManager;
+		TCPConnectionManager				_connectionManager;
 
 	public:
 		explicit TCPServer(std::string const &ip,

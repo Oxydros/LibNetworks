@@ -2,9 +2,8 @@
 
 #include <boost/thread/mutex.hpp>
 #include "Common.h"
-#include "Debug.h"
 #include "IConnection.h"
-#include "ConnectionManager.h"
+#include "TCPConnectionManager.h"
 
 namespace Network
 {
@@ -16,7 +15,7 @@ namespace Network
 	{
 	private:
         boost::asio::strand                 &_strand;
-		ConnectionManager					*_connectionManager;
+		TCPConnectionManager					*_connectionManager;
 		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		bool								_stopped;
@@ -33,7 +32,7 @@ namespace Network
 	public:
 		explicit TCPConnection(boost::asio::strand &_strand,
                                boost::asio::ip::tcp::socket socket,
-			PacketObserver &observer, ConnectionManager *manager = nullptr);
+			PacketObserver &observer, TCPConnectionManager *manager = nullptr);
 		virtual ~TCPConnection() = default;
 
 	public:

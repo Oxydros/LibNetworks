@@ -13,6 +13,6 @@ endif(UNIX)
 file(GLOB SOURCES src/*.cpp)
 file(GLOB INCLUDES include/*.h)
 
-add_executable(clientFile ${SOURCES} ${INCLUDES})
+add_executable(tcpClient ${SOURCES} ${INCLUDES})
 
-target_link_libraries(clientFile cubznetworks)
+target_link_libraries(tcpClient cubznetworks)

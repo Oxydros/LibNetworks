@@ -11,11 +11,13 @@
 #include <boost/bind.hpp>
 #include <functional>
 
+#include "Debug.h"
 #include "IConnection.h"
 #include "IPacket.h"
 
 namespace Network
 {
     typedef std::int32_t                PacketSize;
+
     typedef std::function<void(Network::IConnection::SharedPtr, Network::IPacket const &)>  PacketObserver;
 }

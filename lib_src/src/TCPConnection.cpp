@@ -4,7 +4,7 @@
 using namespace Network;
 
 TCPConnection::TCPConnection(boost::asio::strand &strand, boost::asio::ip::tcp::socket socket,
-	PacketObserver &observer, ConnectionManager *manager)
+	PacketObserver &observer, TCPConnectionManager *manager)
 	: _strand(strand), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
       _stopped(false), _buffer(), _finalBuffer(), _bytesSize(0), _ioMutex(), _packetSize(0), _packetRead(0)
 {
@@ -20,15 +20,15 @@ void Network::TCPConnection::processRead()
 {
 	auto                            self(shared_from_this());
 
-	dout << "Launch async read for packet size. sizeof(int32_t)=" << sizeof(int32_t) << std::endl;
+	dout << "TCP: Launch async read for packet size." << std::endl;
 	_socket.async_read_some(boost::asio::buffer(&_bytesSize, sizeof(_bytesSize)),
-	[this, self](boost::system::error_code ec, std::size_t nbBytes)
+	_strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
         std::int32_t                         bytesToRead = 0;
 
-        dout << "READ " << nbBytes << std::endl;
+        dout << "TCP: READ " << nbBytes << std::endl;
         std::memcpy(&bytesToRead, &_bytesSize, sizeof(bytesToRead));
-        dout << "Packet size to receive is " << bytesToRead << std::endl;
+        dout << "TCP: Packet size to receive is " << bytesToRead << std::endl;
 
 
 		if (!ec && nbBytes > 0)
@@ -36,27 +36,27 @@ void Network::TCPConnection::processRead()
             _packetSize = bytesToRead;
             _packetRead = 0;
 
-            dout << "Launch async read for packet" << std::endl;
+            dout << "TCP: Launch async read for packet" << std::endl;
             handleRead(BUFFER_SIZE);
         }
 		else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
 		{
-            dout << "Read error, stopping socket" << std::endl;
+            dout << "TCP: Read error, stopping socket" << std::endl;
 			_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 		}
-	});
+	}));
 }
 
 void Network::TCPConnection::handleRead(size_t bytesToRead)
 {
     auto self(shared_from_this());
 
-    dout << "Handle read called with " << bytesToRead << std::endl;
+    dout << "TCP: Handle read called with " << bytesToRead << std::endl;
     _socket.async_read_some(boost::asio::buffer(_buffer.data(), bytesToRead),
-                            [this, self](boost::system::error_code ec, std::size_t nbBytes)
+                            _strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
                             {
                                 _packetRead += nbBytes;
-                                dout << "READ " << nbBytes << ". State: " << _packetRead << "/" << _packetSize <<std::endl;
+                                dout << "TCP: READ " << nbBytes << ". State: " << _packetRead << "/" << _packetSize <<std::endl;
                                 if (!ec && nbBytes > 0)
                                 {
                                     //Append the new bytes read to the final packet buffer
@@ -77,10 +77,10 @@ void Network::TCPConnection::handleRead(size_t bytesToRead)
                                 else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
                                 {
                                     _finalBuffer.clear();
-                                    dout << "Read error, stopping socket" << std::endl;
+                                    dout << "TCP: Read error, stopping socket" << std::endl;
                                     _connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
                                 }
-                            });
+                            }));
 }
 
 void Network::TCPConnection::stop()
@@ -103,7 +103,7 @@ bool Network::TCPConnection::sendPacket(IPacket const &packet)
     PacketSize                  packetSize = toSend.size();
     PacketSize                  finalPacketSize = sizeof(finalPacketSize) + packetSize;
 
-	dout << "Received send packet cmd of size " << toSend.size() << std::endl;
+	dout << "TCP: Received send packet cmd of size " << toSend.size() << std::endl;
 	//Concat buffers
     //Receive send buffer to add new packet to send
     _toSendBuffer.resize(_toSendBuffer.size() + finalPacketSize);
@@ -118,7 +118,7 @@ bool Network::TCPConnection::sendPacket(IPacket const &packet)
 
 void Network::TCPConnection::handleWrite(boost::system::error_code ec)
 {
-    dout << "WRITE: " << ec.message() << std::endl;
+    dout << "TCP: WRITE: " << ec.message() << std::endl;
 	if (!ec)
 	{
 		processWrite(ec);
@@ -133,11 +133,11 @@ void Network::TCPConnection::processWrite(boost::system::error_code &ec)
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
-    dout << "WRITING on SOCKET " << _toSendBuffer.size() << " bytes" << std::endl;
+    dout << "TCP: WRITING on SOCKET " << _toSendBuffer.size() << " bytes" << std::endl;
     std::size_t len = _socket.write_some(boost::asio::buffer(_toSendBuffer.data(), _toSendBuffer.size()), ec);
-    dout << "SUCCESSFULLY WROTE " << len << std::endl;
+    dout << "TCP: SUCCESSFULLY WROTE " << len << std::endl;
     _toSendBuffer.erase(_toSendBuffer.begin(), _toSendBuffer.begin() + len);
-    dout << "NEW SIZE OF SEND BUFFER IS " << _toSendBuffer.size() << std::endl;
+    dout << "TCP: NEW SIZE OF SEND BUFFER IS " << _toSendBuffer.size() << std::endl;
     if (_toSendBuffer.size() > 0)
     {
         checkWrite();
@@ -146,7 +146,7 @@ void Network::TCPConnection::processWrite(boost::system::error_code &ec)
 
 void Network::TCPConnection::checkWrite()
 {
-    dout << "Checking if I can write" << std::endl;
+    dout << "TCP: Checking if I can write" << std::endl;
     _socket.async_write_some(boost::asio::null_buffers(),
                              _strand.wrap(
                              boost::bind(&TCPConnection::handleWrite,

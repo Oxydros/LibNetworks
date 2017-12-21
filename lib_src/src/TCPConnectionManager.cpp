@@ -1,19 +1,19 @@
 
 #include "Debug.h"
-#include "ConnectionManager.h"
+#include "TCPConnectionManager.h"
 
 using namespace Network;
 
-Network::ConnectionManager::ConnectionManager()
+Network::TCPConnectionManager::TCPConnectionManager()
         : _ioMutex()
 {
 }
 
-Network::ConnectionManager::~ConnectionManager()
+Network::TCPConnectionManager::~TCPConnectionManager()
 {
 }
 
-void Network::ConnectionManager::add(IConnection::SharedPtr ptr)
+void Network::TCPConnectionManager::add(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
@@ -26,7 +26,7 @@ void Network::ConnectionManager::add(IConnection::SharedPtr ptr)
 	dout << _connections.size() << " active connections" << std::endl;
 }
 
-void Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
+void Network::TCPConnectionManager::stop(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
@@ -41,7 +41,7 @@ void Network::ConnectionManager::stop(IConnection::SharedPtr ptr)
 }
 
 //Stop all connections
-void Network::ConnectionManager::stop_all()
+void Network::TCPConnectionManager::stop_all()
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
