@@ -19,13 +19,16 @@ namespace Network
 		ConnectionManager					*_connectionManager;
 		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
-		std::vector<unsigned char>			_buffer;
-		std::vector<unsigned char>			_toSendBuffer;
-        PacketSize                          _bytesSize;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
+        //Use in receiving
+        std::vector<unsigned char>			_buffer;
+        std::vector<unsigned char>			_finalBuffer;
+        PacketSize                          _bytesSize;
         PacketSize                          _packetSize;
         PacketSize                          _packetRead;
+        //Use in sending
+        std::vector<unsigned char>			_toSendBuffer;
 
 	public:
 		explicit TCPConnection(boost::asio::strand &_strand,

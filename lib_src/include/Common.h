@@ -4,6 +4,8 @@
 # define BOOST_ASIO_ENABLE_HANDLER_TRACKING
 #endif
 
+#define BUFFER_SIZE     (1024)
+
 #include <vector>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>

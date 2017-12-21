@@ -30,6 +30,9 @@ namespace Network
 		std::vector<unsigned char>	    getFileData() const;
         Type                            getPacketType() const;
 
+        void                            setFileData(std::vector<unsigned char> const &fileData);
+        void                            setFileData(char *data, size_t size);
+
         CubZPacket::AuthMessage const   &getAuthMessage() const;
         CubZPacket::PingMessage const   &getPingMessage() const;
         CubZPacket::FileMessage const   &getFileMessage() const;
