@@ -7,8 +7,9 @@ using namespace Network;
 Network::UDPConnectionManager::UDPConnectionManager(boost::asio::ip::udp::socket &socket,
                                                     boost::asio::strand &strand,
                                                     PacketObserver &callBack)
-        : _socket(socket), _strand(strand), _callBack(callBack), _ioMutex()
+        : _socket(socket), _strand(strand), _callBack(callBack), _ioMutex(), _receptBuffer()
 {
+    _receptBuffer.resize(512);
 }
 
 Network::UDPConnectionManager::~UDPConnectionManager()

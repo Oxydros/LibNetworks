@@ -9,7 +9,7 @@ int main()
     server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
         auto tcpPacket = static_cast<Network::UDPPacket const &>(packet);
 
-        //std::cout << "Received " << tcpPacket << std::endl;
+        std::cout << "Received " << tcpPacket << std::endl;
     });
 	server.run(); //Block
     return 0;

@@ -15,6 +15,12 @@ int main()
     });
 	client.connect("127.0.0.1", "4242");
 
+    client.sendPacket(packet);
+    packet.setString("Oxydros");
+    client.sendPacket(packet);
+    client.sendPacket(packet);
+    client.sendPacket(packet);
+
 	client.run(); //Block
 	dout << "Leaving client ..." << std::endl;
     return 0;
