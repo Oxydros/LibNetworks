@@ -1,11 +1,10 @@
 #include <Debug.h>
 #include <TCPPacket.h>
-#include <cstring>
 
 using namespace Network;
 
 Network::TCPPacket::TCPPacket()
-	: APacket(TCP), _protobufPacket(), _fileData()
+	: APacket(TCP), _protobufPacket()
 {
     _protobufPacket.set_type(CubZPacket::PacketTCP::UNKNOWN);
 }
@@ -16,35 +15,23 @@ Network::TCPPacket::~TCPPacket()
 
 PacketBuffer Network::TCPPacket::getData() const
 {
-	PacketBuffer	_finalBuffer;
-	PacketBuffer	_textBuffer;
-	std::int32_t 	_bufferSize = 0;
+    PacketBuffer	_finalBuffer{};
 
-	_textBuffer.resize(_protobufPacket.ByteSizeLong());
-    _protobufPacket.SerializeToArray(_textBuffer.data(),
+    _finalBuffer.resize(_protobufPacket.ByteSizeLong());
+    _protobufPacket.SerializeToArray(_finalBuffer.data(),
                                      _protobufPacket.ByteSize());
-
-	_bufferSize += _protobufPacket.ByteSize();
-	_finalBuffer.resize(_bufferSize + sizeof(_bufferSize));
-	std::memcpy(_finalBuffer.data(), &_bufferSize, sizeof(_bufferSize));
-	std::memcpy(_finalBuffer.data() + sizeof(_bufferSize),
-				_textBuffer.data(),
-				_textBuffer.size());
-
-	dout << "Get data on TCPPacket. Packet size: "
-		 << _bufferSize << " Real Size: "
-		 << _finalBuffer.size() << std::endl;
-	dout << _protobufPacket.DebugString() << std::endl;
-	return _finalBuffer;
+    tcpMsg << "Get data on TCPPPacket. Packet size: "
+         << (_finalBuffer.size()) << std::endl;
+    dout << _protobufPacket.DebugString() << std::endl;
+    return (_finalBuffer);
 }
 
 std::size_t Network::TCPPacket::setData(PacketBuffer const &buff)
 {
 	dout << "Set data on TCPPacket(size: " << buff.size() << ")" << std::endl;
-
-	PacketBuffer	_textBuffer;
-
-    _protobufPacket.ParseFromArray(buff.data(), buff.size());
+    bool success{_protobufPacket.ParseFromArray(buff.data(), buff.size())};
+    if (!success)
+        dout << "Couldn't parse protobuf packet !" << std::endl;
 	dout << "DEBUG PROTOBUF PRINT " <<_protobufPacket.DebugString() << std::endl;
 	return (buff.size());
 }
@@ -52,11 +39,6 @@ std::size_t Network::TCPPacket::setData(PacketBuffer const &buff)
 void Network::TCPPacket::setType(Type t)
 {
     _protobufPacket.set_type(t);
-}
-
-std::vector<unsigned char> Network::TCPPacket::getFileData() const
-{
-	return (_fileData);
 }
 
 Network::TCPPacket::Type Network::TCPPacket::getPacketType() const

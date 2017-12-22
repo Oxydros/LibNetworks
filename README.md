@@ -13,9 +13,10 @@ Protobuf:
 # Compilation de la librairie
 
 Windows:
-- Ouvrir le dossier à l'aide Visual Studio 2017
+- Executer le script contenu dans le dossier scripts/windows
 
 Linux:
+- Executer le script initRepo.sh
 - Executer le script build.sh
 - Les libs se trouvent dans le dossier build/lib
 

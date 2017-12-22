@@ -1,10 +1,10 @@
 #pragma once
 
 #include <boost/thread/mutex.hpp>
+#include <boost/circular_buffer.hpp>
 #include "Common.h"
-#include "Debug.h"
 #include "IConnection.h"
-#include "ConnectionManager.h"
+#include "TCPConnectionManager.h"
 
 namespace Network
 {
@@ -15,48 +15,47 @@ namespace Network
 	class TCPConnection : public IConnection, public std::enable_shared_from_this<TCPConnection>
 	{
 	private:
-		ConnectionManager					*_connectionManager;
+        boost::asio::strand                 &_strand;
+		TCPConnectionManager				*_connectionManager;
 		PacketObserver						&_callBack;
 		boost::asio::ip::tcp::socket		_socket;
-		std::vector<unsigned char>			_buffer;
-		std::vector<unsigned char>			_toSendBuffer;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
+        //Use in receiving
+        boost::circular_buffer<char>        _readBuffer;
+        std::vector<unsigned char>			_readActionBuffer;
+        //Use in sending
+        boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
-		explicit TCPConnection(boost::asio::ip::tcp::socket socket,
-			PacketObserver &observer, ConnectionManager *manager = nullptr);
-		virtual ~TCPConnection() = default;
+		explicit TCPConnection(boost::asio::strand &_strand,
+                               boost::asio::ip::tcp::socket socket,
+			PacketObserver &observer, TCPConnectionManager *manager = nullptr);
+		~TCPConnection() = default;
 
 	public:
         /*!
          * Start the TCP Connection
          */
-		virtual void start();
+		void start() override;
 
         /*!
          * Stop the TCP Connection
          */
-		virtual void stop();
+		void stop() override;
 
         /*!
          * Send a packet
          * @param packet
          * @return
          */
-		virtual bool sendPacket(IPacket const &packet);
+		bool sendPacket(IPacket const &packet) override;
 
 	private:
         /*!
          * Check if we can write on the socket
          */
 		void	checkWrite();
-
-        /*!
-         * Handle the read request
-         * @param nbBytes
-         */
-		void	handleRead(size_t nbBytes);
 
         /*!
          * Handle the write request
@@ -68,11 +67,5 @@ namespace Network
          * Process the read
          */
 		void 	processRead();
-
-        /*!
-         * Process the write
-         * @param ec
-         */
-		void 	processWrite(boost::system::error_code &ec);
 	};
 }

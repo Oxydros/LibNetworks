@@ -25,6 +25,9 @@ ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
 ENDIF()
 
 add_subdirectory(lib_src)
-add_subdirectory(tests/server)
-add_subdirectory(tests/client)
-add_subdirectory(tests/client_multithread)
+add_subdirectory(tests/tcpServer)
+add_subdirectory(tests/tcpClient)
+add_subdirectory(tests/tcpClientMultiThread)
+
+add_subdirectory(tests/udpClient)
+add_subdirectory(tests/udpServer)

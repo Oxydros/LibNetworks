@@ -19,13 +19,13 @@ namespace Network
          * Get the protocol
          * @return Network::Protocol
          */
-		virtual Protocol getProtocol() const;
+		Protocol getProtocol() const override;
 
         /*!
          * Set the protocol
          * @param Network::Protocol newProt
          * @return void
          */
-		virtual void setProtocol(Protocol newProt);
+		void setProtocol(Protocol newProt) override;
 	};
 }

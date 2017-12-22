@@ -1,11 +1,10 @@
 #pragma once
 
 #include <vector>
+#include "Common.h"
 
 namespace Network
 {
-	typedef std::vector<unsigned char> PacketBuffer;
-
     //! Protocol enum
 	enum Protocol
 	{

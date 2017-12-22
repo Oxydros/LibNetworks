@@ -1,25 +1,28 @@
 #pragma once
 
 #include "Client.h"
-#include "TCPConnection.h"
+#include "UDPConnectionManager.h"
 
 namespace Network
 {
-    //! TCPClient
+    //! UDPClient
     /*!
-     * Implementation of a TCPClient
+     * Implementation of a UDPClient
      */
-	class TCPClient : public Client
+	class UDPClient : public Client
 	{
 	private:
 		boost::asio::io_service			_io_service;
         boost::asio::strand              _strand;
-        TCPConnection::SharedPtr        _tcpConnection;
+        boost::asio::ip::udp::socket    _socket;
+        boost::asio::ip::udp::endpoint  _endpoint;
+        UDPConnectionManager             _manager;
+        UDPConnection::SharedPtr        _mainCo;
         boost::asio::signal_set			_signalRegister;
 
 	public:
-		explicit TCPClient();
-		~TCPClient() override;
+		explicit UDPClient();
+		~UDPClient() override;
 
 	public:
         /*!

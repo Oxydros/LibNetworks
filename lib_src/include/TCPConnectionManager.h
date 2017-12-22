@@ -10,21 +10,21 @@ namespace Network
     /*!
      * Handle the life of the connections
      */
-	class ConnectionManager
+	class TCPConnectionManager
 	{
 	private:
         boost::mutex                        _ioMutex;
 		std::set<IConnection::SharedPtr>	_connections;
 
 	public:
-		ConnectionManager();
-		virtual ~ConnectionManager();
+		TCPConnectionManager();
+		~TCPConnectionManager();
 
 		//We can't copy a connection manager
 		//It would imply problems with the life management
 		//of the connections
-		ConnectionManager(ConnectionManager const &) = delete;
-		ConnectionManager &operator=(ConnectionManager const &) = delete;
+		TCPConnectionManager(TCPConnectionManager const &) = delete;
+		TCPConnectionManager &operator=(TCPConnectionManager const &) = delete;
 
 	public:
         /*!

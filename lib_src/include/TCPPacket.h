@@ -16,18 +16,16 @@ namespace Network
 
 	private:
         CubZPacket::PacketTCP           _protobufPacket;
-		std::vector<unsigned char>		_fileData;
 
 	public:
 		explicit					    TCPPacket();
-		virtual						    ~TCPPacket();
+		    						    ~TCPPacket() override;
 
 	public:
-		virtual PacketBuffer		    getData() const;
-		virtual std::size_t			    setData(PacketBuffer const &buff);
+		PacketBuffer		            getData() const override;
+		std::size_t			            setData(PacketBuffer const &buff) override;
 
 	public:
-		std::vector<unsigned char>	    getFileData() const;
         Type                            getPacketType() const;
 
         CubZPacket::AuthMessage const   &getAuthMessage() const;

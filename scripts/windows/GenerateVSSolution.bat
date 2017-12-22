@@ -8,4 +8,6 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliar
 devenv LibNetworks.sln /build Release
 move lib\Release\cubznetworks.lib ..\bin
 move lib\Release\proto.lib ..\bin
+move lib_src\proto\ChatMessage.pb.h ..\include
 move lib_src\proto\TCPMessage.pb.h ..\include
+move lib_src\proto\TypeDescription.pb.h ..\include
