@@ -18,7 +18,7 @@ namespace Network
 
 	public:
 		TCPConnectionManager();
-		virtual ~TCPConnectionManager();
+		~TCPConnectionManager();
 
 		//We can't copy a connection manager
 		//It would imply problems with the life management

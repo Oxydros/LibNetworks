@@ -25,7 +25,7 @@ namespace Network
         UDPConnectionManager(boost::asio::ip::udp::socket &socket,
                              boost::asio::strand &strand,
                              PacketObserver &callBack);
-		virtual ~UDPConnectionManager();
+		~UDPConnectionManager();
 
 		//We can't copy a connection manager
 		//It would imply problems with the life management

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/circular_buffer.hpp>
 #include <boost/thread/mutex.hpp>
 #include "Common.h"
 #include "IConnection.h"
@@ -18,6 +19,7 @@ namespace Network
     public:
         typedef boost::asio::ip::udp::endpoint  endpoint;
         typedef std::shared_ptr<UDPConnection>  SharedPtr;
+
 	private:
         boost::asio::strand                 &_strand;
         boost::asio::ip::udp::socket        &_socket;
@@ -25,19 +27,19 @@ namespace Network
         endpoint                            _remoteEndpoint;
         boost::mutex                        _ioMutex;
         //Use in sending
-        std::vector<unsigned char>			_toSendBuffer;
+        boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
 		explicit UDPConnection(boost::asio::strand &strand,
                                boost::asio::ip::udp::socket &socket,
                                endpoint &remote,
                                UDPConnectionManager *manager = nullptr);
-		virtual ~UDPConnection();
+		~UDPConnection() override;
 
 	public:
-		virtual void start();
-		virtual void stop();
-		virtual bool sendPacket(IPacket const &packet);
+		void start() override;
+		void stop() override;
+		bool sendPacket(IPacket const &packet) override;
 
     public:
         Network::UDPConnection::endpoint const &getEndpoint() const noexcept;
@@ -45,6 +47,5 @@ namespace Network
     private:
         void        checkWrite();
         void        handleWrite(boost::system::error_code ec);
-        void 	    processWrite(boost::system::error_code &ec);
 	};
 }

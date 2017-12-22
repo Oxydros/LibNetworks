@@ -27,16 +27,16 @@ namespace Network
 	public:
 		explicit TCPServer(std::string const &ip,
 			std::string const &serverPort);
-		virtual ~TCPServer();
+		~TCPServer() override;
 
 		//Can't copy a server
 		TCPServer(TCPServer const &) = delete;
 		TCPServer &operator=(TCPServer const &) = delete;
 
 	public:
-		virtual bool    run();
-        virtual void    setCallback(PacketObserver &callback);
-        virtual void    setCallback(PacketObserver &&callback);
+		bool    run() override;
+        void    setCallback(PacketObserver &callback) override;
+        void    setCallback(PacketObserver &&callback) override;
 
 	private:
 		void	handleAsyncWait();

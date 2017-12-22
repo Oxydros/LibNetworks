@@ -17,27 +17,27 @@ void Network::TCPConnectionManager::add(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
-	dout << "New connection" << std::endl;
+	tcpMsg << "New connection" << std::endl;
 	//Adding the connection to the set
 	_connections.insert(ptr);
 
 	//Launching the connection read / write loop
 	ptr->start();
-	dout << _connections.size() << " active connections" << std::endl;
+    tcpMsg << _connections.size() << " active connections" << std::endl;
 }
 
 void Network::TCPConnectionManager::stop(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock(_ioMutex);
 
-	dout << "Delete connection" << std::endl;
+    tcpMsg << "Delete connection" << std::endl;
 
 	//Erasing the connection from the set
 	_connections.erase(ptr);
 
 	//Stopping the read / write loop by closing the socket
 	ptr->stop();
-	dout << _connections.size() << " active connections" << std::endl;
+    tcpMsg << _connections.size() << " active connections" << std::endl;
 }
 
 //Stop all connections

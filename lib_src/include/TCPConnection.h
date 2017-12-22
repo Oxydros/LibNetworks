@@ -31,25 +31,25 @@ namespace Network
 		explicit TCPConnection(boost::asio::strand &_strand,
                                boost::asio::ip::tcp::socket socket,
 			PacketObserver &observer, TCPConnectionManager *manager = nullptr);
-		virtual ~TCPConnection() = default;
+		~TCPConnection() = default;
 
 	public:
         /*!
          * Start the TCP Connection
          */
-		virtual void start();
+		void start() override;
 
         /*!
          * Stop the TCP Connection
          */
-		virtual void stop();
+		void stop() override;
 
         /*!
          * Send a packet
          * @param packet
          * @return
          */
-		virtual bool sendPacket(IPacket const &packet);
+		bool sendPacket(IPacket const &packet) override;
 
 	private:
         /*!

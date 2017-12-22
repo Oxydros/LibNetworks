@@ -19,7 +19,7 @@ namespace Network
 
 	public:
 		explicit TCPClient();
-		virtual ~TCPClient();
+		~TCPClient() override;
 
 	public:
         /*!
@@ -28,23 +28,23 @@ namespace Network
          * @param port
          * @return
          */
-		virtual bool		connect(std::string const &ip, std::string const &port);
+		bool		connect(std::string const &ip, std::string const &port) override;
 
         /*!
          * Disconnect from a server
          */
-		virtual void		disconnect();
+		void		disconnect() override;
 
         /*!
          * Send a packet
          * @param p
          */
-        virtual void        sendPacket(IPacket const &p);
+        void        sendPacket(IPacket const &p) override;
 
         /*!
          * Launch the loop
          */
-		virtual void		run();
+		void		run() override;
 
     private:
         void	            handleAsyncWait();

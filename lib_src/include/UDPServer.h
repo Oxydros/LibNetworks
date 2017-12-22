@@ -24,16 +24,16 @@ namespace Network
 
 	public:
 		explicit UDPServer(short serverPort);
-		virtual ~UDPServer();
+		~UDPServer() override ;
 
 		//Can't copy a server
 		UDPServer(UDPServer const &) = delete;
 		UDPServer &operator=(UDPServer const &) = delete;
 
 	public:
-		virtual bool    run();
-        virtual void    setCallback(PacketObserver &callback);
-        virtual void    setCallback(PacketObserver &&callback);
+		bool    run() override;
+        void    setCallback(PacketObserver &callback) override;
+        void    setCallback(PacketObserver &&callback) override;
 
 	private:
 		void	handleAsyncWait();

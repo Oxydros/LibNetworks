@@ -18,11 +18,11 @@ namespace Network
         CubZPacket::PacketUDP          _protobufPacket;
 	public:
 		explicit UDPPacket();
-		virtual ~UDPPacket();
+		~UDPPacket() override;
 
 	public:
-		virtual PacketBuffer getData() const;
-		virtual std::size_t setData(PacketBuffer const &buff);
+		PacketBuffer getData() const override;
+		std::size_t setData(PacketBuffer const &buff) override;
 
     public:
         void setString(std::string const &name);

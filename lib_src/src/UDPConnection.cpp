@@ -7,7 +7,7 @@ Network::UDPConnection::UDPConnection(boost::asio::strand &strand, boost::asio::
                                       Network::UDPConnection::endpoint &remote,
                                       UDPConnectionManager *manager)
         : _strand(strand), _socket(socket), _connectionManager(manager),
-          _remoteEndpoint(std::move(remote)), _ioMutex(), _toSendBuffer()
+          _remoteEndpoint(std::move(remote)), _ioMutex(), _toSendBuffer(MAX_BUFFER_SIZE)
 {
 
 }
@@ -28,23 +28,23 @@ void Network::UDPConnection::stop()
 
 bool Network::UDPConnection::sendPacket(IPacket const &packet)
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
-    PacketBuffer                toSend = packet.getData();
-    //PacketSize                  packetSize = toSend.size();
-    //PacketSize                  finalPacketSize = sizeof(finalPacketSize) + packetSize;
+    boost::mutex::scoped_lock   lock{_ioMutex};
+    PacketBuffer	            _finalBuffer{};
+    PacketBuffer                toSend{packet.getData()};
+    PacketSize                  packetSize{toSend.size()};
 
-    dout << "Received send packet cmd of size  " << toSend.size()
-         << " for : " << _remoteEndpoint
-         << std::endl;
-    //Concat buffers
-    //Receive send buffer to add new packet to send
-    //_toSendBuffer.resize(_toSendBuffer.size() + finalPacketSize);
-    _toSendBuffer.resize(_toSendBuffer.size() + toSend.size());
-    //Write the size of the new packet
-    //std::memcpy(_toSendBuffer.data(), &packetSize, sizeof(packetSize));
-    //Write the new packet
-    //std::memcpy(_toSendBuffer.data() + sizeof(packetSize), toSend.data(), toSend.size());
-    std::memcpy(_toSendBuffer.data(), toSend.data(), toSend.size());
+    if (_toSendBuffer.reserve() < packetSize)
+    {
+        udpMsg << "OVERFLOW !!" << std::endl;
+        assert(false);
+    }
+    udpMsg << "Received send packet cmd of size " << toSend.size()
+           << " for " << _remoteEndpoint << std::endl;
+    _finalBuffer.resize(sizeof(PacketSize));
+    std::memcpy(_finalBuffer.data(), &packetSize, sizeof(packetSize));
+    _toSendBuffer.insert(_toSendBuffer.end(), _finalBuffer.begin(), _finalBuffer.end());
+    _toSendBuffer.insert(_toSendBuffer.end(), toSend.begin(), toSend.end());
+    udpMsg << "Send buffer size is now " << _toSendBuffer.size() << std::endl;
     //Check if we can write some data in the socket
     checkWrite();
     return (false);
@@ -52,7 +52,7 @@ bool Network::UDPConnection::sendPacket(IPacket const &packet)
 
 void Network::UDPConnection::checkWrite()
 {
-    dout << "UDP Checking if I can write" << std::endl;
+    udpMsg << "UDP Checking if I can write" << std::endl;
     _socket.async_send_to(boost::asio::null_buffers(), _remoteEndpoint,
                              _strand.wrap(
                                      boost::bind(&UDPConnection::handleWrite,
@@ -62,31 +62,24 @@ void Network::UDPConnection::checkWrite()
 
 void Network::UDPConnection::handleWrite(boost::system::error_code ec)
 {
-    dout << "UDP WRITE: " << ec.message() << std::endl;
+    boost::mutex::scoped_lock   lock{_ioMutex};
+
+    if (_toSendBuffer.empty())
+        return;
+    udpMsg << "Write: " << ec.message() << std::endl;
     if (!ec)
     {
-        processWrite(ec);
+        udpMsg << "Writing on socket " << _toSendBuffer.size() << " bytes" << std::endl;
+        std::size_t len = _socket.send_to(boost::asio::buffer(_toSendBuffer.linearize(), _toSendBuffer.size()), _remoteEndpoint);
+        udpMsg << "Successfully wrote " << len << std::endl;
+        _toSendBuffer.erase_begin(len);
+        udpMsg << "New size of send buffer " << _toSendBuffer.size() << std::endl;
+        if (!_toSendBuffer.empty())
+            checkWrite();
     }
     //If error, stop socket
     if (!(!ec || ec == boost::asio::error::would_block))
         _connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
-}
-
-void Network::UDPConnection::processWrite(boost::system::error_code &ec)
-{
-    boost::mutex::scoped_lock   lock(_ioMutex);
-
-    if (_toSendBuffer.size() <= 0)
-        return;
-    dout << "UDP WRITING on SOCKET " << _toSendBuffer.size() << " bytes" << std::endl;
-    std::size_t len = _socket.send_to(boost::asio::buffer(_toSendBuffer.data(), _toSendBuffer.size()), _remoteEndpoint);
-    dout << "UDP SUCCESSFULLY WROTE " << len << std::endl;
-    _toSendBuffer.erase(_toSendBuffer.begin(), _toSendBuffer.begin() + len);
-    dout << "UDP NEW SIZE OF SEND BUFFER IS " << _toSendBuffer.size() << std::endl;
-    if (_toSendBuffer.size() > 0)
-    {
-        checkWrite();
-    }
 }
 
 Network::UDPConnection::endpoint const& Network::UDPConnection::getEndpoint() const noexcept
