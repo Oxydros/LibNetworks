@@ -25,6 +25,12 @@ namespace Network
 		std::size_t setData(PacketBuffer const &buff) override;
 
     public:
+        void        setType(Type type);
+        Type        getPacketType() const;
+
+        CubZPacket::PacketUDP           *getMutableUDPPacket();
+
+    public:
         void setString(std::string const &name);
 
     public:

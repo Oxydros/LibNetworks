@@ -17,8 +17,7 @@ int main()
 
     client.sendPacket(packet);
     packet.setString("Oxydros");
-    client.sendPacket(packet);
-    client.sendPacket(packet);
+    packet.setType(Network::UDPPacket::Type::PacketUDP_Type_OBJECT_MOVEMENT);
     client.sendPacket(packet);
 
 	client.run(); //Block

@@ -15,7 +15,7 @@ Network::TCPConnectionManager::~TCPConnectionManager()
 
 void Network::TCPConnectionManager::add(IConnection::SharedPtr ptr)
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
 	tcpMsg << "New connection" << std::endl;
 	//Adding the connection to the set
@@ -28,7 +28,7 @@ void Network::TCPConnectionManager::add(IConnection::SharedPtr ptr)
 
 void Network::TCPConnectionManager::stop(IConnection::SharedPtr ptr)
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
     tcpMsg << "Delete connection" << std::endl;
 
@@ -43,7 +43,7 @@ void Network::TCPConnectionManager::stop(IConnection::SharedPtr ptr)
 //Stop all connections
 void Network::TCPConnectionManager::stop_all()
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
 	for (auto co : _connections)
 	{

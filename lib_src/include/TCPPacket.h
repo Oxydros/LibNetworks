@@ -28,15 +28,15 @@ namespace Network
 	public:
         Type                            getPacketType() const;
 
+        CubZPacket::PacketTCP const     &getTCPPacket() const;
         CubZPacket::AuthMessage const   &getAuthMessage() const;
         CubZPacket::PingMessage const   &getPingMessage() const;
         CubZPacket::FileMessage const   &getFileMessage() const;
 
+        CubZPacket::PacketTCP           *getMutableTCPPacket();
         CubZPacket::AuthMessage         *getMutableAuthMessage();
         CubZPacket::PingMessage         *getMutablePingMessage();
         CubZPacket::FileMessage         *getMutableFileMessage();
-
-        CubZPacket::PacketTCP const      &getTCPPacket() const;
 
         void                            setType(Type t);
 	};

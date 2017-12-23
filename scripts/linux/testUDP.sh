@@ -1,11 +1,11 @@
 #!/bin/bash
 
-outputWanted=`cat -e tests/output.txt`
+outputWanted=`cat -e tests/outputUDP.txt`
 
 cd ./build
 
 ##Launching server in background
-./bin/tcpServer &> outputServer &
+./bin/udpServer &> outputServer &
 serverPID=$!
 
 echo "Launched server on $serverPID"
@@ -13,7 +13,7 @@ echo "Launched server on $serverPID"
 echo "Waiting 5secs";
 sleep 5;
 
-./bin/tcpClient &> outputClient &
+./bin/udpClient &> outputClient &
 clientPID=$!
 
 echo "Launched client on $clientPID"
@@ -27,7 +27,7 @@ kill -s "SIGTERM" $serverPID;
 
 echo "Client and Server terminated, comparing responses"
 
-response=$(cat -e outputServer | grep "Received type");
+response=$(cat -e outputServer | grep -o -e "Received .*: .*");
 
 if [ "$response" == "$outputWanted" ]
 then

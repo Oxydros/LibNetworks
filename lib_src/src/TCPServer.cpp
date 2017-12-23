@@ -11,8 +11,8 @@ Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPo
 {
 	handleAsyncWait();
 
-	boost::asio::ip::tcp::resolver	resolver(_io_service);
-	boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve({ ip, serverPort });
+	boost::asio::ip::tcp::resolver	resolver{_io_service};
+	boost::asio::ip::tcp::endpoint endpoint{*resolver.resolve({ ip, serverPort })};
 
 	dout << "Launching server on " << ip << ":" << serverPort << std::endl;
 

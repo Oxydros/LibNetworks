@@ -18,13 +18,13 @@ Network::UDPClient::~UDPClient()
 
 bool Network::UDPClient::connect(std::string const &ip, std::string const &port)
 {
-	boost::asio::ip::udp::resolver	resolver(_io_service);
-    boost::asio::ip::udp::endpoint  endpoint = *resolver.resolve(
+	boost::asio::ip::udp::resolver	resolver{_io_service};
+    boost::asio::ip::udp::endpoint  endpoint{*resolver.resolve(
             {
                     boost::asio::ip::udp::v4(),
                     ip,
                     port
-            });
+            })};
     _mainCo = std::make_shared<UDPConnection>(
             _strand,
             _socket,
