@@ -19,4 +19,6 @@ buildAndTestLibAndBinaries:
   stage: build
   script:
    - ./scripts/linux/build.sh
-   - ./scripts/linux/test.sh
+   - ./scripts/linux/testTCP.sh
+   - ./scripts/linux/testUDP.sh
+
