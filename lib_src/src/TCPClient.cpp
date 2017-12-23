@@ -13,8 +13,8 @@ Network::TCPClient::~TCPClient()
 
 bool Network::TCPClient::connect(std::string const &ip, std::string const &port)
 {
-	boost::asio::ip::tcp::resolver	resolver(_io_service);
-    boost::asio::ip::tcp::socket	socket(_io_service);
+	boost::asio::ip::tcp::resolver	resolver{_io_service};
+    boost::asio::ip::tcp::socket	socket{_io_service};
 
 	boost::asio::connect(socket, resolver.resolve({ ip, port }));
     _tcpConnection = std::make_shared<TCPConnection>(

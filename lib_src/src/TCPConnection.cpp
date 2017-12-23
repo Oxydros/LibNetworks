@@ -20,7 +20,7 @@ void Network::TCPConnection::start()
 
 void Network::TCPConnection::processRead()
 {
-	auto                            self(shared_from_this());
+	auto                            self{shared_from_this()};
 
     tcpMsg << "Launch async read for packet" << std::endl;
 	_socket.async_read_some(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE),
@@ -60,7 +60,7 @@ void Network::TCPConnection::processRead()
 
 void Network::TCPConnection::stop()
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
     if (!_stopped)
     {
         tcpMsg << "Stop socket" << std::endl;

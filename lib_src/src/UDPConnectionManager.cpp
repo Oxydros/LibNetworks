@@ -43,7 +43,7 @@ void Network::UDPConnectionManager::processRead(size_t nbBytes)
     {
         return (_currentRemoteEndpoint == std::dynamic_pointer_cast<UDPConnection>(ptr)->getEndpoint());
     });
-    UDPPacket   packet;
+    UDPPacket   packet{};
 
     packet.setData(_receptBuffer);
     if (found == _connections.end())
@@ -64,7 +64,7 @@ void Network::UDPConnectionManager::processRead(size_t nbBytes)
 
 void Network::UDPConnectionManager::add(IConnection::SharedPtr ptr)
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
     udpMsg << "New connection" << std::endl;
 	//Adding the connection to the set
@@ -77,7 +77,7 @@ void Network::UDPConnectionManager::add(IConnection::SharedPtr ptr)
 
 void Network::UDPConnectionManager::stop(IConnection::SharedPtr ptr)
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
     udpMsg << "Delete connection" << std::endl;
 
@@ -92,7 +92,7 @@ void Network::UDPConnectionManager::stop(IConnection::SharedPtr ptr)
 //Stop all connections
 void Network::UDPConnectionManager::stop_all()
 {
-    boost::mutex::scoped_lock   lock(_ioMutex);
+    boost::mutex::scoped_lock   lock{_ioMutex};
 
 	for (auto co : _connections)
 	{

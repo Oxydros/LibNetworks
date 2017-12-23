@@ -16,7 +16,7 @@ Network::UDPPacket::~UDPPacket()
 
 PacketBuffer Network::UDPPacket::getData() const
 {
-    PacketBuffer    _protobufBuffer;
+    PacketBuffer    _protobufBuffer{};
 
     _protobufBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_protobufBuffer.data(),
