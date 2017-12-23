@@ -61,6 +61,11 @@ CubZPacket::FileMessage const     &Network::TCPPacket::getFileMessage() const
     return (_protobufPacket.filemessage());
 }
 
+CubZPacket::PacketTCP* Network::TCPPacket::getMutableTCPPacket()
+{
+    return (&_protobufPacket);
+}
+
 CubZPacket::AuthMessage     *Network::TCPPacket::getMutableAuthMessage()
 {
     return (_protobufPacket.mutable_authmessage());

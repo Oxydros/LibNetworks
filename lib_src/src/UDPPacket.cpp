@@ -21,17 +21,35 @@ PacketBuffer Network::UDPPacket::getData() const
     _protobufBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_protobufBuffer.data(),
                                      _protobufPacket.ByteSize());
-    dout << "Get data on UDPPacket. Packet size: "
-         << (_protobufBuffer.size()) << std::endl;
-    dout << _protobufPacket.DebugString() << std::endl;
+    udpMsg << "Get data on UDPPacket. Packet size: "
+           << (_protobufBuffer.size()) << std::endl;
+    udpMsg << _protobufPacket.type() << std::endl;
+    udpMsg << _protobufPacket.DebugString() << std::endl;
     return (_protobufBuffer);
 }
 
 std::size_t Network::UDPPacket::setData(PacketBuffer const &buff)
 {
-    dout << "Set data on UDPPacket(size: " << buff.size() << ")" << std::endl;
+    udpMsg << "Set data on UDPPacket(size: " << buff.size() << ")" << std::endl;
     _protobufPacket.ParseFromArray(buff.data(), buff.size());
 	return (buff.size());
+}
+
+
+void Network::UDPPacket::setType(Network::UDPPacket::Type t)
+{
+    _protobufPacket.set_type(t);
+}
+
+
+Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
+{
+    return (_protobufPacket.type());
+}
+
+CubZPacket::PacketUDP* Network::UDPPacket::getMutableUDPPacket()
+{
+    return (&_protobufPacket);
 }
 
 void Network::UDPPacket::setString(std::string const &name)
