@@ -18,8 +18,10 @@ namespace Network
         PacketObserver                      &_callBack;
         boost::mutex                        _ioMutex;
 		std::set<IConnection::SharedPtr>	_connections;
-        std::vector<unsigned char>          _receptBuffer;
         UDPConnection::endpoint             _currentRemoteEndpoint;
+        //Use in receiving
+        boost::circular_buffer<char>        _readBuffer;
+        std::vector<unsigned char>			_readActionBuffer;
 
 	public:
         UDPConnectionManager(boost::asio::ip::udp::socket &socket,
@@ -54,6 +56,7 @@ namespace Network
 		void stop_all();
 
     private:
-        void processRead(size_t nbBytes);
+        void processRead();
+        IConnection::SharedPtr  extractRemoteCo(boost::asio::ip::udp::endpoint &remoteEndpoint);
 	};
 }
