@@ -21,7 +21,7 @@ namespace Network
         typedef std::shared_ptr<UDPConnection>  SharedPtr;
 
 	private:
-        boost::asio::strand                 &_strand;
+        boost::asio::io_service::strand                 &_strand;
         boost::asio::ip::udp::socket        &_socket;
         UDPConnectionManager		    	*_connectionManager;
         endpoint                            _remoteEndpoint;
@@ -30,7 +30,7 @@ namespace Network
         boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
-		explicit UDPConnection(boost::asio::strand &strand,
+		explicit UDPConnection(boost::asio::io_service::strand &strand,
                                boost::asio::ip::udp::socket &socket,
                                endpoint &remote,
                                UDPConnectionManager *manager = nullptr);

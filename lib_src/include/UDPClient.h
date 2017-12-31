@@ -13,7 +13,7 @@ namespace Network
 	{
 	private:
 		boost::asio::io_service			_io_service;
-        boost::asio::strand              _strand;
+        boost::asio::io_service::strand              _strand;
         boost::asio::ip::udp::socket    _socket;
         boost::asio::ip::udp::endpoint  _endpoint;
         UDPConnectionManager             _manager;

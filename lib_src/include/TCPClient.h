@@ -13,7 +13,7 @@ namespace Network
 	{
 	private:
 		boost::asio::io_service			_io_service;
-        boost::asio::strand              _strand;
+        boost::asio::io_service::strand              _strand;
         TCPConnection::SharedPtr        _tcpConnection;
         boost::asio::signal_set			_signalRegister;
 

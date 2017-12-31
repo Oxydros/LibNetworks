@@ -14,7 +14,7 @@ namespace Network
 	{
 	private:
         boost::asio::ip::udp::socket        &_socket;
-        boost::asio::strand                 &_strand;
+        boost::asio::io_service::strand                 &_strand;
         PacketObserver                      &_callBack;
         boost::mutex                        _ioMutex;
 		std::set<IConnection::SharedPtr>	_connections;
@@ -25,7 +25,7 @@ namespace Network
 
 	public:
         UDPConnectionManager(boost::asio::ip::udp::socket &socket,
-                             boost::asio::strand &strand,
+                             boost::asio::io_service::strand &strand,
                              PacketObserver &callBack);
 		~UDPConnectionManager();
 
