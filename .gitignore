@@ -62,5 +62,4 @@ proto/test.pb.h
 /tests/server/server.vcxproj
 /tests/server/server.vcxproj.filters
 lib_src/proto/
-
-
+.vscode/
