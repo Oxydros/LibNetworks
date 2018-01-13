@@ -1,10 +1,13 @@
 Librairie C++ pour communiquer entre les applications CubZ
 
-# Installation des dependances pour Windows 64 Bits
+# Installation des dependances pour Windows
 Boost:
 - Télécharger la librairie Boost (http://www.boost.org/users/download/)
 - Utiliser la commande
     ```b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=static address-model=64 stage```
+- Pour utiliser la lib avec le projet HoloLens, vous devez les compiler en 32Bit
+    ```./b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=shared architecture=
+x86 stage```
 - Definir la variable d'env BOOST_ROOT vers le dossier Boost (cf Google)
 
 Protobuf:
