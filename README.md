@@ -1,30 +1,36 @@
-Librairie C++ pour communiquer entre les applications CubZ
+# C++ Library for network communications
 
-# Installation des dependances pour Windows
+# Windows third part library compilation
 Boost:
-- Télécharger la librairie Boost (http://www.boost.org/users/download/)
-- Utiliser la commande
-    ```b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=static address-model=64 stage```
-- Pour utiliser la lib avec le projet HoloLens, vous devez les compiler en 32Bit
-    ```./b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=shared architecture=
-x86 stage```
-- Definir la variable d'env BOOST_ROOT vers le dossier Boost (cf Google)
+- Download the Boost library (http://www.boost.org/users/download/)
+- Here is the compilation command
+```
+    /yourBoostRootDir> ./boostrap
+    /yourBoostRootDir> ./b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=static address-model=64 stage
+```
+- To use this library with HoloLens application, you will need the 32 bits version.
+```
+    /yourBoostRootDir> ./b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=shared architecture=x86 stage
+```
+- Define the env variable BOOST_ROOT with the path to your boost directory as value
 
 Protobuf:
-- Suivre https://github.com/google/protobuf/blob/master/cmake/README.md
+- Follow https://github.com/google/protobuf/blob/master/cmake/README.md
 
-# Compilation de la librairie
+# Library compilation
 
 Windows:
-- Executer le script contenu dans le dossier scripts/windows
+- Execute the script in the directory scripts/windows
+- This script is meant to be call from  the directory (read the script for more information)
 
 Linux:
-- Executer le script initRepo.sh
-- Executer le script build.sh
-- Les libs se trouvent dans le dossier build/lib
+- You will find the scripts in the scripts/linux directory
+- Execute initRepo.sh
+- Execute build.sh
+- Libs are in build/lib
 
 
 # TODO
-- Plus de detail sur la compilation via CMake sur Windows
-- Plus de tests unitaires
-- Ajouter l'installation des dependances directement depuis le CMake
+- Add details on CMake windows compilation (?)
+- More unit test
+- Add depdencies installation from within CMake
