@@ -3,7 +3,7 @@
 
 using namespace Network;
 
-Network::UDPConnection::UDPConnection(boost::asio::strand &strand, boost::asio::ip::udp::socket &socket,
+Network::UDPConnection::UDPConnection(boost::asio::io_service::strand &strand, boost::asio::ip::udp::socket &socket,
                                       Network::UDPConnection::endpoint &remote,
                                       UDPConnectionManager *manager)
         : _strand(strand), _socket(socket), _connectionManager(manager),

@@ -4,7 +4,7 @@
 
 using namespace Network;
 
-TCPConnection::TCPConnection(boost::asio::strand &strand, boost::asio::ip::tcp::socket socket,
+TCPConnection::TCPConnection(boost::asio::io_service::strand &strand, boost::asio::ip::tcp::socket socket,
 	PacketObserver &observer, TCPConnectionManager *manager)
 	: _strand(strand), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
       _stopped(false), _ioMutex(), _readBuffer(MAX_BUFFER_SIZE), _readActionBuffer(),
