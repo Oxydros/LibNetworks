@@ -11,6 +11,15 @@ int main()
         auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
 
         std::cout << "Received " << tcpPacket << std::endl;
+
+        if (tcpPacket.getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)
+        {
+            std::cout << "Login request for " << tcpPacket.getAuthMessage().user().username() << std::endl;
+            //Confirm connection by notfying the client with no error
+            tcpPacket.getMutableAuthMessage()->set_code(0);
+            co->sendPacket(tcpPacket);
+            std::cout << "User logged in" << std::endl;
+        }
     });
 	server.run(); //Block
     return 0;
