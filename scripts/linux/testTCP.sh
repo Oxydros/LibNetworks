@@ -27,7 +27,7 @@ kill -s "SIGTERM" $serverPID;
 
 echo "Client and Server terminated, comparing responses"
 
-response=$(cat -e outputServer | grep "Received type");
+response=$(cat -e outputServer | grep "logged");
 
 if [ "$response" == "$outputWanted" ]
 then
