@@ -1,2 +1,1 @@
-Received type: UNKNOWN
-Received type: PING
+User logged in
