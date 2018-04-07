@@ -1,6 +1,10 @@
 # C++ Library for network communications
 
 # Windows third part library compilation
+
+Please follow https://gitlab.com/cubz/LibNetworks/wikis/Compilation
+
+The instructions bellow are deprecated, and keep for maintenance purposes:
 Boost:
 - Download the Boost library (http://www.boost.org/users/download/)
 - Here is the compilation command
