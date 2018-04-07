@@ -10,7 +10,7 @@ add_definitions( -DBOOST_ALL_NO_LIB )
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost 1.51.0 COMPONENTS "filesystem" "system" "thread" "regex" REQUIRED)
+find_package(Boost 1.51.0 COMPONENTS "system" "thread" REQUIRED)
 
 if(Boost_FOUND)
     if (MSCV)
