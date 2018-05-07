@@ -8,7 +8,7 @@ int main()
 {
 	Network::TCPClient client{};
 	Network::TCPPacket packet{};
-    CubZPacket::UserDescription user{};
+	CubZPacket::UserDescription *user = new CubZPacket::UserDescription();
 
     client.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
         auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
@@ -26,8 +26,8 @@ int main()
     //Login packet for "Oxydros"
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
     packet.getMutableAuthMessage()->set_code(0);
-    user.set_username("Oxydros");
-    packet.getMutableAuthMessage()->set_allocated_user(&user);
+    user->set_username("Oxydros");
+    packet.getMutableAuthMessage()->set_allocated_user(user);
 
     client.sendPacket(packet);
 	client.run(); //Block
