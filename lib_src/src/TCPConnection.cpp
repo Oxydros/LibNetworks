@@ -75,8 +75,8 @@ bool Network::TCPConnection::sendPacket(IPacket const &packet)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
     PacketBuffer	            _finalBuffer{};
-	PacketBuffer                toSend{packet.getData()};
-    PacketSize                  packetSize{toSend.size()};
+    PacketBuffer                toSend{packet.getData()};
+    PacketSize                  packetSize{static_cast<int>(toSend.size())};
 
     if (_toSendBuffer.reserve() < packetSize)
     {

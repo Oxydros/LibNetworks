@@ -8,7 +8,7 @@
 
 #define MAX_BUFFER_SIZE     (2048)
 #define READ_SIZE           (512)
-#define HEADER_TYPE         std::size_t
+#define HEADER_TYPE         int
 #define HEADER_SIZE         (sizeof(HEADER_TYPE))
 
 #ifndef MAX
