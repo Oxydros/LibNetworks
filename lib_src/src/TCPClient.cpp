@@ -58,3 +58,8 @@ void Network::TCPClient::handleAsyncWait()
                 _tcpConnection->stop();
             });
 }
+
+void TCPClient::receiveFile(std::string const &ip, std::string const &port, size_t fileSize, std::vector<char> &fileData)
+{
+
+}

@@ -36,8 +36,8 @@ int main()
     std::string         input;
     Network::TCPClient  client;
 
-    client.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
-        auto tcpPacket = static_cast<Network::TCPPacket*>(packet.get());
+    client.setCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
+        auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
 
         std::cout << "Received " << *tcpPacket << std::endl;
     });

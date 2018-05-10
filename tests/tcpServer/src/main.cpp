@@ -7,8 +7,8 @@ int main()
 {
 	Network::TCPServer server("0.0.0.0", "4242");
 
-    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
-        auto tcpPacket = dynamic_cast<Network::TCPPacket *>(packet.get());
+    server.setCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
+        auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
 
         std::cout << "Received " << *tcpPacket << std::endl;
 

@@ -3,7 +3,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/circular_buffer.hpp>
 #include "Common.h"
-#include "IConnection.h"
+#include "IPacketConnection.h"
 #include "TCPConnectionManager.h"
 
 namespace Network
@@ -12,7 +12,7 @@ namespace Network
     /*!
      * Implementation of a TCPConnection
      */
-	class TCPConnection : public IConnection, public std::enable_shared_from_this<TCPConnection>
+	class TCPConnection : public IPacketConnection, public std::enable_shared_from_this<TCPConnection>
 	{
 	private:
         boost::asio::io_service::strand                 &_strand;

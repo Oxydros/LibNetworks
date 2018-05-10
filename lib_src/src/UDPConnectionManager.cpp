@@ -45,7 +45,7 @@ void Network::UDPConnectionManager::run()
 
 void Network::UDPConnectionManager::processRead()
 {
-    IConnection::SharedPtr remoteCo = extractRemoteCo(_currentRemoteEndpoint);
+    IPacketConnection::SharedPtr remoteCo = extractRemotePacketCo(_currentRemoteEndpoint);
 
     assert(remoteCo);
     while (true)
@@ -104,9 +104,9 @@ void Network::UDPConnectionManager::stop_all()
 	_connections.clear();
 }
 
-IConnection::SharedPtr Network::UDPConnectionManager::extractRemoteCo(boost::asio::ip::udp::endpoint &remoteEndpoint)
+IPacketConnection::SharedPtr Network::UDPConnectionManager::extractRemotePacketCo(boost::asio::ip::udp::endpoint &remoteEndpoint)
 {
-    IConnection::SharedPtr co{};
+    IPacketConnection::SharedPtr co{};
 
     auto foundRemoteConnection = std::find_if(_connections.begin(),
                                               _connections.end(),
@@ -124,7 +124,7 @@ IConnection::SharedPtr Network::UDPConnectionManager::extractRemoteCo(boost::asi
                                              this);
         add(co);
     } else {
-        co = *foundRemoteConnection;
+        co = std::static_pointer_cast<IPacketConnection>(*foundRemoteConnection);
     }
     return (co);
 }

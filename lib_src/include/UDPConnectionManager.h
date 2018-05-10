@@ -57,6 +57,6 @@ namespace Network
 
     private:
         void processRead();
-        IConnection::SharedPtr  extractRemoteCo(boost::asio::ip::udp::endpoint &remoteEndpoint);
+        IPacketConnection::SharedPtr  extractRemotePacketCo(boost::asio::ip::udp::endpoint &remoteEndpoint);
 	};
 }

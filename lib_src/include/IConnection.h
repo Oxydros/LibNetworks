@@ -32,12 +32,5 @@ namespace Network
          * Stop the connection / Disconnect socket
          */
 		virtual void stop() = 0;
-
-        /*!
-         * Send a packet
-         * @param packet
-         * @return true or false if succeed
-         */
-		virtual bool sendPacket(IPacket::SharedPtr packet) = 0;
 	};
 }

@@ -10,8 +10,8 @@ int main()
 	Network::TCPPacket::SharedPtr packet = std::make_shared<Network::TCPPacket>();
 	CubZPacket::UserDescription *user = new CubZPacket::UserDescription();
 
-    client.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
-        auto tcpPacket = dynamic_cast<Network::TCPPacket *>(packet.get());
+    client.setCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
+        auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
 
         std::cout << "Received " << *tcpPacket << std::endl;
         if (tcpPacket->getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)

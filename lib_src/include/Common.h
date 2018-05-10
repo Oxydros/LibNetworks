@@ -29,9 +29,10 @@
 namespace Network
 {
     class IConnection;
+    class IPacketConnection;
     class IPacket;
 
-    typedef std::function< void(std::shared_ptr<IConnection>, std::shared_ptr<IPacket> ) >  PacketObserver;
+    typedef std::function< void(std::shared_ptr<IPacketConnection>, std::shared_ptr<IPacket> ) >  PacketObserver;
 
     typedef HEADER_TYPE                 PacketSize;
     typedef std::vector<unsigned char>  PacketBuffer;
