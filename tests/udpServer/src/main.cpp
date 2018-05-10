@@ -6,10 +6,10 @@ int main()
 {
 	Network::UDPServer server(4242);
 
-    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
-        auto tcpPacket = static_cast<Network::UDPPacket const &>(packet);
+    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
+        auto udpPacket = dynamic_cast<Network::UDPPacket*>(packet.get());
 
-        std::cout << "Received " << tcpPacket << std::endl;
+        std::cout << "Received " << *udpPacket << std::endl;
     });
 	server.run(); //Block
     return 0;

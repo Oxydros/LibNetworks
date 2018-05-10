@@ -19,6 +19,9 @@ namespace Network
      */
 	class IPacket
 	{
+    public:
+        typedef std::shared_ptr<IPacket>    SharedPtr;
+
 	public:
 		IPacket() = default;
 		virtual ~IPacket() = default;
@@ -40,7 +43,8 @@ namespace Network
          * Get the binary representation of the packet
          * @return Network::PacketBuffer
          */
-		virtual PacketBuffer getData() const = 0;
+
+		virtual Network::PacketBuffer getData() const = 0;
 
         /*!
          * Set the binary representaton of the packet

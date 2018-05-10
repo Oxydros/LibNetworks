@@ -7,17 +7,17 @@ int main()
 {
 	Network::TCPServer server("0.0.0.0", "4242");
 
-    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
-        auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
+    server.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
+        auto tcpPacket = dynamic_cast<Network::TCPPacket *>(packet.get());
 
-        std::cout << "Received " << tcpPacket << std::endl;
+        std::cout << "Received " << *tcpPacket << std::endl;
 
-        if (tcpPacket.getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)
+        if (tcpPacket->getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)
         {
-            std::cout << "Login request for " << tcpPacket.getAuthMessage().user().username() << std::endl;
+            std::cout << "Login request for " << tcpPacket->getAuthMessage().user().username() << std::endl;
             //Confirm connection by notfying the client with no error
-            tcpPacket.getMutableAuthMessage()->set_code(0);
-            co->sendPacket(tcpPacket);
+            tcpPacket->getMutableAuthMessage()->set_code(0);
+            co->sendPacket(packet);
             std::cout << "User logged in" << std::endl;
         }
     });

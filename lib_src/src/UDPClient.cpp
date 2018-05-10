@@ -35,7 +35,7 @@ bool Network::UDPClient::connect(std::string const &ip, std::string const &port)
 	return (true);
 }
 
-void Network::UDPClient::sendPacket(IPacket const &p)
+void Network::UDPClient::sendPacket(IPacket::SharedPtr p)
 {
     _mainCo->sendPacket(p);
 }

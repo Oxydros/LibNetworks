@@ -25,7 +25,7 @@ bool Network::TCPClient::connect(std::string const &ip, std::string const &port)
 	return (true);
 }
 
-void Network::TCPClient::sendPacket(IPacket const &p)
+void Network::TCPClient::sendPacket(IPacket::SharedPtr p)
 {
     _tcpConnection->sendPacket(p);
 }

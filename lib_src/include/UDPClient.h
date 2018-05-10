@@ -42,7 +42,7 @@ namespace Network
          * Send a packet
          * @param p
          */
-        void        sendPacket(IPacket const &p) override;
+        void        sendPacket(IPacket::SharedPtr p) override;
 
         /*!
          * Launch the loop

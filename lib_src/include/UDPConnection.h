@@ -39,7 +39,7 @@ namespace Network
 	public:
 		void start() override;
 		void stop() override;
-		bool sendPacket(IPacket const &packet) override;
+		bool sendPacket(IPacket::SharedPtr packet) override;
 
     public:
         Network::UDPConnection::endpoint const &getEndpoint() const noexcept;

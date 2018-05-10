@@ -49,7 +49,7 @@ namespace Network
          * @param packet
          * @return
          */
-		bool sendPacket(IPacket const &packet) override;
+		bool sendPacket(IPacket::SharedPtr packet) override;
 
 	private:
         /*!

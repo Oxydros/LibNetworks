@@ -40,7 +40,7 @@ void Network::TCPConnection::processRead()
                 auto packet = Network::extractPacketFromCircularBuffer<TCPPacket>(_readBuffer);
                 if (packet)
                 {
-                    _callBack(shared_from_this(), *packet.get());
+                    _callBack(shared_from_this(), packet);
                     if (_readBuffer.empty())
                         break;
                 } else {
@@ -71,11 +71,11 @@ void Network::TCPConnection::stop()
 }
 
 //Scoped lock to prevent multiple thread write bugs
-bool Network::TCPConnection::sendPacket(IPacket const &packet)
+bool Network::TCPConnection::sendPacket(IPacket::SharedPtr packet)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
     PacketBuffer	            _finalBuffer{};
-    PacketBuffer                toSend{packet.getData()};
+    PacketBuffer                toSend{packet->getData()};
     PacketSize                  packetSize{static_cast<int>(toSend.size())};
 
     if (_toSendBuffer.reserve() < packetSize)

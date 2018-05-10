@@ -13,7 +13,7 @@
 namespace Network
 {
     template<typename OutputPacket>
-    std::unique_ptr<OutputPacket> extractPacketFromCircularBuffer(boost::circular_buffer<char> &buffer)
+    std::shared_ptr<OutputPacket> extractPacketFromCircularBuffer(boost::circular_buffer<char> &buffer)
     {
         auto                                rangeOne{buffer.array_one()};
         auto                                rangeTwo{buffer.array_two()};
@@ -24,7 +24,7 @@ namespace Network
         std::size_t                         saveCopyOne{copyFromOne};
         std::size_t                         saveCopyTwo{copyFromTwo};
         std::vector<unsigned char>          finalData{};
-        std::unique_ptr<OutputPacket>       ptr{};
+        std::shared_ptr<OutputPacket>       ptr{};
 
         if (!std::is_base_of<IPacket, OutputPacket>::value)
         {

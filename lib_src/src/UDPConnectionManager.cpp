@@ -54,7 +54,7 @@ void Network::UDPConnectionManager::processRead()
         if (packet)
         {
             if (_callBack)
-                _callBack(remoteCo, *packet.get());
+                _callBack(remoteCo, packet);
             if (_readBuffer.empty())
                 break;
         } else {

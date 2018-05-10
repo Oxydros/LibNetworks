@@ -2,6 +2,7 @@
 
 #include <queue>
 #include "Common.h"
+#include "IPacket.h"
 
 namespace Network
 {
@@ -36,7 +37,7 @@ namespace Network
          * Send a packet
          * @param p
          */
-        virtual void        sendPacket(IPacket const &p) = 0;
+        virtual void        sendPacket(IPacket::SharedPtr p) = 0;
 
         /*!
          * Launch the client loop

@@ -35,12 +35,10 @@ std::size_t Network::UDPPacket::setData(PacketBuffer const &buff)
 	return (buff.size());
 }
 
-
 void Network::UDPPacket::setType(Network::UDPPacket::Type t)
 {
     _protobufPacket.set_type(t);
 }
-
 
 Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
 {
@@ -50,11 +48,6 @@ Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
 CubZPacket::PacketUDP* Network::UDPPacket::getMutableUDPPacket()
 {
     return (&_protobufPacket);
-}
-
-void Network::UDPPacket::setString(std::string const &name)
-{
-    _protobufPacket.set_info(name);
 }
 
 CubZPacket::PacketUDP const& Network::UDPPacket::getUDPPacket() const

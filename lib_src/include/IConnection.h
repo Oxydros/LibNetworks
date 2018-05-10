@@ -38,6 +38,6 @@ namespace Network
          * @param packet
          * @return true or false if succeed
          */
-		virtual bool sendPacket(IPacket const &packet) = 0;
+		virtual bool sendPacket(IPacket::SharedPtr packet) = 0;
 	};
 }
