@@ -43,6 +43,7 @@ void Network::UDPClient::sendPacket(IPacket::SharedPtr p)
 void Network::UDPClient::disconnect()
 {
     _manager.stop_all();
+    _socket.close();
 }
 
 void Network::UDPClient::run()

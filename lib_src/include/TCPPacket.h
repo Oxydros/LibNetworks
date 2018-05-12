@@ -23,7 +23,7 @@ namespace Network
 		    						    ~TCPPacket() override;
 
 	public:
-		ByteBuffer		            getData() const override;
+		ByteBuffer		                getData() const override;
 		std::size_t			            setData(ByteBuffer const &buff) override;
 
 	public:

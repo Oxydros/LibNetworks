@@ -8,7 +8,6 @@ int main()
 {
     Network::TCPClient client{};
 	Network::TCPPacket::SharedPtr packet = std::make_shared<Network::TCPPacket>();
-	CubZPacket::UserDescription *user = new CubZPacket::UserDescription();
 
     client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet)
                              {
@@ -27,8 +26,7 @@ int main()
     //Login packet for "Oxydros"
     packet->setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
     packet->getMutableAuthMessage()->set_code(0);
-    user->set_username("Oxydros");
-    packet->getMutableAuthMessage()->set_allocated_user(user);
+    packet->getMutableAuthMessage()->mutable_user()->set_username("Oxydros");
 
     client.sendPacket(packet);
 	client.async_run();

@@ -21,13 +21,10 @@ void sendPing(Network::TCPClient &client)
 void sendAuth(Network::TCPClient &client)
 {
     Network::TCPPacket  packet;
-    CubZPacket::UserDescription *user = new CubZPacket::UserDescription();
-
-    user->set_username("Oxydros");
 
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
     packet.getMutableAuthMessage()->set_action(CubZPacket::AuthMessage_Action::AuthMessage_Action_LOGIN);
-    packet.getMutableAuthMessage()->set_allocated_user(user);
+    packet.getMutableAuthMessage()->mutable_user()->set_username("Oxydros");
     client.sendPacket(packet.shared_from_this());
 }
 
