@@ -1,5 +1,17 @@
 # C++ Library for network communications
 
+# Update submodules
+
+Before compiling the library using the respective build.sh or GenerateVSSolution.bat script, you need  
+to update the submodules.  
+If you are on Linux:  
+```
+    git submodule sync --recursive
+    git submodule update --init --remote --merge
+```  
+  
+You can use the same parameters using TortoiseGit on Windows.  
+
 # Windows third part library compilation
 __Please follow https://gitlab.com/cubz/LibNetworks/wikis/Compilation__
 
