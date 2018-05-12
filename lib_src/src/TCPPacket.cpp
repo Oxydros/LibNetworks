@@ -13,9 +13,9 @@ Network::TCPPacket::~TCPPacket()
 {
 }
 
-PacketBuffer Network::TCPPacket::getData() const
+ByteBuffer Network::TCPPacket::getData() const
 {
-    PacketBuffer	_finalBuffer{};
+    ByteBuffer	_finalBuffer{};
 
     _finalBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_finalBuffer.data(),
@@ -26,7 +26,7 @@ PacketBuffer Network::TCPPacket::getData() const
     return (_finalBuffer);
 }
 
-std::size_t Network::TCPPacket::setData(PacketBuffer const &buff)
+std::size_t Network::TCPPacket::setData(ByteBuffer const &buff)
 {
 	dout << "Set data on TCPPacket(size: " << buff.size() << ")" << std::endl;
     bool success{_protobufPacket.ParseFromArray(buff.data(), buff.size())};

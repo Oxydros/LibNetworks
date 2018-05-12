@@ -36,11 +36,12 @@ int main()
     std::string         input;
     Network::TCPClient  client;
 
-    client.setCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet){
-        auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
+    client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet)
+                             {
+                                 auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
 
-        std::cout << "Received " << *tcpPacket << std::endl;
-    });
+                                 std::cout << "Received " << *tcpPacket << std::endl;
+                             });
     client.connect("127.0.0.1", "4242");
 
     boost::thread       clientThread([&](){

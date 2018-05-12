@@ -30,6 +30,8 @@ ENDIF()
 add_subdirectory(lib_src)
 add_subdirectory(tests/tcpServer)
 add_subdirectory(tests/tcpClient)
+add_subdirectory(tests/tcpFileServer)
+add_subdirectory(tests/tcpFileClient)
 add_subdirectory(tests/tcpClientMultiThread)
 
 add_subdirectory(tests/udpClient)

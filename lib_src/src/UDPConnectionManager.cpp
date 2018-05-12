@@ -7,7 +7,7 @@ using namespace Network;
 
 Network::UDPConnectionManager::UDPConnectionManager(boost::asio::ip::udp::socket &socket,
                                                     boost::asio::io_service::strand &strand,
-                                                    PacketObserver &callBack)
+                                                    PacketCallback &callBack)
         : _socket(socket), _strand(strand), _callBack(callBack),
           _ioMutex(), _readBuffer(MAX_BUFFER_SIZE), _readActionBuffer(READ_SIZE)
 {

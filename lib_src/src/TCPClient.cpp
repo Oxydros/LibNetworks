@@ -17,27 +17,39 @@ bool Network::TCPClient::connect(std::string const &ip, std::string const &port)
     boost::asio::ip::tcp::socket	socket{_io_service};
 
 	boost::asio::connect(socket, resolver.resolve({ ip, port }));
-    _tcpConnection = std::make_shared<TCPConnection>(
+    _tcpPacketConnection = std::make_shared<TCPPacketConnection>(
             _strand,
             std::move(socket),
-            _callBack
+            _packetCallBack
     );
 	return (true);
 }
 
 void Network::TCPClient::sendPacket(IPacket::SharedPtr p)
 {
-    _tcpConnection->sendPacket(p);
+    _tcpPacketConnection->sendPacket(p);
+}
+
+void Network::TCPClient::sendFile(std::string const &ip, std::string const &port, Network::ByteBuffer bytes)
+{
+    _fileExchanger.sendFile(ip, port, bytes);
+}
+
+
+void TCPClient::receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+                            Network::RawCallback callback)
+{
+    _fileExchanger.receiveFile(ip, port, expectedSize, callback);
 }
 
 void Network::TCPClient::disconnect()
 {
-    _tcpConnection->stop();
+    _tcpPacketConnection->stop();
 }
 
 void Network::TCPClient::run()
 {
-    _tcpConnection->start();
+    _tcpPacketConnection->start();
 	_io_service.run();
 }
 
@@ -55,11 +67,6 @@ void Network::TCPClient::handleAsyncWait()
             [this](boost::system::error_code ec, int sigNbr)
             {
                 dout << "Received signal " << sigNbr << std::endl;
-                _tcpConnection->stop();
+                _tcpPacketConnection->stop();
             });
-}
-
-void TCPClient::receiveFile(std::string const &ip, std::string const &port, size_t fileSize, std::vector<char> &fileData)
-{
-
 }

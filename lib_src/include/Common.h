@@ -30,11 +30,14 @@ namespace Network
 {
     class IConnection;
     class IPacketConnection;
+    class IRawConnection;
     class IPacket;
 
-    typedef std::function< void(std::shared_ptr<IPacketConnection>, std::shared_ptr<IPacket> ) >  PacketObserver;
-
     typedef HEADER_TYPE                 PacketSize;
-    typedef std::vector<unsigned char>  PacketBuffer;
+    typedef std::vector<char>           ByteBuffer;
+
+    typedef std::function< void(std::shared_ptr<IPacketConnection>, std::shared_ptr<IPacket> ) >    PacketCallback;
+    typedef std::function < void(std::shared_ptr<IRawConnection>, ByteBuffer)>                      RawEndCallback;
+    typedef std::function< void(ByteBuffer ) >                                                      RawCallback;
 }
 #endif

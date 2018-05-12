@@ -39,6 +39,7 @@ namespace Network
 	public:
 		void start() override;
 		void stop() override;
+        bool isOpen() const override { return _socket.is_open(); };
 		bool sendPacket(IPacket::SharedPtr packet) override;
 
     public:

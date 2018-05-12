@@ -44,13 +44,13 @@ namespace Network
          * @return Network::PacketBuffer
          */
 
-		virtual Network::PacketBuffer getData() const = 0;
+		virtual Network::ByteBuffer getData() const = 0;
 
         /*!
          * Set the binary representaton of the packet
          * @param buff
          * @return
          */
-		virtual std::size_t setData(PacketBuffer const &buff) = 0;
+		virtual std::size_t setData(ByteBuffer const &buff) = 0;
 	};
 }

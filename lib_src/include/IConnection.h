@@ -32,5 +32,7 @@ namespace Network
          * Stop the connection / Disconnect socket
          */
 		virtual void stop() = 0;
+
+		virtual bool isOpen() const = 0;
 	};
 }

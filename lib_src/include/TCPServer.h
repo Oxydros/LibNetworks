@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "IServer.h"
 #include "TCPConnectionManager.h"
-#include "TCPConnection.h"
+#include "TCPPacketConnection.h"
 
 namespace Network
 {
@@ -16,13 +16,13 @@ namespace Network
 	private:
 		std::string const				&_serverIp;
 		std::string const				&_serverPort;
-		PacketObserver					_callBack;
-		boost::asio::io_service			_io_service;
-        boost::asio::io_service::strand             _strand;
+		boost::asio::io_service         _io_service;
+		PacketCallback					_callBack;
+        boost::asio::io_service::strand _strand;
 		boost::asio::ip::tcp::socket	_serverSocket;
 		boost::asio::signal_set			_signalRegister;
 		boost::asio::ip::tcp::acceptor	_acceptor;
-		TCPConnectionManager				_connectionManager;
+		TCPConnectionManager			_connectionManager;
 
 	public:
 		explicit TCPServer(std::string const &ip,
@@ -35,8 +35,8 @@ namespace Network
 
 	public:
 		bool    run() override;
-        void    setCallback(PacketObserver &callback) override;
-        void    setCallback(PacketObserver &&callback) override;
+        void    setCallback(PacketCallback &callback) override;
+        void    setCallback(PacketCallback &&callback) override;
 
 	private:
 		void	handleAsyncWait();

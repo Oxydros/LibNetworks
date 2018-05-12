@@ -12,12 +12,12 @@ namespace Network
     /*!
      * Implementation of a TCPConnection
      */
-	class TCPConnection : public IPacketConnection, public std::enable_shared_from_this<TCPConnection>
+	class TCPPacketConnection : public IPacketConnection, public std::enable_shared_from_this<TCPPacketConnection>
 	{
 	private:
         boost::asio::io_service::strand                 &_strand;
 		TCPConnectionManager				*_connectionManager;
-		PacketObserver						&_callBack;
+		PacketCallback						_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
@@ -28,10 +28,10 @@ namespace Network
         boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
-		explicit TCPConnection(boost::asio::io_service::strand &_strand,
+		explicit TCPPacketConnection(boost::asio::io_service::strand &_strand,
                                boost::asio::ip::tcp::socket socket,
-			PacketObserver &observer, TCPConnectionManager *manager = nullptr);
-		~TCPConnection() = default;
+			PacketCallback &observer, TCPConnectionManager *manager = nullptr);
+		~TCPPacketConnection() = default;
 
 	public:
         /*!
@@ -43,6 +43,8 @@ namespace Network
          * Stop the TCP Connection
          */
 		void stop() override;
+
+        bool isOpen() const override { return _socket.is_open(); };
 
         /*!
          * Send a packet

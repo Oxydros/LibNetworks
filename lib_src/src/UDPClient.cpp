@@ -8,7 +8,7 @@ Network::UDPClient::UDPClient()
               boost::asio::ip::udp::endpoint(
                       boost::asio::ip::udp::v4(), 0)
               ),
-      _manager(_socket, _strand, _callBack),_signalRegister(_io_service)
+      _manager(_socket, _strand, _packetCallBack),_signalRegister(_io_service)
 {
  //   handleAsyncWait();
 }

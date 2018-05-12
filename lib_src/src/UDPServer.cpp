@@ -50,12 +50,12 @@ void Network::UDPServer::handleAsyncWait()
 	});
 }
 
-void Network::UDPServer::setCallback(PacketObserver &callback)
+void Network::UDPServer::setCallback(PacketCallback &callback)
 {
     _callBack = std::move(callback);
 }
 
-void Network::UDPServer::setCallback(PacketObserver &&callback)
+void Network::UDPServer::setCallback(PacketCallback &&callback)
 {
     _callBack = callback;
 }

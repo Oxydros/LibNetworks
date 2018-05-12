@@ -21,6 +21,6 @@ int main()
             std::cout << "User logged in" << std::endl;
         }
     });
-	server.run(); //Block
+	server.run();
     return 0;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <queue>
+#include <boost/thread.hpp>
 #include "Common.h"
 #include "IPacket.h"
 
@@ -9,13 +10,14 @@ namespace Network
     /*! Abstract Client class */
 	class Client
 	{
-    public:
 	protected:
-        PacketObserver  _callBack;
+        PacketCallback                  _packetCallBack{};
+        bool                            _isAsync;
+        std::unique_ptr<boost::thread>  _thread;
 
 	public:
 		explicit Client()
-                : _callBack()
+                : _packetCallBack()
 		{}
 		virtual ~Client() = default;
 
@@ -40,9 +42,21 @@ namespace Network
         virtual void        sendPacket(IPacket::SharedPtr p) = 0;
 
         /*!
-         * Launch the client loop
+         * Launch the client loop (block)
          */
 		virtual void		run() = 0;
+
+		void        async_run() {
+            _isAsync = true;
+            _thread = std::make_unique<boost::thread>([this](){ this->run(); });
+		};
+
+        void        wait() {
+            if (_isAsync)
+                _thread->join();
+        };
+
+        bool        isAsync() const { return (_isAsync); };
 
 	public:
         /*!
@@ -52,14 +66,14 @@ namespace Network
          * @return
          */
 
-        void                setCallback(PacketObserver &o)
+        void                setPacketCallback(PacketCallback &o)
         {
-            _callBack = std::move(o);
+            _packetCallBack = std::move(o);
         }
 
-        void                setCallback(PacketObserver &&o)
+        void                setPacketCallback(PacketCallback &&o)
         {
-            _callBack = o;
+            _packetCallBack = o;
         }
 	};
 }

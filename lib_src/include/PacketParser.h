@@ -12,6 +12,18 @@
 
 namespace Network
 {
+//    ByteBuffer extractRawFromCircularBuffer(boost::circular_buffer<char> &buffer)
+//    {
+//        auto                                rangeOne{buffer.array_one()};
+//        auto                                rangeTwo{buffer.array_two()};
+//        std::vector<unsigned char>          finalData{};
+//
+//        finalData.resize(rangeOne.second + rangeTwo.second);
+//        std::memcpy(finalData.data(), rangeOne.first, rangeOne.second);
+//        std::memcpy(finalData.data() + rangeOne.second, rangeTwo.first, rangeTwo.second);
+//        return (finalData);
+//    }
+
     template<typename OutputPacket>
     std::shared_ptr<OutputPacket> extractPacketFromCircularBuffer(boost::circular_buffer<char> &buffer)
     {
@@ -23,7 +35,7 @@ namespace Network
                                                         (HEADER_SIZE - copyFromOne) : rangeTwo.second};
         std::size_t                         saveCopyOne{copyFromOne};
         std::size_t                         saveCopyTwo{copyFromTwo};
-        std::vector<unsigned char>          finalData{};
+        ByteBuffer                          finalData{};
         std::shared_ptr<OutputPacket>       ptr{};
 
         if (!std::is_base_of<IPacket, OutputPacket>::value)

@@ -6,7 +6,7 @@ using namespace Network;
 
 Network::TCPServer::TCPServer(std::string const &ip, std::string const &serverPort)
         : _serverIp(ip), _serverPort(serverPort),
-        _callBack(), _io_service(), _strand(_io_service), _serverSocket(_io_service),
+        _callBack(), _strand(_io_service), _serverSocket(_io_service),
           _signalRegister(_io_service),_acceptor(_io_service)
 {
 	handleAsyncWait();
@@ -36,7 +36,7 @@ Network::TCPServer::~TCPServer()
 bool Network::TCPServer::run()
 {
 	dout << "Launching io_service" << std::endl;
-	_io_service.run();
+    _io_service.run();
 	return (false);
 }
 
@@ -73,7 +73,7 @@ void Network::TCPServer::processAccept()
 			//Take the socket ownership
 			//Instantiate a connection with it
 			_connectionManager.add(
-				std::make_shared<TCPConnection>(_strand,
+				std::make_shared<TCPPacketConnection>(_strand,
 					std::move(_serverSocket),
 					_callBack,
 					&_connectionManager
@@ -83,12 +83,12 @@ void Network::TCPServer::processAccept()
 	});
 }
 
-void Network::TCPServer::setCallback(PacketObserver &callback)
+void Network::TCPServer::setCallback(PacketCallback &callback)
 {
     _callBack = std::move(callback);
 }
 
-void Network::TCPServer::setCallback(PacketObserver &&callback)
+void Network::TCPServer::setCallback(PacketCallback &&callback)
 {
     _callBack = callback;
 }
