@@ -21,4 +21,4 @@ buildAndTestLibAndBinaries:
    - ./scripts/linux/build.sh
    - ./scripts/linux/testTCP.sh
    - ./scripts/linux/testUDP.sh
-
+   - ./scripts/linux/testFileExchange.sh
