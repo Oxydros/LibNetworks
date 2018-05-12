@@ -14,9 +14,9 @@ Network::UDPPacket::~UDPPacket()
 {
 }
 
-PacketBuffer Network::UDPPacket::getData() const
+ByteBuffer Network::UDPPacket::getData() const
 {
-    PacketBuffer    _protobufBuffer{};
+    ByteBuffer    _protobufBuffer{};
 
     _protobufBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_protobufBuffer.data(),
@@ -28,19 +28,17 @@ PacketBuffer Network::UDPPacket::getData() const
     return (_protobufBuffer);
 }
 
-std::size_t Network::UDPPacket::setData(PacketBuffer const &buff)
+std::size_t Network::UDPPacket::setData(ByteBuffer const &buff)
 {
     udpMsg << "Set data on UDPPacket(size: " << buff.size() << ")" << std::endl;
     _protobufPacket.ParseFromArray(buff.data(), buff.size());
 	return (buff.size());
 }
 
-
 void Network::UDPPacket::setType(Network::UDPPacket::Type t)
 {
     _protobufPacket.set_type(t);
 }
-
 
 Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
 {
@@ -50,11 +48,6 @@ Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
 CubZPacket::PacketUDP* Network::UDPPacket::getMutableUDPPacket()
 {
     return (&_protobufPacket);
-}
-
-void Network::UDPPacket::setString(std::string const &name)
-{
-    _protobufPacket.set_info(name);
 }
 
 CubZPacket::PacketUDP const& Network::UDPPacket::getUDPPacket() const

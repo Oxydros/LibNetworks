@@ -33,11 +33,6 @@ namespace Network
          */
 		virtual void stop() = 0;
 
-        /*!
-         * Send a packet
-         * @param packet
-         * @return true or false if succeed
-         */
-		virtual bool sendPacket(IPacket const &packet) = 0;
+		virtual bool isOpen() const = 0;
 	};
 }

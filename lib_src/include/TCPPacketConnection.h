@@ -3,7 +3,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/circular_buffer.hpp>
 #include "Common.h"
-#include "IConnection.h"
+#include "IPacketConnection.h"
 #include "TCPConnectionManager.h"
 
 namespace Network
@@ -12,12 +12,12 @@ namespace Network
     /*!
      * Implementation of a TCPConnection
      */
-	class TCPConnection : public IConnection, public std::enable_shared_from_this<TCPConnection>
+	class TCPPacketConnection : public IPacketConnection, public std::enable_shared_from_this<TCPPacketConnection>
 	{
 	private:
         boost::asio::io_service::strand                 &_strand;
 		TCPConnectionManager				*_connectionManager;
-		PacketObserver						&_callBack;
+		PacketCallback						_callBack;
 		boost::asio::ip::tcp::socket		_socket;
 		bool								_stopped;
         boost::mutex                        _ioMutex;
@@ -28,10 +28,10 @@ namespace Network
         boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
-		explicit TCPConnection(boost::asio::io_service::strand &_strand,
+		explicit TCPPacketConnection(boost::asio::io_service::strand &_strand,
                                boost::asio::ip::tcp::socket socket,
-			PacketObserver &observer, TCPConnectionManager *manager = nullptr);
-		~TCPConnection() = default;
+			PacketCallback &observer, TCPConnectionManager *manager = nullptr);
+		~TCPPacketConnection() = default;
 
 	public:
         /*!
@@ -44,12 +44,14 @@ namespace Network
          */
 		void stop() override;
 
+        bool isOpen() const override { return _socket.is_open(); };
+
         /*!
          * Send a packet
          * @param packet
          * @return
          */
-		bool sendPacket(IPacket const &packet) override;
+		bool sendPacket(IPacket::SharedPtr packet) override;
 
 	private:
         /*!

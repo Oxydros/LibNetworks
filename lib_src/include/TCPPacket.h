@@ -9,10 +9,11 @@ namespace Network
     /*!
      * Implementation of a TCPPacket
      */
-	class TCPPacket : public APacket
+	class TCPPacket : public APacket, public std::enable_shared_from_this<TCPPacket>
 	{
     public:
         typedef CubZPacket::PacketTCP::Type Type;
+        typedef std::shared_ptr<TCPPacket>  SharedPtr;
 
 	private:
         CubZPacket::PacketTCP           _protobufPacket;
@@ -22,8 +23,8 @@ namespace Network
 		    						    ~TCPPacket() override;
 
 	public:
-		PacketBuffer		            getData() const override;
-		std::size_t			            setData(PacketBuffer const &buff) override;
+		ByteBuffer		            getData() const override;
+		std::size_t			            setData(ByteBuffer const &buff) override;
 
 	public:
         Type                            getPacketType() const;

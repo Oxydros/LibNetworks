@@ -8,7 +8,7 @@ Network::UDPClient::UDPClient()
               boost::asio::ip::udp::endpoint(
                       boost::asio::ip::udp::v4(), 0)
               ),
-      _manager(_socket, _strand, _callBack),_signalRegister(_io_service)
+      _manager(_socket, _strand, _packetCallBack),_signalRegister(_io_service)
 {
  //   handleAsyncWait();
 }
@@ -35,7 +35,7 @@ bool Network::UDPClient::connect(std::string const &ip, std::string const &port)
 	return (true);
 }
 
-void Network::UDPClient::sendPacket(IPacket const &p)
+void Network::UDPClient::sendPacket(IPacket::SharedPtr p)
 {
     _mainCo->sendPacket(p);
 }

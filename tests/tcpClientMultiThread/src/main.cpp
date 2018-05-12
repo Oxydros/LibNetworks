@@ -13,9 +13,9 @@ void sendPing(Network::TCPClient &client)
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_PING);
     packet.getMutablePingMessage()->set_action(CubZPacket::PingMessage_Action::PingMessage_Action_PING);
     packet.getMutablePingMessage()->set_pingid(1);
-    client.sendPacket(packet);
+    client.sendPacket(packet.shared_from_this());
     packet.getMutablePingMessage()->set_pingid(2);
-    client.sendPacket(packet);
+    client.sendPacket(packet.shared_from_this());
 }
 
 void sendAuth(Network::TCPClient &client)
@@ -28,7 +28,7 @@ void sendAuth(Network::TCPClient &client)
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
     packet.getMutableAuthMessage()->set_action(CubZPacket::AuthMessage_Action::AuthMessage_Action_LOGIN);
     packet.getMutableAuthMessage()->set_allocated_user(user);
-    client.sendPacket(packet);
+    client.sendPacket(packet.shared_from_this());
 }
 
 int main()
@@ -36,11 +36,12 @@ int main()
     std::string         input;
     Network::TCPClient  client;
 
-    client.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
-        auto tcpPacket = static_cast<Network::TCPPacket const &>(packet);
+    client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet)
+                             {
+                                 auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
 
-        std::cout << "Received " << tcpPacket << std::endl;
-    });
+                                 std::cout << "Received " << *tcpPacket << std::endl;
+                             });
     client.connect("127.0.0.1", "4242");
 
     boost::thread       clientThread([&](){

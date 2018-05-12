@@ -15,7 +15,7 @@ namespace Network
 	{
 	private:
         short           				_serverPort;
-		PacketObserver					_callBack;
+		PacketCallback					_callBack;
 		boost::asio::io_service			_io_service;
         boost::asio::io_service::strand             _strand;
 		boost::asio::ip::udp::socket	_serverSocket;
@@ -32,8 +32,8 @@ namespace Network
 
 	public:
 		bool    run() override;
-        void    setCallback(PacketObserver &callback) override;
-        void    setCallback(PacketObserver &&callback) override;
+        void    setCallback(PacketCallback &callback) override;
+        void    setCallback(PacketCallback &&callback) override;
 
 	private:
 		void	handleAsyncWait();

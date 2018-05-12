@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Client.h"
-#include "TCPConnection.h"
+#include "TCPPacketConnection.h"
+#include "TCPRawConnection.h"
+#include "FileExchanger.h"
 
 namespace Network
 {
@@ -12,10 +14,11 @@ namespace Network
 	class TCPClient : public Client
 	{
 	private:
-		boost::asio::io_service			_io_service;
-        boost::asio::io_service::strand              _strand;
-        TCPConnection::SharedPtr        _tcpConnection;
-        boost::asio::signal_set			_signalRegister;
+        boost::asio::io_service                     _io_service;
+        boost::asio::io_service::strand             _strand;
+        TCPPacketConnection::SharedPtr              _tcpPacketConnection;
+        boost::asio::signal_set			            _signalRegister;
+        FileExchanger                               _fileExchanger;
 
 	public:
 		explicit TCPClient();
@@ -39,7 +42,16 @@ namespace Network
          * Send a packet
          * @param p
          */
-        void        sendPacket(IPacket const &p) override;
+        void        sendPacket(IPacket::SharedPtr p) override;
+
+        /*!
+         * Send raw bytes
+         * @param bytes
+         * @return
+         */
+        void        sendFile(std::string const &ip, std::string const &port, ByteBuffer bytes);
+        void        receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+                                Network::RawCallback callback);
 
         /*!
          * Launch the loop

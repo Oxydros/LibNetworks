@@ -19,6 +19,7 @@
 # define MIN(x, y)           ((x) < (y) ? (x) : (y))
 #endif
 
+#include <memory>
 #include <vector>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
@@ -28,11 +29,15 @@
 namespace Network
 {
     class IConnection;
+    class IPacketConnection;
+    class IRawConnection;
     class IPacket;
 
     typedef HEADER_TYPE                 PacketSize;
-    typedef std::vector<unsigned char>  PacketBuffer;
+    typedef std::vector<char>           ByteBuffer;
 
-    typedef std::function<void(std::shared_ptr<IConnection>, Network::IPacket const &)>  PacketObserver;
+    typedef std::function< void(std::shared_ptr<IPacketConnection>, std::shared_ptr<IPacket> ) >    PacketCallback;
+    typedef std::function < void(std::shared_ptr<IRawConnection>, ByteBuffer)>                      RawEndCallback;
+    typedef std::function< void(ByteBuffer ) >                                                      RawCallback;
 }
 #endif

@@ -6,18 +6,18 @@
 int main()
 {
 	Network::UDPClient client;
-	Network::UDPPacket packet;
+	Network::UDPPacket::SharedPtr packet = std::make_shared<Network::UDPPacket>();
 
-    client.setCallback([](Network::IConnection::SharedPtr co, Network::IPacket const &packet){
-        auto tcpPacket = static_cast<Network::UDPPacket const &>(packet);
+    client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet)
+                             {
+                                 auto tcpPacket = std::static_pointer_cast<Network::UDPPacket>(packet);
 
-        //std::cout << "Received " << tcpPacket << std::endl;
-    });
+                                 //std::cout << "Received " << *tcpPacket << std::endl;
+                             });
 	client.connect("127.0.0.1", "4242");
 
     client.sendPacket(packet);
-    packet.setString("Oxydros");
-    packet.setType(Network::UDPPacket::Type::PacketUDP_Type_OBJECT_MOVEMENT);
+    packet->setType(Network::UDPPacket::Type::PacketUDP_Type_ENTITY);
     client.sendPacket(packet);
 
 	client.run(); //Block

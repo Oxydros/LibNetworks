@@ -3,7 +3,7 @@
 #include <boost/circular_buffer.hpp>
 #include <boost/thread/mutex.hpp>
 #include "Common.h"
-#include "IConnection.h"
+#include "IPacketConnection.h"
 
 namespace Network
 {
@@ -14,7 +14,7 @@ namespace Network
     /*!
      * Implementation of a UDPConnection
      */
-	class UDPConnection : public IConnection, public std::enable_shared_from_this<UDPConnection>
+	class UDPConnection : public IPacketConnection, public std::enable_shared_from_this<UDPConnection>
 	{
     public:
         typedef boost::asio::ip::udp::endpoint  endpoint;
@@ -39,7 +39,8 @@ namespace Network
 	public:
 		void start() override;
 		void stop() override;
-		bool sendPacket(IPacket const &packet) override;
+        bool isOpen() const override { return _socket.is_open(); };
+		bool sendPacket(IPacket::SharedPtr packet) override;
 
     public:
         Network::UDPConnection::endpoint const &getEndpoint() const noexcept;
