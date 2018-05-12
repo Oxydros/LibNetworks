@@ -29,8 +29,8 @@ void Network::UDPConnection::stop()
 bool Network::UDPConnection::sendPacket(IPacket::SharedPtr packet)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
-    ByteBuffer	            _finalBuffer{};
-    ByteBuffer                toSend{packet->getData()};
+    ByteBuffer	                _finalBuffer{};
+    ByteBuffer                   toSend{packet->getData()};
     PacketSize                  packetSize{static_cast<int>(toSend.size())};
 
     if (_toSendBuffer.reserve() < packetSize)
