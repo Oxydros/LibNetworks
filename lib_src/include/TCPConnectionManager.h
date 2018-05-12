@@ -1,7 +1,7 @@
 #pragma once
 
 #include <set>
-#include <boost/thread/mutex.hpp>
+#include <boost/thread.hpp>
 #include "IConnection.h"
 
 namespace Network

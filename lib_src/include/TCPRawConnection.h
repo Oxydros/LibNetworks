@@ -1,8 +1,7 @@
 #pragma once
 
-#include <boost/thread/mutex.hpp>
+#include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
-#include <boost/thread/pthread/mutex.hpp>
 #include "Common.h"
 #include "IRawConnection.h"
 #include "TCPConnectionManager.h"

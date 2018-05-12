@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/thread/mutex.hpp>
+#include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
 #include "Common.h"
 #include "IPacketConnection.h"
