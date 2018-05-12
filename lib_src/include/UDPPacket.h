@@ -29,7 +29,7 @@ namespace Network
         void        setType(Type type);
         Type        getPacketType() const;
 
-        CubZPacket::PacketUDP           *getMutableUDPPacket();
+        CubZPacket::PacketUDP           &getUDPPacket();
 
     public:
         CubZPacket::PacketUDP const      &getUDPPacket() const;

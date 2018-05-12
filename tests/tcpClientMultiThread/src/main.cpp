@@ -11,10 +11,10 @@ void sendPing(Network::TCPClient &client)
     Network::TCPPacket  packet;
 
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_PING);
-    packet.getMutablePingMessage()->set_action(CubZPacket::PingMessage_Action::PingMessage_Action_PING);
-    packet.getMutablePingMessage()->set_pingid(1);
+    packet.getTCPPacket().mutable_pingmessage()->set_action(CubZPacket::PingMessage_Action::PingMessage_Action_PING);
+    packet.getTCPPacket().mutable_pingmessage()->set_pingid(1);
     client.sendPacket(packet.shared_from_this());
-    packet.getMutablePingMessage()->set_pingid(2);
+    packet.getTCPPacket().mutable_pingmessage()->set_pingid(2);
     client.sendPacket(packet.shared_from_this());
 }
 
@@ -23,8 +23,8 @@ void sendAuth(Network::TCPClient &client)
     Network::TCPPacket  packet;
 
     packet.setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
-    packet.getMutableAuthMessage()->set_action(CubZPacket::AuthMessage_Action::AuthMessage_Action_LOGIN);
-    packet.getMutableAuthMessage()->mutable_user()->set_username("Oxydros");
+    packet.getTCPPacket().mutable_authmessage()->set_action(CubZPacket::AuthMessage_Action::AuthMessage_Action_LOGIN);
+    packet.getTCPPacket().mutable_authmessage()->mutable_user()->set_username("Oxydros");
     client.sendPacket(packet.shared_from_this());
 }
 

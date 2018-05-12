@@ -9,14 +9,14 @@ int main()
     Network::TCPClient client{};
 	Network::TCPPacket::SharedPtr packet = std::make_shared<Network::TCPPacket>();
 
-    client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr packet)
+    client.setPacketCallback([](Network::IPacketConnection::SharedPtr co, Network::IPacket::SharedPtr genericPacket)
                              {
-                                 auto tcpPacket = std::static_pointer_cast<Network::TCPPacket>(packet);
+                                 auto packet = std::static_pointer_cast<Network::TCPPacket>(genericPacket);
 
-                                 std::cout << "Received " << *tcpPacket << std::endl;
-                                 if (tcpPacket->getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)
+                                 std::cout << "Received " << *packet << std::endl;
+                                 if (packet->getPacketType() == Network::TCPPacket::Type::PacketTCP_Type_AUTH)
                                  {
-                                     if (!tcpPacket->getAuthMessage().user().username().compare("Oxydros"))
+                                     if (!packet->getTCPPacket().authmessage().user().username().compare("Oxydros"))
                                      {
                                          std::cout << "Logged in" << std::endl;
                                      }
@@ -25,8 +25,8 @@ int main()
 	client.connect("127.0.0.1", "4242");
     //Login packet for "Oxydros"
     packet->setType(Network::TCPPacket::Type::PacketTCP_Type_AUTH);
-    packet->getMutableAuthMessage()->set_code(0);
-    packet->getMutableAuthMessage()->mutable_user()->set_username("Oxydros");
+    packet->getTCPPacket().mutable_authmessage()->set_code(0);
+    packet->getTCPPacket().mutable_authmessage()->mutable_user()->set_username("Oxydros");
 
     client.sendPacket(packet);
 	client.async_run();

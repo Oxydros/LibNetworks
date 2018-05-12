@@ -30,14 +30,7 @@ namespace Network
         Type                            getPacketType() const;
 
         CubZPacket::PacketTCP const     &getTCPPacket() const;
-        CubZPacket::AuthMessage const   &getAuthMessage() const;
-        CubZPacket::PingMessage const   &getPingMessage() const;
-        CubZPacket::FileMessage const   &getFileMessage() const;
-
-        CubZPacket::PacketTCP           *getMutableTCPPacket();
-        CubZPacket::AuthMessage         *getMutableAuthMessage();
-        CubZPacket::PingMessage         *getMutablePingMessage();
-        CubZPacket::FileMessage         *getMutableFileMessage();
+        CubZPacket::PacketTCP           &getTCPPacket();
 
         void                            setType(Type t);
 	};

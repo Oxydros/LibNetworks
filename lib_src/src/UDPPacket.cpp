@@ -45,9 +45,9 @@ Network::UDPPacket::Type Network::UDPPacket::getPacketType() const
     return (_protobufPacket.type());
 }
 
-CubZPacket::PacketUDP* Network::UDPPacket::getMutableUDPPacket()
+CubZPacket::PacketUDP &Network::UDPPacket::getUDPPacket()
 {
-    return (&_protobufPacket);
+    return (_protobufPacket);
 }
 
 CubZPacket::PacketUDP const& Network::UDPPacket::getUDPPacket() const
