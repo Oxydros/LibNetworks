@@ -15,7 +15,7 @@ namespace Network
 	class TCPRawConnection : public IRawConnection, public std::enable_shared_from_this<TCPRawConnection>
 	{
 	private:
-        boost::asio::io_service::strand     &_strand;
+        boost::asio::io_service::strand     _strand;
 		TCPConnectionManager				*_connectionManager;
         RawEndCallback 						_callBack;
 		boost::asio::ip::tcp::socket		_socket;
@@ -30,7 +30,7 @@ namespace Network
         Network::ByteBuffer    	            _toSendBuffer;
 
 	public:
-		explicit TCPRawConnection(boost::asio::io_service::strand &_strand,
+		explicit TCPRawConnection(boost::asio::io_service &io_service,
                                    boost::asio::ip::tcp::socket socket,
                                    RawEndCallback observer,
                                    TCPConnectionManager *manager = nullptr);

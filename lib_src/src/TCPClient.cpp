@@ -18,7 +18,7 @@ bool Network::TCPClient::connect(std::string const &ip, std::string const &port)
 
 	boost::asio::connect(socket, resolver.resolve({ ip, port }));
     _tcpPacketConnection = std::make_shared<TCPPacketConnection>(
-            _strand,
+            _io_service,
             std::move(socket),
             _packetCallBack
     );
@@ -35,11 +35,15 @@ void Network::TCPClient::sendFile(std::string const &ip, std::string const &port
     _fileExchanger.sendFile(ip, port, bytes);
 }
 
+std::shared_ptr<FileExchanger::FileExchange>	Network::TCPClient::prepareFileReception()
+{
+	return (_fileExchanger.prepareReception());
+}
 
-void TCPClient::receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+void TCPClient::receiveFile(std::shared_ptr<FileExchanger::FileExchange> fileExchange, size_t expectedSize,
                             Network::RawCallback callback)
 {
-    _fileExchanger.receiveFile(ip, port, expectedSize, callback);
+    _fileExchanger.receiveFile(fileExchange, expectedSize, callback);
 }
 
 void Network::TCPClient::disconnect()

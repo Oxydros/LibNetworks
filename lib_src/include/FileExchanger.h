@@ -13,8 +13,15 @@ namespace Network
 {
     class FileExchanger
     {
+	public:
+		struct FileExchange : public std::enable_shared_from_this<FileExchange>
+		{
+			std::shared_ptr<TCPRawConnection>					tcpConnection;
+			std::unique_ptr<boost::asio::ip::tcp::acceptor>		acceptor;
+		};
+
     private:
-        typedef std::pair<std::shared_ptr<TCPRawConnection>, Network::RawCallback>  FileConnection;
+        typedef std::pair<std::shared_ptr<FileExchange>, Network::RawCallback>  FileConnection;
 
     private:
         boost::asio::io_service                     _io_service;
@@ -30,7 +37,10 @@ namespace Network
         void        launchService();
 
         void        sendFile(std::string const &ip, std::string const &port, ByteBuffer bytes);
-        void        receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+
+		std::shared_ptr<FileExchange>	prepareReception();
+
+        void        receiveFile(std::shared_ptr<FileExchange> fileExchange, size_t expectedSize,
                                 Network::RawCallback callback);
 
         void        fileTransferFinished(std::shared_ptr<IRawConnection> connection, ByteBuffer bytes);

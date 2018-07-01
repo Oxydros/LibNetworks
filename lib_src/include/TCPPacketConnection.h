@@ -15,7 +15,7 @@ namespace Network
 	class TCPPacketConnection : public IPacketConnection, public std::enable_shared_from_this<TCPPacketConnection>
 	{
 	private:
-        boost::asio::io_service::strand                 &_strand;
+        boost::asio::io_service::strand		_strand;
 		TCPConnectionManager				*_connectionManager;
 		PacketCallback						_callBack;
 		boost::asio::ip::tcp::socket		_socket;
@@ -28,7 +28,7 @@ namespace Network
         boost::circular_buffer<char>    	_toSendBuffer;
 
 	public:
-		explicit TCPPacketConnection(boost::asio::io_service::strand &_strand,
+		explicit TCPPacketConnection(boost::asio::io_service &_io_service,
                                boost::asio::ip::tcp::socket socket,
 			PacketCallback &observer, TCPConnectionManager *manager = nullptr);
 		~TCPPacketConnection() = default;
