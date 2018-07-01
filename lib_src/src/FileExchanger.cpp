@@ -32,6 +32,8 @@ void FileExchanger::launchService()
 
 void FileExchanger::sendFile(const std::string &ip, const std::string &port, ByteBuffer bytes)
 {
+	boost::mutex::scoped_lock   lock{ _fileMutex };
+
     _threads.push_back(boost::thread([this, ip, port, bytes](){
         tcpMsg << "FileExchanger receive command to send file of size " << bytes.size() << std::endl;
 
@@ -40,55 +42,78 @@ void FileExchanger::sendFile(const std::string &ip, const std::string &port, Byt
 
         boost::asio::connect(socket, resolver.resolve({ ip, port }));
 
-        auto newConnection = std::make_shared<TCPRawConnection>(_strand, std::move(socket),
+        auto newConnection = std::make_shared<TCPRawConnection>(_io_service, std::move(socket),
                                                                 std::bind(&FileExchanger::fileTransferFinished, this,
                                                                           std::placeholders::_1, std::placeholders::_2));
         newConnection->sendRawBytes(bytes);
 
-        auto newPair = std::make_pair(newConnection, nullptr);
+		auto fileExchange = std::make_shared<FileExchange>();
+
+		fileExchange->tcpConnection = newConnection;
+
+        auto newPair = std::make_pair(fileExchange, nullptr);
         _fileMutex.lock();
         _tcpFileConnections.push_back(newPair);
         _fileMutex.unlock();
 
-        this->launchService();
+		_io_service.reset();
+		_io_service.run();
+
+		tcpMsg << "END THREAD SEND FILE" << std::endl;
     }));
 }
 
-void FileExchanger::receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+std::shared_ptr<FileExchanger::FileExchange>	FileExchanger::prepareReception()
+{
+	boost::asio::ip::tcp::acceptor	acceptor{ _io_service };
+	boost::asio::ip::tcp::resolver	resolver{ _io_service };
+	boost::asio::ip::tcp::endpoint  endpoint{ *resolver.resolve({ "127.0.0.1", "0" }) };
+	auto fileExchange = std::make_shared<FileExchange>();
+
+	fileExchange->acceptor = std::make_unique<boost::asio::ip::tcp::acceptor>(std::move(acceptor));
+
+	fileExchange->acceptor->open(endpoint.protocol());
+	fileExchange->acceptor->set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+	fileExchange->acceptor->bind(endpoint);
+
+	return (fileExchange);
+}
+
+void FileExchanger::receiveFile(std::shared_ptr<FileExchange> fileExchange, size_t expectedSize,
                                 Network::RawCallback callback)
 {
-    _threads.push_back(boost::thread([this, ip, port, expectedSize, callback](){
-        boost::asio::ip::tcp::resolver	resolver{_io_service};
-        boost::asio::ip::tcp::endpoint  endpoint{*resolver.resolve({ ip, port })};
-        boost::asio::ip::tcp::socket	_serverSocket{_io_service};
-        boost::asio::ip::tcp::acceptor	_acceptor{_io_service};
+	boost::mutex::scoped_lock   lock{ _fileMutex };
 
-        _acceptor.open(endpoint.protocol());
-        _acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-        _acceptor.bind(endpoint);
-        _acceptor.listen();
+    _threads.push_back(boost::thread([this, fileExchange, expectedSize, callback](){
+        boost::asio::ip::tcp::socket	_serverSocket{_io_service};
+
+		fileExchange->acceptor->listen();
 
         tcpMsg << "Waiting connection for file reception " << std::endl;
-        _acceptor.accept(_serverSocket);
+		fileExchange->acceptor->accept(_serverSocket);
 
 
-        auto newConnection = std::make_shared<TCPRawConnection>(_strand, std::move(_serverSocket),
+        auto newConnection = std::make_shared<TCPRawConnection>(_io_service, std::move(_serverSocket),
                                                                 std::bind(&FileExchanger::fileTransferFinished, this,
                                                                           std::placeholders::_1, std::placeholders::_2));
 
-        _acceptor.close();
-        _serverSocket.close();
+		fileExchange->acceptor->close();
 
         tcpMsg << "EXPECTED " << expectedSize << std::endl;
         newConnection->readRawBytes(expectedSize);
 
-        auto newPair = std::make_pair(newConnection, callback);
+		fileExchange->tcpConnection = newConnection;
+
+        auto newPair = std::make_pair(fileExchange, callback);
 
         _fileMutex.lock();
         _tcpFileConnections.push_back(newPair);
         _fileMutex.unlock();
 
-        this->launchService();
+		_io_service.reset();
+		_io_service.run();
+
+		tcpMsg << "END THREAD RECEIVE FILE" << std::endl;
     }));
 }
 
@@ -98,7 +123,7 @@ void FileExchanger::fileTransferFinished(std::shared_ptr<Network::IRawConnection
 
     auto it = std::find_if(_tcpFileConnections.begin(), _tcpFileConnections.end(),
                            [connection](auto &co) -> bool {
-                               return (co.first.get() == connection.get());
+                               return (co.first->tcpConnection.get() == connection.get());
                            });
 
     tcpMsg << "Finished raw co" << std::endl;

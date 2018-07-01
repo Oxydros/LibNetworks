@@ -50,7 +50,9 @@ namespace Network
          * @return
          */
         void        sendFile(std::string const &ip, std::string const &port, ByteBuffer bytes);
-        void        receiveFile(std::string const &ip, std::string const &port, size_t expectedSize,
+
+		std::shared_ptr<FileExchanger::FileExchange>	prepareFileReception();
+        void        receiveFile(std::shared_ptr<FileExchanger::FileExchange> fileExchange, size_t expectedSize,
                                 Network::RawCallback callback);
 
         /*!

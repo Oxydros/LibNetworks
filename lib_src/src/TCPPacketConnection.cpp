@@ -4,9 +4,9 @@
 
 using namespace Network;
 
-TCPPacketConnection::TCPPacketConnection(boost::asio::io_service::strand &strand, boost::asio::ip::tcp::socket socket,
+TCPPacketConnection::TCPPacketConnection(boost::asio::io_service &io_service, boost::asio::ip::tcp::socket socket,
 	PacketCallback &observer, TCPConnectionManager *manager)
-	: _strand(strand), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
+	: _strand(io_service), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
       _stopped(false), _ioMutex(), _readBuffer(MAX_BUFFER_SIZE), _readActionBuffer(),
       _toSendBuffer(MAX_BUFFER_SIZE)
 {

@@ -73,7 +73,7 @@ void Network::TCPServer::processAccept()
 			//Take the socket ownership
 			//Instantiate a connection with it
 			_connectionManager.add(
-				std::make_shared<TCPPacketConnection>(_strand,
+				std::make_shared<TCPPacketConnection>(_io_service,
 					std::move(_serverSocket),
 					_callBack,
 					&_connectionManager

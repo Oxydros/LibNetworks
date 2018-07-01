@@ -4,9 +4,9 @@
 
 using namespace Network;
 
-TCPRawConnection::TCPRawConnection(boost::asio::io_service::strand &strand, boost::asio::ip::tcp::socket socket,
+TCPRawConnection::TCPRawConnection(boost::asio::io_service &io_service, boost::asio::ip::tcp::socket socket,
 	RawEndCallback observer, TCPConnectionManager *manager)
-	: _strand(strand), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
+	: _strand(io_service), _socket(std::move(socket)), _connectionManager(manager), _callBack(observer),
       _stopped(false), _ioMutex(), _readBuffer(), _readActionBuffer(),
       _toSendBuffer()
 {
@@ -20,7 +20,7 @@ void Network::TCPRawConnection::processRead()
 {
 	auto                            self{shared_from_this()};
 
-    tcpMsg << "Launch async read for packet" << std::endl;
+    tcpMsg << "Launch async read for file data" << std::endl;
 	_socket.async_read_some(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE),
 	_strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
@@ -37,7 +37,11 @@ void Network::TCPRawConnection::processRead()
             if (_expectRead && _expectReadSize == _readBuffer.size())
             {
                 _callBack(shared_from_this(), _readBuffer);
-            } else 	processRead();
+			}
+			else
+			{
+				processRead();
+			}
         }
 		else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
 		{
@@ -69,7 +73,6 @@ void TCPRawConnection::readRawBytes(size_t expectedSize)
     _expectReadSize = expectedSize;
     processRead();
 }
-
 
 //Scoped lock to prevent multiple thread write bugs
 bool Network::TCPRawConnection::sendRawBytes(ByteBuffer bytes)
@@ -115,5 +118,8 @@ void Network::TCPRawConnection::handleWrite(boost::system::error_code ec)
     }
 	//If error, stop socket
 	if (!(!ec || ec == boost::asio::error::would_block))
+	{
+		tcpMsg << "Write error, stopping socket" << std::endl;
 		_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
+	}
 }
