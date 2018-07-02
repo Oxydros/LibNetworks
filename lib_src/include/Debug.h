@@ -4,7 +4,7 @@
 
 #if defined(_DEBUG) || defined(CUBZ_NETWORK_DEBUG)
 
-# if defined (__WIN32__)
+# ifdef WIN32
 	#define TRACE(x) \
 			{std::stringstream s;  s << __FILE__ << "(" << __LINE__ << ") DEBUG: " << x;\
             ::OutputDebugStringA(s.str().c_str());}
