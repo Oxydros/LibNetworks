@@ -42,3 +42,5 @@ add_subdirectory(tests/tcpClientMultiThread)
 
 add_subdirectory(tests/udpClient)
 add_subdirectory(tests/udpServer)
+
+add_subdirectory(tests/fullClient)
