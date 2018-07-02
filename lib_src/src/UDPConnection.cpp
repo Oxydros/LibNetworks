@@ -54,10 +54,10 @@ void Network::UDPConnection::checkWrite()
 {
 	UDPMSG("UDP Checking if I can write" << std::endl);
     _socket.async_send_to(boost::asio::null_buffers(), _remoteEndpoint,
-                             _strand.wrap(
+                            
                                      boost::bind(&UDPConnection::handleWrite,
                                                  shared_from_this(),
-                                                 boost::asio::placeholders::error)));
+                                                 boost::asio::placeholders::error));
 }
 
 void Network::UDPConnection::handleWrite(boost::system::error_code ec)

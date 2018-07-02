@@ -21,7 +21,7 @@ void Network::UDPConnectionManager::run()
 {
 	UDPMSG("Launch async read for packet" << std::endl);
     _socket.async_receive_from(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE), _currentRemoteEndpoint,
-                              _strand.wrap(
+                              
                                       [this](boost::system::error_code ec, std::size_t nbBytes)
                                       {
                                           if (!ec && nbBytes > 0)
@@ -40,7 +40,7 @@ void Network::UDPConnectionManager::run()
 											  UDPMSG("Read error for " << _currentRemoteEndpoint << std::endl);
                                           }
                                       }
-                              ));
+                              );
 }
 
 void Network::UDPConnectionManager::processRead()

@@ -22,7 +22,7 @@ void Network::TCPRawConnection::processRead()
 
 	TCPMSG("Launch async read for file data" << std::endl);
 	_socket.async_read_some(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE),
-	_strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
+	[this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
         boost::mutex::scoped_lock   lock{_ioMutex};
 
@@ -48,7 +48,7 @@ void Network::TCPRawConnection::processRead()
 			TCPMSG("Read error, stopping socket" << std::endl);
 			_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 		}
-	}));
+	});
 }
 
 void Network::TCPRawConnection::stop()
@@ -91,10 +91,9 @@ void Network::TCPRawConnection::checkWrite()
 {
 	TCPMSG("Checking if I can write" << std::endl);
     _socket.async_write_some(boost::asio::null_buffers(),
-                             _strand.wrap(
-                                     boost::bind(&TCPRawConnection::handleWrite,
+                             boost::bind(&TCPRawConnection::handleWrite,
                                                  shared_from_this(),
-                                                 boost::asio::placeholders::error)));
+                                                 boost::asio::placeholders::error));
 }
 
 void Network::TCPRawConnection::handleWrite(boost::system::error_code ec)
