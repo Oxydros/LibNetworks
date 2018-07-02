@@ -24,7 +24,7 @@ void Network::TCPPacketConnection::processRead()
 
 	TCPMSG("Launch async read for packet" << std::endl);
 	_socket.async_read_some(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE),
-	_strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
+		[this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
 
 		if (!ec && nbBytes > 0)
@@ -55,7 +55,7 @@ void Network::TCPPacketConnection::processRead()
 			TCPMSG("Read error, stopping socket" << std::endl);
 			_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 		}
-	}));
+	});
 }
 
 void Network::TCPPacketConnection::stop()
@@ -98,10 +98,9 @@ void Network::TCPPacketConnection::checkWrite()
 {
 	TCPMSG("Checking if I can write" << std::endl);
     _socket.async_write_some(boost::asio::null_buffers(),
-                             _strand.wrap(
-                                     boost::bind(&TCPPacketConnection::handleWrite,
+                             boost::bind(&TCPPacketConnection::handleWrite,
                                                  shared_from_this(),
-                                                 boost::asio::placeholders::error)));
+                                                 boost::asio::placeholders::error));
 }
 
 void Network::TCPPacketConnection::handleWrite(boost::system::error_code ec)
