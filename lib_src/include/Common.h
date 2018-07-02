@@ -2,9 +2,9 @@
 #ifndef COMMON_INCLUDE_H
 # define COMMON_INCLUDE_H
 
-#if defined(_DEBUG) || defined(CUBZ_NETWORK_DEBUG)
+//#if defined(_DEBUG) || defined(CUBZ_NETWORK_DEBUG)
 # define BOOST_ASIO_ENABLE_HANDLER_TRACKING
-#endif
+//#endif
 #define MAX_BUFFER_SIZE     (2048)
 #define READ_SIZE           (512)
 #define HEADER_TYPE         int

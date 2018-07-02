@@ -1,4 +1,4 @@
-#include "..\include\FullClient.h"
+#include "FullClient.h"
 
 FullClient::FullClient()
 {
