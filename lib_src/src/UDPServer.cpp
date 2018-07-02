@@ -13,18 +13,18 @@ Network::UDPServer::UDPServer(short serverPort)
 {
 	handleAsyncWait();
 
-	dout << "Launched UDP server on port " << serverPort << std::endl;
+	TRACE("Launched UDP server on port " << serverPort << std::endl);
 }
 
 Network::UDPServer::~UDPServer()
 {
-	dout << "Stopping server..." << std::endl;
+	TRACE("Stopping server..." << std::endl);
 	_connectionManager.stop_all();
 }
 
 bool Network::UDPServer::run()
 {
-	dout << "Launching io_service" << std::endl;
+	TRACE("Launching io_service" << std::endl);
     _connectionManager.run();
 	_io_service.run();
 	return (false);
@@ -32,7 +32,7 @@ bool Network::UDPServer::run()
 
 void Network::UDPServer::handleAsyncWait()
 {
-	dout << "Configuring signalHandler" << std::endl;
+	TCPMSG("Configuring signalHandler" << std::endl);
 
 	//Register signals to be handle in async_wait
 	//Allow us to exit the server correctly
@@ -43,7 +43,7 @@ void Network::UDPServer::handleAsyncWait()
 	_signalRegister.async_wait(
 		[this](boost::system::error_code ec, int sigNbr)
 	{
-		dout << "Received signal " << sigNbr << std::endl;
+		TCPMSG("Received signal " << sigNbr << std::endl);
 		//Close all opened connections
 		_connectionManager.stop_all();
         _serverSocket.close();

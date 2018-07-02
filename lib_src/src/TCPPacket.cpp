@@ -20,19 +20,19 @@ ByteBuffer Network::TCPPacket::getData() const
     _finalBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_finalBuffer.data(),
                                      _protobufPacket.ByteSize());
-    tcpMsg << "Get data on TCPPPacket. Packet size: "
-         << (_finalBuffer.size()) << std::endl;
-    dout << _protobufPacket.DebugString() << std::endl;
+	TCPMSG("Get data on TCPPPacket. Packet size: "
+         << (_finalBuffer.size()) << std::endl);
+    TRACE(_protobufPacket.DebugString() << std::endl);
     return (_finalBuffer);
 }
 
 std::size_t Network::TCPPacket::setData(ByteBuffer const &buff)
 {
-	dout << "Set data on TCPPacket(size: " << buff.size() << ")" << std::endl;
+	TRACE("Set data on TCPPacket(size: " << buff.size() << ")" << std::endl);
     bool success{_protobufPacket.ParseFromArray(buff.data(), buff.size())};
     if (!success)
-        dout << "Couldn't parse protobuf packet !" << std::endl;
-	dout << "DEBUG PROTOBUF PRINT " <<_protobufPacket.DebugString() << std::endl;
+        TRACE("Couldn't parse protobuf packet !" << std::endl);
+	TRACE("DEBUG PROTOBUF PRINT " <<_protobufPacket.DebugString() << std::endl);
 	return (buff.size());
 }
 

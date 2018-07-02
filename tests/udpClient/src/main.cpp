@@ -21,6 +21,6 @@ int main()
     client.sendPacket(packet);
 
 	client.run(); //Block
-	dout << "Leaving client ..." << std::endl;
+	TRACE("Leaving client ..." << std::endl);
     return 0;
 }

@@ -35,7 +35,7 @@ void FileExchanger::sendFile(const std::string &ip, const std::string &port, Byt
 	boost::mutex::scoped_lock   lock{ _fileMutex };
 
     _threads.push_back(boost::thread([this, ip, port, bytes](){
-        tcpMsg << "FileExchanger receive command to send file of size " << bytes.size() << std::endl;
+        TCPMSG("FileExchanger receive command to send file of size " << bytes.size() << std::endl);
 
         boost::asio::ip::tcp::resolver	resolver{_io_service};
         boost::asio::ip::tcp::socket	socket{_io_service};
@@ -59,7 +59,7 @@ void FileExchanger::sendFile(const std::string &ip, const std::string &port, Byt
 		_io_service.reset();
 		_io_service.run();
 
-		tcpMsg << "END THREAD SEND FILE" << std::endl;
+		TCPMSG("END THREAD SEND FILE" << std::endl);
     }));
 }
 
@@ -89,7 +89,7 @@ void FileExchanger::receiveFile(std::shared_ptr<FileExchange> fileExchange, size
 
 		fileExchange->acceptor->listen();
 
-        tcpMsg << "Waiting connection for file reception " << std::endl;
+        TCPMSG("Waiting connection for file reception " << std::endl);
 		fileExchange->acceptor->accept(_serverSocket);
 
 
@@ -99,7 +99,7 @@ void FileExchanger::receiveFile(std::shared_ptr<FileExchange> fileExchange, size
 
 		fileExchange->acceptor->close();
 
-        tcpMsg << "EXPECTED " << expectedSize << std::endl;
+		TCPMSG("EXPECTED " << expectedSize << std::endl);
         newConnection->readRawBytes(expectedSize);
 
 		fileExchange->tcpConnection = newConnection;
@@ -113,7 +113,7 @@ void FileExchanger::receiveFile(std::shared_ptr<FileExchange> fileExchange, size
 		_io_service.reset();
 		_io_service.run();
 
-		tcpMsg << "END THREAD RECEIVE FILE" << std::endl;
+		TCPMSG("END THREAD RECEIVE FILE" << std::endl);
     }));
 }
 
@@ -126,7 +126,7 @@ void FileExchanger::fileTransferFinished(std::shared_ptr<Network::IRawConnection
                                return (co.first->tcpConnection.get() == connection.get());
                            });
 
-    tcpMsg << "Finished raw co" << std::endl;
+	TCPMSG("Finished raw co" << std::endl);
     if (it->second)
         it->second(bytes);
     _tcpFileConnections.erase(it);

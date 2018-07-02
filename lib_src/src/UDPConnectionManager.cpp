@@ -19,25 +19,25 @@ Network::UDPConnectionManager::~UDPConnectionManager()
 
 void Network::UDPConnectionManager::run()
 {
-    udpMsg << "Launch async read for packet" << std::endl;
+	UDPMSG("Launch async read for packet" << std::endl);
     _socket.async_receive_from(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE), _currentRemoteEndpoint,
                               _strand.wrap(
                                       [this](boost::system::error_code ec, std::size_t nbBytes)
                                       {
                                           if (!ec && nbBytes > 0)
                                           {
-                                              udpMsg << "Got packet of size: " << nbBytes
-                                                   << " from " << _currentRemoteEndpoint << std::endl;
+											  UDPMSG("Got packet of size: " << nbBytes
+                                                   << " from " << _currentRemoteEndpoint << std::endl);
                                               assert(_readBuffer.reserve() >= nbBytes);
 
                                               _readBuffer.insert(_readBuffer.end(), _readActionBuffer.begin(), _readActionBuffer.begin() + nbBytes);
                                               _readActionBuffer.clear();
-                                              udpMsg << "Circular buffer size is now: " << _readBuffer.size() << std::endl;
+											  UDPMSG("Circular buffer size is now: " << _readBuffer.size() << std::endl);
                                               processRead();
                                           }
                                           else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
                                           {
-                                              udpMsg << "Read error for " << _currentRemoteEndpoint << std::endl;
+											  UDPMSG("Read error for " << _currentRemoteEndpoint << std::endl);
                                           }
                                       }
                               ));
@@ -58,7 +58,7 @@ void Network::UDPConnectionManager::processRead()
             if (_readBuffer.empty())
                 break;
         } else {
-            tcpMsg << "No more packet readble, size of circular is " << _readBuffer.size() << std::endl;
+			UDPMSG("No more packet readble, size of circular is " << _readBuffer.size() << std::endl);
             break;
         }
     }
@@ -69,27 +69,27 @@ void Network::UDPConnectionManager::add(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
 
-    udpMsg << "New connection" << std::endl;
+	UDPMSG("New connection" << std::endl);
 	//Adding the connection to the set
 	_connections.insert(ptr);
 
 	//Launching the connection read / write loop
 	ptr->start();
-    udpMsg << _connections.size() << " active connections" << std::endl;
+	UDPMSG(_connections.size() << " active connections" << std::endl);
 }
 
 void Network::UDPConnectionManager::stop(IConnection::SharedPtr ptr)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
 
-    udpMsg << "Delete connection" << std::endl;
+	UDPMSG("Delete connection" << std::endl);
 
 	//Erasing the connection from the set
 	_connections.erase(ptr);
 
 	//Stopping the read / write loop by closing the socket
 	ptr->stop();
-    udpMsg << _connections.size() << " active connections" << std::endl;
+	UDPMSG(_connections.size() << " active connections" << std::endl);
 }
 
 //Stop all connections
@@ -114,10 +114,10 @@ IPacketConnection::SharedPtr Network::UDPConnectionManager::extractRemotePacketC
                                               {
                                                   return (remoteEndpoint == std::dynamic_pointer_cast<UDPConnection>(ptr)->getEndpoint());
                                               });
-    udpMsg << "Identifying remote connection..." << std::endl;
+	UDPMSG("Identifying remote connection..." << std::endl);
     if (foundRemoteConnection == _connections.end())
     {
-        udpMsg << "Couldn't find remote... creating a udp connection" << std::endl;
+		UDPMSG("Couldn't find remote... creating a udp connection" << std::endl);
         co = std::make_shared<UDPConnection>(_strand,
                                              _socket,
                                              remoteEndpoint,

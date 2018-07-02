@@ -54,7 +54,7 @@ void Network::UDPClient::run()
 
 void Network::UDPClient::handleAsyncWait()
 {
-    dout << "Configuring signalHandler" << std::endl;
+	UDPMSG("Configuring signalHandler" << std::endl);
 
     //Register signals to be handle in async_wait
     //Allow us to exit the server correctly
@@ -65,7 +65,7 @@ void Network::UDPClient::handleAsyncWait()
     _signalRegister.async_wait(
             [this](boost::system::error_code ec, int sigNbr)
             {
-                dout << "Received signal " << sigNbr << std::endl;
+                UDPMSG("Received signal " << sigNbr << std::endl);
                 _manager.stop_all();
             });
 }
