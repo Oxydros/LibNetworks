@@ -31,6 +31,6 @@ int main()
     client.sendPacket(packet);
 	client.async_run();
 	client.wait();
-	dout << "Leaving client ..." << std::endl;
+	TRACE("Leaving client ..." << std::endl);
     return 0;
 }

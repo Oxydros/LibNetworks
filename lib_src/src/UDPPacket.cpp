@@ -21,16 +21,16 @@ ByteBuffer Network::UDPPacket::getData() const
     _protobufBuffer.resize(_protobufPacket.ByteSizeLong());
     _protobufPacket.SerializeToArray(_protobufBuffer.data(),
                                      _protobufPacket.ByteSize());
-    udpMsg << "Get data on UDPPacket. Packet size: "
-           << (_protobufBuffer.size()) << std::endl;
-    udpMsg << _protobufPacket.type() << std::endl;
-    udpMsg << _protobufPacket.DebugString() << std::endl;
+	UDPMSG("Get data on UDPPacket. Packet size: "
+           << (_protobufBuffer.size()) << std::endl);
+	UDPMSG(_protobufPacket.type() << std::endl);
+	UDPMSG(_protobufPacket.DebugString() << std::endl);
     return (_protobufBuffer);
 }
 
 std::size_t Network::UDPPacket::setData(ByteBuffer const &buff)
 {
-    udpMsg << "Set data on UDPPacket(size: " << buff.size() << ")" << std::endl;
+	UDPMSG("Set data on UDPPacket(size: " << buff.size() << ")" << std::endl);
     _protobufPacket.ParseFromArray(buff.data(), buff.size());
 	return (buff.size());
 }

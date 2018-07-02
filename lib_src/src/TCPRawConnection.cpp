@@ -20,7 +20,7 @@ void Network::TCPRawConnection::processRead()
 {
 	auto                            self{shared_from_this()};
 
-    tcpMsg << "Launch async read for file data" << std::endl;
+	TCPMSG("Launch async read for file data" << std::endl);
 	_socket.async_read_some(boost::asio::buffer(_readActionBuffer.data(), READ_SIZE),
 	_strand.wrap([this, self](boost::system::error_code ec, std::size_t nbBytes)
 	{
@@ -28,12 +28,12 @@ void Network::TCPRawConnection::processRead()
 
 		if (!ec && nbBytes > 0)
         {
-            tcpMsg << "Read " << nbBytes << std::endl;
+			TCPMSG("Read " << nbBytes << std::endl);
 
             _readBuffer.insert(_readBuffer.end(), _readActionBuffer.begin(), _readActionBuffer.begin() + nbBytes);
             _readActionBuffer.clear();
-            tcpMsg << "Read buffer size is now: " << _readBuffer.size() << std::endl;
-            tcpMsg << "Expected read is " << _expectReadSize << std::endl;
+			TCPMSG("Read buffer size is now: " << _readBuffer.size() << std::endl);
+			TCPMSG("Expected read is " << _expectReadSize << std::endl);
             if (_expectRead && _expectReadSize == _readBuffer.size())
             {
                 _callBack(shared_from_this(), _readBuffer);
@@ -45,7 +45,7 @@ void Network::TCPRawConnection::processRead()
         }
 		else if (nbBytes <= 0 || ec != boost::asio::error::operation_aborted)
 		{
-            tcpMsg << "Read error, stopping socket" << std::endl;
+			TCPMSG("Read error, stopping socket" << std::endl);
 			_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 		}
 	}));
@@ -56,7 +56,7 @@ void Network::TCPRawConnection::stop()
     boost::mutex::scoped_lock   lock{_ioMutex};
     if (!_stopped)
     {
-        tcpMsg << "Stop socket" << std::endl;
+		TCPMSG("Stop socket" << std::endl);
         _socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
         _socket.close();
         _stopped = true;
@@ -79,9 +79,9 @@ bool Network::TCPRawConnection::sendRawBytes(ByteBuffer bytes)
 {
     boost::mutex::scoped_lock   lock{_ioMutex};
 
-    tcpMsg << "Received send file data of size " << bytes.size() << std::endl;
+	TCPMSG("Received send file data of size " << bytes.size() << std::endl);
     _toSendBuffer.insert(_toSendBuffer.end(), bytes.begin(), bytes.begin() + bytes.size());
-    tcpMsg << "Send buffer size is now " << _toSendBuffer.size() << std::endl;
+	TCPMSG("Send buffer size is now " << _toSendBuffer.size() << std::endl);
     //Check if we can write some data in the socket
 	checkWrite();
 	return (false);
@@ -89,7 +89,7 @@ bool Network::TCPRawConnection::sendRawBytes(ByteBuffer bytes)
 
 void Network::TCPRawConnection::checkWrite()
 {
-    tcpMsg << "Checking if I can write" << std::endl;
+	TCPMSG("Checking if I can write" << std::endl);
     _socket.async_write_some(boost::asio::null_buffers(),
                              _strand.wrap(
                                      boost::bind(&TCPRawConnection::handleWrite,
@@ -103,14 +103,14 @@ void Network::TCPRawConnection::handleWrite(boost::system::error_code ec)
 
     if (_toSendBuffer.empty())
         return;
-    tcpMsg << "Write: " << ec.message() << std::endl;
+	TCPMSG("Write: " << ec.message() << std::endl);
 	if (!ec)
     {
-        tcpMsg << "Writing on socket " << _toSendBuffer.size() << " bytes" << std::endl;
+		TCPMSG("Writing on socket " << _toSendBuffer.size() << " bytes" << std::endl);
         std::size_t len = _socket.write_some(boost::asio::buffer(_toSendBuffer, _toSendBuffer.size()), ec);
-        tcpMsg << "Successfully wrote " << len << std::endl;
+		TCPMSG("Successfully wrote " << len << std::endl);
         _toSendBuffer.erase(_toSendBuffer.begin(), _toSendBuffer.begin() + len);
-        tcpMsg << "New size of send buffer " << _toSendBuffer.size() << " " << _toSendBuffer.empty() << std::endl;
+		TCPMSG("New size of send buffer " << _toSendBuffer.size() << " " << _toSendBuffer.empty() << std::endl);
         if (_toSendBuffer.size())
             checkWrite();
         else
@@ -119,7 +119,7 @@ void Network::TCPRawConnection::handleWrite(boost::system::error_code ec)
 	//If error, stop socket
 	if (!(!ec || ec == boost::asio::error::would_block))
 	{
-		tcpMsg << "Write error, stopping socket" << std::endl;
+		TCPMSG("Write error, stopping socket" << std::endl);
 		_connectionManager != nullptr ? _connectionManager->stop(shared_from_this()) : stop();
 	}
 }

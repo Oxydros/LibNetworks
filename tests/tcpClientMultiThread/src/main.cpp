@@ -60,7 +60,7 @@ int main()
         std::cout << ">";
     }
 
-    dout << "Leaving client ..." << std::endl;
+	TRACE("Leaving client ..." << std::endl);
     client.disconnect();
     clientThread.join();
     return 0;

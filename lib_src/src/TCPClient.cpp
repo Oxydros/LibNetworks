@@ -59,7 +59,7 @@ void Network::TCPClient::run()
 
 void Network::TCPClient::handleAsyncWait()
 {
-    dout << "Configuring signalHandler" << std::endl;
+    TRACE("Configuring signalHandler" << std::endl);
 
     //Register signals to be handle in async_wait
     //Allow us to exit the server correctly
@@ -70,7 +70,7 @@ void Network::TCPClient::handleAsyncWait()
     _signalRegister.async_wait(
             [this](boost::system::error_code ec, int sigNbr)
             {
-                dout << "Received signal " << sigNbr << std::endl;
+                TRACE("Received signal " << sigNbr << std::endl);
                 _tcpPacketConnection->stop();
             });
 }
