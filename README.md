@@ -1,5 +1,11 @@
 # C++ Library for network communications
 
+**DISCLAIMER: This repository is not yet functional. It will be soon.**
+
+## Introduction
+
+This library is part of our end of studies project called CubZ.  
+
 # Update submodules
 
 Before compiling the library using the respective build.sh or GenerateVSSolution.bat script, you need  
@@ -43,3 +49,7 @@ Boost:
     /yourBoostRootDir> ./b2.exe --toolset=msvc variant=release link=static threading=multi runtime-link=shared architecture=x86 stage
 ```
 - Define the env variable BOOST_ROOT with the path to your boost directory as value
+
+## Contact
+
+You can contact me on Twitter @oxydros, or via e-mail oxydros at gmail.
